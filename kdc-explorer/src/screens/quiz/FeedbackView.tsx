@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import type { AnswerRecord } from '../../features/quiz/engine.ts'
+import { getClassificationByCode } from '../../data/index.ts'
+import { codeFromOption, reactionFor, type AnswerRecord } from '../../features/quiz/engine.ts'
 import type { Quiz } from '../../types/index.ts'
+import { BookCard } from './BookCard.tsx'
+import { SpeechBubble } from './SpeechBubble.tsx'
 import styles from './Quiz.module.css'
 
 interface Props {
@@ -10,10 +13,20 @@ interface Props {
   onNext: () => void
 }
 
+/** 손님이 엉뚱한 서가에 갔을 때의 반응. 서가 내용은 분류 데이터의 대표 주제에서 가져온다. */
+function wrongShelfLine(selected: string): string | null {
+  const code = codeFromOption(selected)
+  const shelf = code ? getClassificationByCode(code) : undefined
+  if (!shelf || shelf.exampleTopics.length === 0) return null
+  return `어? ${shelf.code} ${shelf.name} 서가에 와 보니 ${shelf.exampleTopics.slice(0, 2).join(', ')} 책뿐인데…?`
+}
+
 /** SCR-06 정답/오답 피드백. 결과를 색상·아이콘·텍스트로 함께 보여 준다. */
 export function FeedbackView({ quiz, answer, isLast, onNext }: Props) {
   const [showQuestion, setShowQuestion] = useState(false)
   const headingRef = useRef<HTMLHeadingElement>(null)
+  const character = quiz.character
+  const characterLine = character && (answer.correct ? character.thanks : wrongShelfLine(answer.selected))
 
   useEffect(() => {
     headingRef.current?.focus()
@@ -27,6 +40,14 @@ export function FeedbackView({ quiz, answer, isLast, onNext }: Props) {
         </span>
         {answer.correct ? '정답이에요!' : '아쉬워요, 정답이 아니에요'}
       </h1>
+
+      {character && characterLine ? (
+        <SpeechBubble emoji={character.emoji} name={character.name}>
+          {characterLine}
+        </SpeechBubble>
+      ) : (
+        <p className={styles.reaction}>{reactionFor(quiz, answer.correct)}</p>
+      )}
 
       <dl className={styles.answerLines}>
         <div>
@@ -52,6 +73,8 @@ export function FeedbackView({ quiz, answer, isLast, onNext }: Props) {
 
       {showQuestion && (
         <div className={styles.reviewQuestion} id="feedback-question">
+          {quiz.character && <p className={styles.reviewQuestionText}>{`${quiz.character.name}: "${quiz.character.line}"`}</p>}
+          {quiz.book && <BookCard book={quiz.book} fictional={quiz.fictional} compact />}
           <p className={styles.reviewQuestionText}>{quiz.question}</p>
           <ul className={styles.reviewOptions}>
             {quiz.options.map((option) => (

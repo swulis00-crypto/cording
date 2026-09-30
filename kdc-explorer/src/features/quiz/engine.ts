@@ -1,5 +1,5 @@
 // 퀴즈 규칙 (PRD 10.1). 화면과 분리한 순수 함수.
-import type { Quiz } from '../../types/index.ts'
+import type { Quiz, QuizType } from '../../types/index.ts'
 
 export const POINTS_PER_CORRECT = 10
 
@@ -42,6 +42,39 @@ export function shuffle<T>(items: readonly T[], random: () => number = Math.rand
 /** 미션용 문항: 문항 순서는 데이터 순서(쉬운 문항부터)를 지키고, 보기 순서만 섞는다. */
 export function prepareMission(quizzes: Quiz[], random: () => number = Math.random): Quiz[] {
   return quizzes.map((q) => ({ ...q, options: shuffle(q.options, random) }))
+}
+
+export const QUIZ_TYPE_LABELS: Record<QuizType, string> = {
+  'name-recall': '🔢 번호 맞히기',
+  'code-to-name': '🏷️ 이름표 찾기',
+  'topic-to-classification': '📦 제자리 찾아 주기',
+  'distinguish-similar': '🧠 도전 문제',
+}
+
+const CORRECT_REACTIONS = ['책이 제자리를 찾았어요! 📚', '서가가 한결 깔끔해졌어요! ✨', '탐험대원다운 판단이에요! 🧭']
+const WRONG_REACTIONS = [
+  '앗, 책이 다른 서가로 갈 뻔했어요!',
+  '헷갈리기 쉬운 문제였어요. 해설을 차근차근 읽어 봐요.',
+  '괜찮아요! 틀린 문제가 제일 오래 기억에 남아요.',
+]
+
+/** 피드백 한마디. 같은 문항에는 늘 같은 문구가 나온다. */
+export function reactionFor(quiz: Quiz, correct: boolean): string {
+  const lines = correct ? CORRECT_REACTIONS : WRONG_REACTIONS
+  const seed = [...quiz.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0)
+  return lines[seed % lines.length]
+}
+
+/** 지금까지 연속으로 맞힌 문항 수 */
+export function currentStreak(answers: AnswerRecord[]): number {
+  let streak = 0
+  for (let i = answers.length - 1; i >= 0 && answers[i].correct; i--) streak++
+  return streak
+}
+
+/** "500 기술과학"처럼 번호로 시작하는 보기에서 분류번호를 꺼낸다. 책 제목 보기면 null. */
+export function codeFromOption(option: string): string | null {
+  return /^(\d{3})\s/.exec(option)?.[1] ?? null
 }
 
 export function summarize(answers: AnswerRecord[]): MissionSummary {

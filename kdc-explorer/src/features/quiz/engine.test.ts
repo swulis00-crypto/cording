@@ -1,6 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import type { Quiz } from '../../types/index.ts'
-import { checkAnswer, getPlayableQuizzes, prepareMission, shuffle, summarize, type AnswerRecord } from './engine.ts'
+import {
+  checkAnswer,
+  codeFromOption,
+  currentStreak,
+  getPlayableQuizzes,
+  prepareMission,
+  reactionFor,
+  shuffle,
+  summarize,
+  type AnswerRecord,
+} from './engine.ts'
 
 function quiz(overrides: Partial<Quiz> = {}): Quiz {
   return {
@@ -13,6 +23,7 @@ function quiz(overrides: Partial<Quiz> = {}): Quiz {
     correctAnswer: '총류',
     explanation: '해설',
     hint: '',
+    fictional: false,
     reviewStatus: 'approved',
     ...overrides,
   }
@@ -77,6 +88,30 @@ describe('getPlayableQuizzes', () => {
 
   it('미리보기 모드에서는 모든 문항을 출제한다', () => {
     expect(getPlayableQuizzes(all, true).map((q) => q.id)).toEqual(['a', 'b', 'c'])
+  })
+})
+
+describe('currentStreak', () => {
+  it('마지막부터 연속으로 맞힌 수를 센다', () => {
+    expect(currentStreak([answer(true), answer(false), answer(true), answer(true)])).toBe(2)
+    expect(currentStreak([answer(true), answer(false)])).toBe(0)
+    expect(currentStreak([])).toBe(0)
+  })
+})
+
+describe('codeFromOption', () => {
+  it('"500 기술과학"에서 번호를 꺼내고, 책 제목 보기면 null', () => {
+    expect(codeFromOption('500 기술과학')).toBe('500')
+    expect(codeFromOption('000 총류')).toBe('000')
+    expect(codeFromOption('처음 배우는 우쿨렐레')).toBeNull()
+    expect(codeFromOption('100')).toBeNull()
+  })
+})
+
+describe('reactionFor', () => {
+  it('같은 문항에는 늘 같은 한마디를 준다', () => {
+    expect(reactionFor(quiz(), true)).toBe(reactionFor(quiz(), true))
+    expect(reactionFor(quiz(), true)).not.toBe(reactionFor(quiz(), false))
   })
 })
 

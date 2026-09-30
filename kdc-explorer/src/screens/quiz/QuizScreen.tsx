@@ -2,13 +2,14 @@ import { useEffect, useMemo, useReducer, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { isPreviewMode } from '../../app/preview.ts'
 import { getClassification, getMissionQuizzes } from '../../data/index.ts'
-import { prepareMission, summarize } from '../../features/quiz/engine.ts'
+import { currentStreak, prepareMission, summarize } from '../../features/quiz/engine.ts'
 import { createMission, currentQuiz, missionReducer } from '../../features/quiz/mission.ts'
 import type { Classification, Quiz } from '../../types/index.ts'
 import { hueStyle } from '../../utils/hue.ts'
 import { FeedbackView } from './FeedbackView.tsx'
 import { QuestionView } from './QuestionView.tsx'
 import { ResultView } from './ResultView.tsx'
+import { ShelfTracker } from './ShelfTracker.tsx'
 import styles from './Quiz.module.css'
 
 /** SCR-05 미션 · SCR-06 피드백 · SCR-07 결과 */
@@ -51,6 +52,7 @@ function Mission({ classification, pool }: { classification: Classification; poo
   const quiz = currentQuiz(state)
   const total = state.quizzes.length
   const score = summarize(state.answers).score
+  const streak = currentStreak(state.answers)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -67,23 +69,24 @@ function Mission({ classification, pool }: { classification: Classification; poo
         <p className={styles.missionTitle}>
           <span aria-hidden="true">{classification.symbol} </span>
           {classification.code} {classification.name} 미션
-          {retryingWrong && <span className={styles.modeTag}>틀린 문제 다시 풀기</span>}
+          {retryingWrong && <span className={styles.modeTag}>헤매는 책 다시 찾기</span>}
         </p>
         {state.phase !== 'result' && (
-          <div className={styles.status}>
-            <span>
-              문제 {state.index + 1} / {total}
-            </span>
-            <span>점수 {score}점</span>
-          </div>
-        )}
-        {state.phase !== 'result' && (
-          <progress
-            className={styles.progress}
-            value={state.answers.length}
-            max={total}
-            aria-label={`${total}문제 중 ${state.answers.length}문제 완료`}
-          />
+          <>
+            <div className={styles.status}>
+              <span>
+                문제 {state.index + 1} / {total}
+              </span>
+              {streak >= 2 && (
+                <span className={styles.streak}>
+                  <span aria-hidden="true">🔥 </span>
+                  {streak}연속 정답!
+                </span>
+              )}
+              <span>점수 {score}점</span>
+            </div>
+            <ShelfTracker quizzes={state.quizzes} answers={state.answers} />
+          </>
         )}
       </header>
 

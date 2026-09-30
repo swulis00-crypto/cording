@@ -25,6 +25,10 @@ export function getClassification(id: string): Classification | undefined {
   return classifications.find((c) => c.id === id)
 }
 
+export function getClassificationByCode(code: string): Classification | undefined {
+  return classifications.find((c) => c.code === code)
+}
+
 /** 해당 분류 미션에 출제할 수 있는 문항 (데이터 순서 유지) */
 export function getMissionQuizzes(classificationId: string, preview: boolean): Quiz[] {
   return getPlayableQuizzes(quizzes, preview).filter((q) => q.classificationId === classificationId)

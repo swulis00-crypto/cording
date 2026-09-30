@@ -13,6 +13,7 @@ function quiz(id: string): Quiz {
     correctAnswer: '정답',
     explanation: '해설',
     hint: '힌트',
+    fictional: false,
     reviewStatus: 'approved',
   }
 }

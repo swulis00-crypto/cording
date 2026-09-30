@@ -160,6 +160,19 @@ export function validateQuizzes(input: unknown, classifications: Classification[
       problems.push(`문항 유형(type)은 ${QUIZ_TYPES.join(', ')} 중 하나여야 합니다.`)
     }
     if (!isNonEmptyString(raw.question)) problems.push('문제(question)가 없습니다.')
+    if (raw.book !== undefined && !(isRecord(raw.book) && isNonEmptyString(raw.book.title))) {
+      problems.push('책 정보(book)에는 제목(title)이 있어야 합니다.')
+    }
+    const character = raw.character
+    if (
+      character !== undefined &&
+      !(isRecord(character) && isNonEmptyString(character.name) && isNonEmptyString(character.line) && isNonEmptyString(character.thanks))
+    ) {
+      problems.push('손님(character)에는 이름(name), 부탁(line), 감사 인사(thanks)가 있어야 합니다.')
+    }
+    if (raw.fictional !== undefined && typeof raw.fictional !== 'boolean') {
+      problems.push('가상 예시 표시(fictional)는 true 또는 false여야 합니다.')
+    }
 
     const options = raw.options
     if (!isStringArray(options) || options.length < 2 || options.some((o) => o.trim() === '')) {
@@ -188,10 +201,22 @@ export function validateQuizzes(input: unknown, classifications: Classification[
       type: raw.type as QuizType,
       difficulty: typeof raw.difficulty === 'number' ? raw.difficulty : 1,
       question: raw.question as string,
+      ...(isRecord(character) && {
+        character: {
+          name: character.name as string,
+          emoji: typeof character.emoji === 'string' ? character.emoji : '🙂',
+          line: character.line as string,
+          thanks: character.thanks as string,
+        },
+      }),
+      ...(isRecord(raw.book) && {
+        book: { title: raw.book.title as string, emoji: typeof raw.book.emoji === 'string' ? raw.book.emoji : '📘' },
+      }),
       options: options as string[],
       correctAnswer: raw.correctAnswer as string,
       explanation: typeof raw.explanation === 'string' ? raw.explanation : '',
       hint: typeof raw.hint === 'string' ? raw.hint : '',
+      fictional: raw.fictional === true,
       reviewStatus: raw.reviewStatus as ReviewStatus,
     })
   })

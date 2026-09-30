@@ -45,6 +45,18 @@ describe('학습 데이터', () => {
     }
   })
 
+  it('한 문항에서 두 가지를 묻지 않는다 ("A / B" 형태 보기 없음)', () => {
+    for (const q of quizzes) {
+      for (const option of q.options) expect(option, q.id).not.toContain(' / ')
+    }
+  })
+
+  it('책이나 손님이 나오는 문항은 가상 예시로 표시된다', () => {
+    for (const q of quizzes.filter((q) => q.book || q.character)) {
+      expect(q.fictional, q.id).toBe(true)
+    }
+  })
+
   it('네 가지 문항 유형을 모두 포함한다', () => {
     expect(new Set(quizzes.map((q) => q.type))).toEqual(new Set(QUIZ_TYPES))
   })

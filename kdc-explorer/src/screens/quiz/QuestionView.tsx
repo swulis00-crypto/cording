@@ -1,5 +1,8 @@
 import type { FormEvent } from 'react'
+import { QUIZ_TYPE_LABELS } from '../../features/quiz/engine.ts'
 import type { Quiz } from '../../types/index.ts'
+import { BookCard } from './BookCard.tsx'
+import { SpeechBubble } from './SpeechBubble.tsx'
 import styles from './Quiz.module.css'
 
 interface Props {
@@ -19,12 +22,26 @@ export function QuestionView({ quiz, selected, hintShown, needsSelection, onSele
     onSubmit()
   }
 
+  const titleOptions = quiz.fictional && !quiz.book
+
   return (
     <form className={styles.card} onSubmit={handleSubmit} noValidate>
-      {quiz.reviewStatus !== 'approved' && <p className={styles.draftTag}>검토 전 문항 (미리보기)</p>}
+      <div className={styles.chips}>
+        <span className={styles.typeChip}>{QUIZ_TYPE_LABELS[quiz.type]}</span>
+        {quiz.reviewStatus !== 'approved' && <span className={styles.draftTag}>검토 전 문항 (미리보기)</span>}
+      </div>
+
+      {quiz.character && (
+        <SpeechBubble emoji={quiz.character.emoji} name={quiz.character.name}>
+          {quiz.character.line}
+        </SpeechBubble>
+      )}
+      {quiz.book && <BookCard book={quiz.book} fictional={quiz.fictional} />}
 
       <fieldset className={styles.fieldset}>
         <legend className={styles.question}>{quiz.question}</legend>
+        {titleOptions && <p className={styles.fictionalNote}>📚 보기의 책 제목은 모두 가상 예시예요.</p>}
+
         <div className={styles.options}>
           {quiz.options.map((option) => (
             <label key={option} className={styles.option}>

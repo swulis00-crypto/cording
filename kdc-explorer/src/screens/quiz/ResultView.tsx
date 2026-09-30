@@ -30,8 +30,8 @@ export function ResultView({ classification, quizzes, answers, onRetry, onRetryW
       </h1>
       <p className={styles.gap}>
         {wrong.length === 0
-          ? '모든 문제를 맞혔어요! 해설을 한 번 더 읽어 보면 더 오래 기억할 수 있어요.'
-          : '틀린 문제는 해설을 읽고 다시 도전해 봐요. 틀리면서 배우는 거예요!'}
+          ? `책 ${summary.total}권이 모두 제자리를 찾았어요! ${classification.name} 서가가 깨끗하게 복구됐어요.`
+          : `책 ${summary.correctCount}권이 제자리를 찾았어요. 아직 ${wrong.length}권이 길을 헤매고 있어요. 해설을 읽고 다시 찾아 줄까요?`}
       </p>
 
       <dl className={styles.stats}>
@@ -71,7 +71,7 @@ export function ResultView({ classification, quizzes, answers, onRetry, onRetryW
                 <summary>
                   <span aria-hidden="true">{correct ? '✔ ' : '✖ '}</span>
                   <span className="visually-hidden">{correct ? '맞힘: ' : '틀림: '}</span>
-                  {quiz.question}
+                  {quiz.book ? `『${quiz.book.title}』` : quiz.question}
                 </summary>
                 <p>
                   내가 고른 답: {answer?.selected ?? '-'}
@@ -94,7 +94,7 @@ export function ResultView({ classification, quizzes, answers, onRetry, onRetryW
         </button>
         {wrong.length > 0 && (
           <button type="button" className="btn" onClick={() => onRetryWrong(wrong)}>
-            틀린 문제 다시 풀기 ({wrong.length})
+            헤매는 책 다시 찾아 주기 ({wrong.length})
           </button>
         )}
         <Link to="/map" className="btn">

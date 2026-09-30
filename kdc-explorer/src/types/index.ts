@@ -38,16 +38,36 @@ export const QUIZ_TYPES: readonly QuizType[] = [
   'distinguish-similar',
 ]
 
+/** 문제에 등장하는 책 (표지 카드로 보여 준다) */
+export interface QuizBook {
+  title: string
+  emoji: string
+}
+
+/** 책을 찾으러 온 도서관 손님 (가상 인물) */
+export interface QuizCharacter {
+  name: string
+  emoji: string
+  /** 손님의 부탁 */
+  line: string
+  /** 제자리를 찾아 주었을 때 손님의 한마디 */
+  thanks: string
+}
+
 export interface Quiz {
   id: string
   classificationId: string
   type: QuizType
   difficulty: number
   question: string
+  character?: QuizCharacter
+  book?: QuizBook
   options: string[]
   correctAnswer: string
   explanation: string
   hint: string
+  /** 문제 속 책이 임의로 만든 '가상 예시'인지 (PRD 5.3) */
+  fictional: boolean
   reviewStatus: ReviewStatus
 }
 
