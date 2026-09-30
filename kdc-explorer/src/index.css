@@ -1,0 +1,19 @@
+/* 기본 스타일. 색상·간격 토큰은 단계 1에서 디자인과 함께 정리한다. */
+:root {
+  --text: #1f2330;
+  --bg: #fbf8f1;
+
+  font: 18px/1.5 system-ui, 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
