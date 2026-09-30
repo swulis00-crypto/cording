@@ -1,9 +1,12 @@
+import { HashRouter } from 'react-router'
+import { AppRoutes } from './app/AppRoutes.tsx'
+
+// HashRouter: 정적 호스팅이나 파일로 열어도 새로고침·뒤로 가기가 동작한다.
 function App() {
   return (
-    <main>
-      <h1>KDC 탐험대</h1>
-      <p>사라진 분류의 열쇠</p>
-    </main>
+    <HashRouter>
+      <AppRoutes />
+    </HashRouter>
   )
 }
 

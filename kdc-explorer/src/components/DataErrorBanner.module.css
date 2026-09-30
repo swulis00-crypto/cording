@@ -1,0 +1,20 @@
+.banner {
+  margin: var(--gutter) auto 0;
+  max-width: 1040px;
+  padding: 12px 16px;
+  border: 2px solid var(--error-border);
+  border-radius: var(--radius);
+  background: var(--error-bg);
+  font-size: 0.9rem;
+}
+
+.banner summary {
+  margin-top: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.banner ul {
+  margin: 6px 0 0;
+  padding-left: 1.2em;
+}

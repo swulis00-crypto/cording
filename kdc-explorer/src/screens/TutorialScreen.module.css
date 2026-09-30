@@ -1,0 +1,51 @@
+.card {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 28px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.counter {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.skip {
+  padding: 8px 4px;
+  font-weight: 700;
+}
+
+.title {
+  margin-top: 16px;
+  font-size: 1.7rem;
+}
+
+.body {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.examples,
+.howTo {
+  margin: 0;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 6px;
+}
+
+.actions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
