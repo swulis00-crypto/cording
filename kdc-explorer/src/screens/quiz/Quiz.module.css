@@ -1,0 +1,322 @@
+.mission {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.missionHeader {
+  margin-bottom: 16px;
+}
+
+.missionTitle {
+  color: var(--hue, var(--primary));
+  font-weight: 800;
+}
+
+.modeTag {
+  margin-left: 8px;
+  padding: 0.1em 0.6em;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.status {
+  margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.progress {
+  width: 100%;
+  height: 10px;
+  margin-top: 8px;
+  accent-color: var(--hue, var(--primary));
+}
+
+.card {
+  padding: 24px 28px 28px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.heading {
+  font-size: 1.6rem;
+}
+
+.heading:focus,
+.feedbackTitle:focus {
+  outline: none;
+}
+
+.gap {
+  margin-top: 12px;
+}
+
+.small {
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+.draftTag {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 0.1em 0.7em;
+  border: 1.5px solid var(--key);
+  border-radius: 999px;
+  background: var(--notice-bg);
+  color: #6b4a0f;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ---- 문제 ---- */
+.fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.question {
+  padding: 0;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.options {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.option {
+  min-height: 56px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.option input {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.option:hover {
+  border-color: var(--primary);
+}
+
+.option:has(input:checked) {
+  border-color: var(--primary);
+  background: #e8eff6;
+  font-weight: 700;
+}
+
+.option:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.hint {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-left: 5px solid var(--key);
+  border-radius: 8px;
+  background: var(--notice-bg);
+}
+
+.alert {
+  margin-top: 16px;
+  color: var(--error-border);
+  font-weight: 700;
+}
+
+.actions {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ---- 피드백 ---- */
+.correct {
+  border-color: var(--status-completed);
+  border-top-width: 10px;
+}
+
+.wrong {
+  border-color: var(--status-in-progress);
+  border-top-width: 10px;
+}
+
+.feedbackTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.6rem;
+}
+
+.feedbackIcon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.4rem;
+}
+
+.correct .feedbackIcon {
+  background: var(--status-completed);
+}
+
+.wrong .feedbackIcon {
+  background: var(--status-in-progress);
+}
+
+.answerLines {
+  margin: 16px 0 0;
+  display: grid;
+  gap: 4px;
+}
+
+.answerLines div {
+  display: flex;
+  gap: 12px;
+}
+
+.answerLines dt {
+  min-width: 6.5em;
+  color: var(--text-muted);
+}
+
+.answerLines dd {
+  margin: 0;
+}
+
+.explanation {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #f1ede3;
+}
+
+.explanation h2 {
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.reviewQuestion {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+}
+
+.reviewQuestionText {
+  font-weight: 700;
+}
+
+.reviewOptions {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.mark {
+  display: inline-block;
+  width: 1.4em;
+  font-weight: 800;
+}
+
+.markLabel {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* ---- 결과 ---- */
+.stats {
+  margin: 20px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.stats div {
+  padding: 12px;
+  border-radius: 12px;
+  background: #f1ede3;
+  text-align: center;
+}
+
+.stats dt {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.stats dd {
+  margin: 2px 0 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.subheading {
+  margin-top: 24px;
+  font-size: 1.1rem;
+}
+
+.reviewList {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.reviewList li {
+  padding: 10px 14px;
+  border-left: 5px solid;
+  border-radius: 8px;
+  background: #faf7f0;
+}
+
+.reviewList summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.reviewList p {
+  margin-top: 6px;
+  font-size: 0.95rem;
+}
+
+.reviewList .reviewCorrect {
+  border-color: var(--status-completed);
+}
+
+.reviewList .reviewWrong {
+  border-color: var(--status-in-progress);
+}
+
+.resultActions {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

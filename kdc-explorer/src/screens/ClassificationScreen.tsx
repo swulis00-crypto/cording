@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router'
+import { isPreviewMode } from '../app/preview.ts'
 import { StatusBadge } from '../components/StatusBadge.tsx'
-import { getClassification } from '../data/index.ts'
+import { getClassification, getMissionQuizzes } from '../data/index.ts'
 import { getLearningStatus } from '../features/progress/status.ts'
 import { hueStyle } from '../utils/hue.ts'
 import styles from './ClassificationScreen.module.css'
@@ -22,6 +23,7 @@ export function ClassificationScreen() {
     )
   }
 
+  const missionCount = getMissionQuizzes(classification.id, isPreviewMode()).length
   const confused = classification.confusedWith
     .map((cid) => getClassification(cid))
     .filter((c) => c !== undefined)
@@ -97,12 +99,20 @@ export function ClassificationScreen() {
       </p>
 
       <div className={styles.actions}>
-        <button type="button" className="btn btn-primary" disabled aria-describedby="mission-note">
-          미션 시작
-        </button>
-        <p id="mission-note" className={styles.note}>
-          미션은 준비 중이에요.
-        </p>
+        {missionCount > 0 ? (
+          <Link to={`/mission/${classification.id}`} className="btn btn-primary">
+            미션 시작 ({missionCount}문제)
+          </Link>
+        ) : (
+          <>
+            <button type="button" className="btn btn-primary" disabled aria-describedby="mission-note">
+              미션 시작
+            </button>
+            <p id="mission-note" className={styles.note}>
+              아직 공개된 문항이 없어요. 선생님 검토가 끝나면 미션이 열려요.
+            </p>
+          </>
+        )}
       </div>
     </article>
   )

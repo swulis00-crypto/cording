@@ -8,4 +8,6 @@ window.scrollTo = () => {}
 afterEach(() => {
   cleanup()
   localStorage.clear()
+  // 미리보기 모드(?preview=1) 등 주소 변경을 되돌린다.
+  window.history.replaceState(null, '', '/')
 })

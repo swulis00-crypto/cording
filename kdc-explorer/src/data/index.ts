@@ -2,7 +2,8 @@
 import rawClassifications from './classifications.json'
 import rawQuizzes from './quizzes.json'
 import { validateClassifications, validateQuizzes } from './validate.ts'
-import type { Classification } from '../types/index.ts'
+import { getPlayableQuizzes } from '../features/quiz/engine.ts'
+import type { Classification, Quiz } from '../types/index.ts'
 
 const classificationResult = validateClassifications(rawClassifications as unknown)
 const quizResult = validateQuizzes(rawQuizzes as unknown, classificationResult.items)
@@ -22,4 +23,9 @@ export const dataErrors: string[] = [...classificationResult.errors, ...quizResu
 
 export function getClassification(id: string): Classification | undefined {
   return classifications.find((c) => c.id === id)
+}
+
+/** 해당 분류 미션에 출제할 수 있는 문항 (데이터 순서 유지) */
+export function getMissionQuizzes(classificationId: string, preview: boolean): Quiz[] {
+  return getPlayableQuizzes(quizzes, preview).filter((q) => q.classificationId === classificationId)
 }

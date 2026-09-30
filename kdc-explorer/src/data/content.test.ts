@@ -1,6 +1,7 @@
 // 실제 학습 데이터 파일 검사
 import { describe, expect, it } from 'vitest'
-import { dataErrors, mainClasses } from './index.ts'
+import { QUIZ_TYPES } from '../types/index.ts'
+import { dataErrors, mainClasses, quizzes } from './index.ts'
 
 // PRD 5.1 표, KDC 제6판 주류
 const EXPECTED_MAIN_CLASSES = [
@@ -27,6 +28,25 @@ describe('학습 데이터', () => {
 
   it('모든 주류가 KDC 제6판을 출처로 기록한다', () => {
     for (const c of mainClasses) expect(c.sourceEdition).toBe('KDC 제6판')
+  })
+
+  it('퀴즈는 주류당 3문항, 총 30문항이다', () => {
+    expect(quizzes).toHaveLength(30)
+    for (const c of mainClasses) {
+      expect(quizzes.filter((q) => q.classificationId === c.id)).toHaveLength(3)
+    }
+  })
+
+  it('모든 문항이 보기 4개, 해설, 힌트를 가진다', () => {
+    for (const q of quizzes) {
+      expect(q.options, q.id).toHaveLength(4)
+      expect(q.explanation, q.id).not.toBe('')
+      expect(q.hint, q.id).not.toBe('')
+    }
+  })
+
+  it('네 가지 문항 유형을 모두 포함한다', () => {
+    expect(new Set(quizzes.map((q) => q.type))).toEqual(new Set(QUIZ_TYPES))
   })
 
   it('모든 주류에 쉬운 설명·대표 주제·힌트가 있다', () => {

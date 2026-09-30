@@ -5,6 +5,7 @@ import { CodexScreen } from '../screens/CodexScreen.tsx'
 import { HomeScreen } from '../screens/HomeScreen.tsx'
 import { MapScreen } from '../screens/MapScreen.tsx'
 import { NotFoundScreen } from '../screens/NotFoundScreen.tsx'
+import { QuizScreen } from '../screens/quiz/QuizScreen.tsx'
 import { TutorialScreen } from '../screens/TutorialScreen.tsx'
 
 export function AppRoutes() {
@@ -15,6 +16,7 @@ export function AppRoutes() {
         <Route path="tutorial" element={<TutorialScreen />} />
         <Route path="map" element={<MapScreen />} />
         <Route path="classification/:id" element={<ClassificationScreen />} />
+        <Route path="mission/:id" element={<QuizScreen />} />
         <Route path="codex" element={<CodexScreen />} />
         <Route path="*" element={<NotFoundScreen />} />
       </Route>

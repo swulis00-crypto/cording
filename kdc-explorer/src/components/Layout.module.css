@@ -61,6 +61,16 @@
   padding: 0 var(--gutter);
 }
 
+.preview {
+  margin: var(--gutter) auto 0;
+  max-width: 1040px;
+  padding: 10px 16px;
+  border: 2px dashed var(--key);
+  border-radius: var(--radius);
+  background: var(--notice-bg);
+  font-size: 0.9rem;
+}
+
 .main {
   flex: 1;
   width: 100%;
