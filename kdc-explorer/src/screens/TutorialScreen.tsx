@@ -57,17 +57,16 @@ const STEPS: Step[] = [
 export function TutorialScreen() {
   const [index, setIndex] = useState(0)
   const headingRef = useRef<HTMLHeadingElement>(null)
-  const isFirstRender = useRef(true)
+  const shownIndex = useRef(index)
   const navigate = useNavigate()
   const step = STEPS[index]
   const isLast = index === STEPS.length - 1
 
   // 단계를 넘기면 제목으로 초점을 옮겨 화면 읽기 프로그램이 새 내용을 읽게 한다.
+  // (처음 열 때는 옮기지 않는다)
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
+    if (shownIndex.current === index) return
+    shownIndex.current = index
     headingRef.current?.focus()
   }, [index])
 
