@@ -1,13 +1,15 @@
 import { Link } from 'react-router'
+import { useProgress } from '../app/useProgress.ts'
 import { StatusBadge } from '../components/StatusBadge.tsx'
 import { mainClasses } from '../data/index.ts'
-import { getLearningStatus } from '../features/progress/status.ts'
+import { learningStatus } from '../features/progress/progress.ts'
 import { hueStyle } from '../utils/hue.ts'
 import styles from './CodexScreen.module.css'
 
 /** SCR-08 분류 도감 */
 export function CodexScreen() {
-  const completed = mainClasses.filter((c) => getLearningStatus(c.id) === 'completed').length
+  const { progress } = useProgress()
+  const completed = mainClasses.filter((c) => learningStatus(progress, c.id) === 'completed').length
 
   return (
     <section aria-labelledby="codex-title">
@@ -38,7 +40,7 @@ export function CodexScreen() {
               <p className={styles.desc}>{c.learnerDescription}</p>
             </div>
             <div className={styles.side}>
-              <StatusBadge status={getLearningStatus(c.id)} />
+              <StatusBadge status={learningStatus(progress, c.id)} />
               <Link to={`/classification/${c.id}`} className={styles.more}>
                 자세히 보기<span className="visually-hidden">: {c.code} {c.name}</span>
               </Link>

@@ -1,0 +1,45 @@
+.panel {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border: 2px solid var(--error-border);
+  border-radius: var(--radius);
+  background: #fff8f6;
+  text-align: left;
+}
+
+.title {
+  font-size: 1.1rem;
+}
+
+.title:focus {
+  outline: none;
+}
+
+.body {
+  margin-top: 8px;
+  display: grid;
+  gap: 6px;
+}
+
+.body ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.danger {
+  border-color: var(--error-border);
+  background: var(--error-border);
+  color: #fff;
+}
+
+.danger:hover {
+  background: #8f1c13;
+}

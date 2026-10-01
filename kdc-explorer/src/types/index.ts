@@ -72,3 +72,32 @@ export interface Quiz {
 }
 
 export type LearningStatus = 'not-started' | 'in-progress' | 'completed'
+
+/** mission: 영역 미션 전체, retry: 미션 안에서 틀린 문제만 다시, review: 오답 복습 */
+export type MissionKind = 'mission' | 'retry' | 'review'
+
+export interface MissionAttempt {
+  kind: MissionKind
+  classificationId: string | null
+  finishedAt: string
+  total: number
+  correct: number
+  score: number
+}
+
+/** 브라우저에 저장하는 학습 진행 상태 (PRD 9.4). 개인 식별 정보는 저장하지 않는다. */
+export interface Progress {
+  version: 1
+  /** 소개를 열어 본 영역 (학습 중) */
+  visitedClassifications: string[]
+  /** 미션을 끝까지 푼 영역 (학습 완료) */
+  completedClassifications: string[]
+  /** 영역별 최고 정답 수 = 그 영역에서 얻은 별 (재도전해도 중복 집계하지 않음) */
+  bestCorrect: Record<string, number>
+  wrongQuestionIds: string[]
+  quizAttempts: MissionAttempt[]
+  unlockedBadges: string[]
+  settings: {
+    soundEnabled: boolean
+  }
+}

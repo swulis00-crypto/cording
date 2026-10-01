@@ -1,15 +1,8 @@
-import { useEffect, useMemo, useReducer, useState } from 'react'
+import { useMemo } from 'react'
 import { Link, useParams } from 'react-router'
 import { isPreviewMode } from '../../app/preview.ts'
 import { getClassification, getMissionQuizzes } from '../../data/index.ts'
-import { currentStreak, prepareMission, summarize } from '../../features/quiz/engine.ts'
-import { createMission, currentQuiz, missionReducer } from '../../features/quiz/mission.ts'
-import type { Classification, Quiz } from '../../types/index.ts'
-import { hueStyle } from '../../utils/hue.ts'
-import { FeedbackView } from './FeedbackView.tsx'
-import { QuestionView } from './QuestionView.tsx'
-import { ResultView } from './ResultView.tsx'
-import { ShelfTracker } from './ShelfTracker.tsx'
+import { Mission } from './Mission.tsx'
 import styles from './Quiz.module.css'
 
 /** SCR-05 미션 · SCR-06 피드백 · SCR-07 결과 */
@@ -43,85 +36,14 @@ export function QuizScreen() {
   }
 
   // 영역이 바뀌면 미션을 새로 시작한다.
-  return <Mission key={classification.id} classification={classification} pool={pool} />
-}
-
-function Mission({ classification, pool }: { classification: Classification; pool: Quiz[] }) {
-  const [state, dispatch] = useReducer(missionReducer, pool, (quizzes) => createMission(prepareMission(quizzes)))
-  const [retryingWrong, setRetryingWrong] = useState(false)
-  const quiz = currentQuiz(state)
-  const total = state.quizzes.length
-  const score = summarize(state.answers).score
-  const streak = currentStreak(state.answers)
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [state.phase, state.index])
-
-  const restart = (quizzes: Quiz[], wrongOnly: boolean) => {
-    setRetryingWrong(wrongOnly)
-    dispatch({ type: 'restart', quizzes: prepareMission(quizzes) })
-  }
-
   return (
-    <div className={styles.mission} style={hueStyle(classification.code)}>
-      <header className={styles.missionHeader}>
-        <p className={styles.missionTitle}>
-          <span aria-hidden="true">{classification.symbol} </span>
-          {classification.code} {classification.name} 미션
-          {retryingWrong && <span className={styles.modeTag}>헤매는 책 다시 찾기</span>}
-        </p>
-        {state.phase !== 'result' && (
-          <>
-            <div className={styles.status}>
-              <span>
-                문제 {state.index + 1} / {total}
-              </span>
-              {streak >= 2 && (
-                <span className={styles.streak}>
-                  <span aria-hidden="true">🔥 </span>
-                  {streak}연속 정답!
-                </span>
-              )}
-              <span>점수 {score}점</span>
-            </div>
-            <ShelfTracker quizzes={state.quizzes} answers={state.answers} />
-          </>
-        )}
-      </header>
-
-      {state.phase === 'question' && quiz && (
-        <QuestionView
-          key={quiz.id}
-          quiz={quiz}
-          selected={state.selected}
-          hintShown={state.hintShown}
-          needsSelection={state.needsSelection}
-          onSelect={(option) => dispatch({ type: 'select', option })}
-          onHint={() => dispatch({ type: 'showHint' })}
-          onSubmit={() => dispatch({ type: 'submit' })}
-        />
-      )}
-
-      {state.phase === 'feedback' && quiz && (
-        <FeedbackView
-          key={quiz.id}
-          quiz={quiz}
-          answer={state.answers[state.answers.length - 1]}
-          isLast={state.index === total - 1}
-          onNext={() => dispatch({ type: 'next' })}
-        />
-      )}
-
-      {state.phase === 'result' && (
-        <ResultView
-          classification={classification}
-          quizzes={state.quizzes}
-          answers={state.answers}
-          onRetry={() => restart(pool, false)}
-          onRetryWrong={(wrong) => restart(wrong, true)}
-        />
-      )}
-    </div>
+    <Mission
+      key={classification.id}
+      classification={classification}
+      title={`${classification.code} ${classification.name} 미션`}
+      symbol={classification.symbol}
+      pool={pool}
+      kind="mission"
+    />
   )
 }

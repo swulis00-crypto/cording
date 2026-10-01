@@ -1,8 +1,10 @@
+import { useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import { isPreviewMode } from '../app/preview.ts'
+import { useProgress } from '../app/useProgress.ts'
 import { StatusBadge } from '../components/StatusBadge.tsx'
 import { getClassification, getMissionQuizzes } from '../data/index.ts'
-import { getLearningStatus } from '../features/progress/status.ts'
+import { learningStatus } from '../features/progress/progress.ts'
 import { hueStyle } from '../utils/hue.ts'
 import styles from './ClassificationScreen.module.css'
 
@@ -10,6 +12,12 @@ import styles from './ClassificationScreen.module.css'
 export function ClassificationScreen() {
   const { id = '' } = useParams()
   const classification = getClassification(id)
+  const { progress, visit } = useProgress()
+
+  // 소개를 열면 '학습 중'으로 기록한다.
+  useEffect(() => {
+    if (classification) visit(classification.id)
+  }, [classification, visit])
 
   if (!classification) {
     return (
@@ -47,7 +55,7 @@ export function ClassificationScreen() {
       </header>
 
       <div className={styles.tags}>
-        <StatusBadge status={getLearningStatus(classification.id)} />
+        <StatusBadge status={learningStatus(progress, classification.id)} />
         {classification.level === 1 && <span className={styles.tag}>주류 (10개의 큰 영역 중 하나)</span>}
         {classification.reviewStatus !== 'approved' && (
           <span className={`${styles.tag} ${styles.reviewTag}`}>선생님 검토 중인 내용</span>

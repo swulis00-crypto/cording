@@ -29,7 +29,8 @@
 
 .nav {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 4px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -38,7 +39,7 @@
 .nav a {
   display: inline-block;
   min-height: 44px;
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-radius: 999px;
   color: var(--primary);
   font-weight: 700;
@@ -59,6 +60,21 @@
 
 .gutter {
   padding: 0 var(--gutter);
+}
+
+.notice {
+  margin: var(--gutter) auto 0;
+  max-width: 1040px;
+  padding: 10px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 2px solid var(--key);
+  border-radius: var(--radius);
+  background: var(--notice-bg);
+  font-size: 0.95rem;
 }
 
 .preview {

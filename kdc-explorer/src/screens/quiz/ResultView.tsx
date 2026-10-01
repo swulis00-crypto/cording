@@ -1,19 +1,21 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { summarize, type AnswerRecord } from '../../features/quiz/engine.ts'
 import type { Classification, Quiz } from '../../types/index.ts'
 import styles from './Quiz.module.css'
 
 interface Props {
-  classification: Classification
+  /** 오답 복습처럼 여러 영역을 섞어 풀면 없음 */
+  classification?: Classification
   quizzes: Quiz[]
   answers: AnswerRecord[]
   onRetry: () => void
   onRetryWrong: (wrong: Quiz[]) => void
+  extraActions?: ReactNode
 }
 
 /** SCR-07 결과. 정답률로 평가하거나 순위를 매기지 않는다. */
-export function ResultView({ classification, quizzes, answers, onRetry, onRetryWrong }: Props) {
+export function ResultView({ classification, quizzes, answers, onRetry, onRetryWrong, extraActions }: Props) {
   const summary = summarize(answers)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const answerById = new Map(answers.map((a) => [a.quizId, a]))
@@ -30,7 +32,7 @@ export function ResultView({ classification, quizzes, answers, onRetry, onRetryW
       </h1>
       <p className={styles.gap}>
         {wrong.length === 0
-          ? `책 ${summary.total}권이 모두 제자리를 찾았어요! ${classification.name} 서가가 깨끗하게 복구됐어요.`
+          ? `책 ${summary.total}권이 모두 제자리를 찾았어요! ${classification ? `${classification.name} 서가가 깨끗하게 복구됐어요.` : '헤매던 책을 모두 찾아 주었어요.'}`
           : `책 ${summary.correctCount}권이 제자리를 찾았어요. 아직 ${wrong.length}권이 길을 헤매고 있어요. 해설을 읽고 다시 찾아 줄까요?`}
       </p>
 
@@ -97,15 +99,18 @@ export function ResultView({ classification, quizzes, answers, onRetry, onRetryW
             헤매는 책 다시 찾아 주기 ({wrong.length})
           </button>
         )}
+        {extraActions}
         <Link to="/map" className="btn">
           탐험 지도로 돌아가기
         </Link>
       </div>
-      <p className={styles.small}>
-        <Link to={`/classification/${classification.id}`}>
-          {classification.code} {classification.name} 소개 다시 보기
-        </Link>
-      </p>
+      {classification && (
+        <p className={styles.small}>
+          <Link to={`/classification/${classification.id}`}>
+            {classification.code} {classification.name} 소개 다시 보기
+          </Link>
+        </p>
+      )}
     </section>
   )
 }

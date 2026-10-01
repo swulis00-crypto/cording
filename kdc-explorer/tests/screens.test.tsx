@@ -22,7 +22,7 @@ describe('SCR-01 시작 화면', () => {
 
   it('새 탐험을 누르면 튜토리얼로 이동한다', async () => {
     renderAt('/')
-    await userEvent.click(screen.getByRole('link', { name: '새 탐험' }))
+    await userEvent.click(screen.getByRole('button', { name: '새 탐험' }))
     expect(screen.getByRole('heading', { name: 'KDC는 무엇일까요?' })).toBeInTheDocument()
   })
 })
