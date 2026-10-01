@@ -45,7 +45,7 @@
 }
 
 .code {
-  color: var(--hue);
+  color: var(--hue-ink);
   font-variant-numeric: tabular-nums;
 }
 
