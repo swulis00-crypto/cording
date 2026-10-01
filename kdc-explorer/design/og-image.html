@@ -1,0 +1,245 @@
+<!doctype html>
+<!--
+  오픈그래프 이미지 원본 (1200×630).
+  수정 후 다시 만들기: kdc-explorer 폴더에서 npm run og
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>KDC 탐험대 OG 이미지</title>
+    <style>
+      :root {
+        --bg: #f7f3ea;
+        --text: #1f2330;
+        --muted: #525869;
+        --key: #b7791f;
+        --wood: #a47b4f;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+
+      body {
+        position: relative;
+        background:
+          radial-gradient(circle at 88% 12%, #fff4d6 0, transparent 38%),
+          radial-gradient(circle at 8% 100%, #efe3c8 0, transparent 45%),
+          var(--bg);
+        color: var(--text);
+        font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, sans-serif;
+        word-break: keep-all;
+      }
+
+      .frame {
+        position: absolute;
+        inset: 22px;
+        border: 3px solid #d9d0bd;
+        border-radius: 28px;
+      }
+
+      .copy {
+        position: absolute;
+        left: 76px;
+        top: 70px;
+        width: 600px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 999px;
+        background: #1f4e79;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      h1 {
+        margin-top: 26px;
+        font-size: 86px;
+        white-space: nowrap;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+      }
+
+      .key {
+        font-size: 68px;
+        vertical-align: 6px;
+      }
+
+      .subtitle {
+        margin-top: 14px;
+        color: var(--key);
+        font-size: 44px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+
+      .tagline {
+        margin-top: 26px;
+        color: var(--muted);
+        font-size: 26px;
+        line-height: 1.5;
+      }
+
+      .tagline strong {
+        color: var(--text);
+      }
+
+      /* ---- 오른쪽: 서가 ---- */
+      .shelf {
+        position: absolute;
+        right: 70px;
+        top: 124px;
+        width: 450px;
+        padding: 26px 24px 0;
+        border-radius: 22px 22px 8px 8px;
+        background: #efe6d4;
+        box-shadow: 0 18px 40px rgb(31 35 48 / 0.16);
+      }
+
+      .row {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        height: 178px;
+        border-bottom: 14px solid var(--wood);
+      }
+
+      .row + .row {
+        margin-top: 22px;
+      }
+
+      .book {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px 0 10px;
+        border-radius: 7px 7px 2px 2px;
+        color: #fff;
+        box-shadow: inset -6px 0 0 rgb(0 0 0 / 0.12);
+      }
+
+      .book .emoji {
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .book .code {
+        margin-top: 6px;
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .book .name {
+        margin-top: auto;
+        writing-mode: vertical-rl;
+        font-size: 17px;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+        opacity: 0.95;
+      }
+
+      .tilted {
+        transform: rotate(-6deg) translate(-2px, 2px);
+        transform-origin: bottom left;
+      }
+
+      .h170 { height: 170px; }
+      .h160 { height: 160px; }
+      .h150 { height: 150px; }
+      .h140 { height: 140px; }
+
+      .c0 { background: #56657f; }
+      .c1 { background: #74549a; }
+      .c2 { background: #8f5f2c; }
+      .c3 { background: #25786a; }
+      .c4 { background: #2366a3; }
+      .c5 { background: #a14f1d; }
+      .c6 { background: #a83a70; }
+      .c7 { background: #37803a; }
+      .c8 { background: #8b4533; }
+      .c9 { background: #67622a; }
+
+      .bubble {
+        position: absolute;
+        right: 54px;
+        top: 50px;
+        padding: 12px 20px;
+        border: 3px solid #1f4e79;
+        border-radius: 20px 20px 4px 20px;
+        background: #fff;
+        font-size: 24px;
+        font-weight: 800;
+        box-shadow: 0 8px 18px rgb(31 35 48 / 0.12);
+      }
+
+      .footer {
+        position: absolute;
+        left: 76px;
+        bottom: 62px;
+        display: flex;
+        gap: 12px;
+      }
+
+      .chip {
+        padding: 8px 18px;
+        border: 2px solid #d9d0bd;
+        border-radius: 999px;
+        background: #fffdf8;
+        color: var(--muted);
+        font-size: 22px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame"></div>
+
+    <div class="copy">
+      <span class="eyebrow">중학생 도서관 탐험 게임</span>
+      <h1><span class="key">🗝️</span> KDC 탐험대</h1>
+      <p class="subtitle">사라진 분류의 열쇠</p>
+      <p class="tagline">
+        손님이 찾는 책을 <strong>제자리 서가</strong>로 안내하며<br />
+        KDC 10개 주류를 익혀요.
+      </p>
+    </div>
+
+    <div class="shelf">
+      <div class="row">
+        <div class="book c0 h170"><span class="emoji">📚</span><span class="code">000</span><span class="name">총류</span></div>
+        <div class="book c1 h160"><span class="emoji">💭</span><span class="code">100</span><span class="name">철학</span></div>
+        <div class="book c2 h170"><span class="emoji">🕊️</span><span class="code">200</span><span class="name">종교</span></div>
+        <div class="book c3 h150"><span class="emoji">🏛️</span><span class="code">300</span><span class="name">사회과학</span></div>
+        <div class="book c4 h170 tilted"><span class="emoji">🔭</span><span class="code">400</span><span class="name">자연과학</span></div>
+      </div>
+      <div class="row">
+        <div class="book c5 h160"><span class="emoji">⚙️</span><span class="code">500</span><span class="name">기술과학</span></div>
+        <div class="book c6 h170"><span class="emoji">🎨</span><span class="code">600</span><span class="name">예술</span></div>
+        <div class="book c7 h150"><span class="emoji">🗣️</span><span class="code">700</span><span class="name">언어</span></div>
+        <div class="book c8 h170"><span class="emoji">📖</span><span class="code">800</span><span class="name">문학</span></div>
+        <div class="book c9 h160"><span class="emoji">🗺️</span><span class="code">900</span><span class="name">역사</span></div>
+      </div>
+    </div>
+    <p class="bubble">⚽ 축구 책은 몇 번 서가에 있을까?</p>
+
+    <div class="footer">
+      <span class="chip">KDC 제6판 주류 10개</span>
+      <span class="chip">퀴즈 30문항</span>
+      <span class="chip">설치 없이 웹에서</span>
+    </div>
+  </body>
+</html>
