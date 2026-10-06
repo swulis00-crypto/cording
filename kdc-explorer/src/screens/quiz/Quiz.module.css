@@ -554,3 +554,98 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+
+/* ---- 번호 조립 ---- */
+.builder {
+  margin-top: 18px;
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+.builderSlots {
+  display: flex;
+  gap: 8px;
+}
+
+.builderFixed,
+.builderBlank {
+  width: 64px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 2.4rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.builderFixed {
+  background: var(--hue, var(--primary));
+  color: var(--hue-on, #fff);
+}
+
+.builderBlank {
+  border: 3px dashed var(--border);
+  background: #fff;
+}
+
+/* 숫자를 채운 빈칸은 실선으로 */
+.builderBlank:not(:empty) {
+  border-style: solid;
+  border-color: var(--hue-ink, var(--primary));
+}
+
+.builderNext {
+  border-color: var(--hue-ink, var(--primary));
+  border-style: solid;
+}
+
+.builderCards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.builderCard {
+  width: 64px;
+  height: 64px;
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--primary);
+  font: inherit;
+  font-size: 1.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.builderCard:hover {
+  background: #eef3f8;
+}
+
+.builderCard:disabled {
+  border-color: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* ---- 규칙 카드 예시 ---- */
+.ruleExamples {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ruleExamples li {
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: var(--hue, var(--primary));
+  color: var(--hue-on, #fff);
+  font-size: 0.85rem;
+  font-weight: 700;
+}

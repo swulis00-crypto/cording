@@ -2,6 +2,7 @@ import type { FormEvent } from 'react'
 import { QUIZ_TYPE_LABELS } from '../../features/quiz/engine.ts'
 import type { Quiz } from '../../types/index.ts'
 import { BookCard } from './BookCard.tsx'
+import { NumberBuilder } from './NumberBuilder.tsx'
 import { SpeechBubble } from './SpeechBubble.tsx'
 import styles from './Quiz.module.css'
 
@@ -11,18 +12,23 @@ interface Props {
   hintShown: boolean
   needsSelection: boolean
   onSelect: (option: string) => void
+  /** 번호 조립에서 빈칸이 다시 생겼을 때 */
+  onClear: () => void
   onHint: () => void
   onSubmit: () => void
 }
 
 /** SCR-05 문제 하나와 보기. 제출 전에는 선택을 바꿀 수 있다. */
-export function QuestionView({ quiz, selected, hintShown, needsSelection, onSelect, onHint, onSubmit }: Props) {
+export function QuestionView({ quiz, selected, hintShown, needsSelection, onSelect, onClear, onHint, onSubmit }: Props) {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     onSubmit()
   }
 
   const titleOptions = quiz.fictional && !quiz.book
+  /** 번호 조립 문제면 틀 (예: "7□0") */
+  const template = quiz.type === 'build-number' ? quiz.template : undefined
+  const building = template !== undefined
 
   return (
     <form className={styles.card} onSubmit={handleSubmit} noValidate>
@@ -42,20 +48,28 @@ export function QuestionView({ quiz, selected, hintShown, needsSelection, onSele
         <legend className={styles.question}>{quiz.question}</legend>
         {titleOptions && <p className={styles.fictionalNote}>📚 보기의 책 제목은 모두 가상 예시예요.</p>}
 
-        <div className={styles.options}>
-          {quiz.options.map((option) => (
-            <label key={option} className={styles.option}>
-              <input
-                type="radio"
-                name="answer"
-                value={option}
-                checked={selected === option}
-                onChange={() => onSelect(option)}
-              />
-              <span>{option}</span>
-            </label>
-          ))}
-        </div>
+        {template !== undefined ? (
+          <NumberBuilder
+            template={template}
+            cards={quiz.options}
+            onChange={(value) => (value === null ? onClear() : onSelect(value))}
+          />
+        ) : (
+          <div className={styles.options}>
+            {quiz.options.map((option) => (
+              <label key={option} className={styles.option}>
+                <input
+                  type="radio"
+                  name="answer"
+                  value={option}
+                  checked={selected === option}
+                  onChange={() => onSelect(option)}
+                />
+                <span>{option}</span>
+              </label>
+            ))}
+          </div>
+        )}
       </fieldset>
 
       {hintShown && (
@@ -67,7 +81,7 @@ export function QuestionView({ quiz, selected, hintShown, needsSelection, onSele
 
       {needsSelection && (
         <p className={styles.alert} role="alert">
-          답을 하나 골라 주세요.
+          {building ? '숫자 카드로 빈칸을 모두 채워 주세요.' : '답을 하나 골라 주세요.'}
         </p>
       )}
 

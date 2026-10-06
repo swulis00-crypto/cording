@@ -30,13 +30,32 @@ export type QuizType =
   | 'code-to-name'
   | 'topic-to-classification'
   | 'distinguish-similar'
+  /** 규칙으로 번호의 뜻 추리하기 (게임 2단계) */
+  | 'rule-inference'
+  /** 숫자 카드로 빈칸을 채워 번호 만들기 (게임 2단계) */
+  | 'build-number'
 
 export const QUIZ_TYPES: readonly QuizType[] = [
   'name-recall',
   'code-to-name',
   'topic-to-classification',
   'distinguish-similar',
+  'rule-inference',
+  'build-number',
 ]
+
+/** 번호 조립 문제의 빈칸 표시 */
+export const BLANK = '□'
+
+/** 게임 2단계: 학생이 발견하는 분류기호 규칙 */
+export interface NumberRule {
+  id: string
+  emoji: string
+  title: string
+  summary: string
+  examples: { code: string; label: string }[]
+  reviewStatus: ReviewStatus
+}
 
 /** 문제에 등장하는 책 (표지 카드로 보여 준다) */
 export interface QuizBook {
@@ -60,6 +79,10 @@ export interface Quiz {
   type: QuizType
   difficulty: number
   question: string
+  /** 게임 2단계 문항이 속한 규칙 id */
+  rule?: string
+  /** 번호 조립 문제의 틀 (예: "7□0"). 보기는 숫자 카드, 정답은 완성된 번호 */
+  template?: string
   character?: QuizCharacter
   book?: QuizBook
   options: string[]
@@ -79,6 +102,8 @@ export type MissionKind = 'mission' | 'retry' | 'review'
 export interface MissionAttempt {
   kind: MissionKind
   classificationId: string | null
+  /** 게임 2단계 규칙 미션이면 그 규칙 id */
+  ruleId?: string
   finishedAt: string
   total: number
   correct: number
@@ -92,6 +117,8 @@ export interface Progress {
   visitedClassifications: string[]
   /** 미션을 끝까지 푼 영역 (학습 완료) */
   completedClassifications: string[]
+  /** 게임 2단계에서 마친 규칙 */
+  completedRules: string[]
   /** 영역별 최고 정답 수 = 그 영역에서 얻은 별 (재도전해도 중복 집계하지 않음) */
   bestCorrect: Record<string, number>
   wrongQuestionIds: string[]

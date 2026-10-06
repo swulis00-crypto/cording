@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { isPreviewMode } from '../app/preview.ts'
 import { useProgress } from '../app/useProgress.ts'
-import { mainClasses } from '../data/index.ts'
+import { mainClasses, rules } from '../data/index.ts'
 import { GAME_LEVELS, isLevelCompleted, isLevelUnlocked } from '../features/progress/levels.ts'
 import styles from './Pages.module.css'
 
@@ -9,8 +9,12 @@ import styles from './Pages.module.css'
 export function LevelsScreen() {
   const { progress } = useProgress()
   const preview = isPreviewMode()
-  const mainIds = mainClasses.map((c) => c.id)
-  const level1Done = mainIds.filter((id) => progress.completedClassifications.includes(id)).length
+  const content = { mainClassIds: mainClasses.map((c) => c.id), ruleIds: rules.map((r) => r.id) }
+  // 단계별 진행 정도 (1단계: 구역, 2단계: 규칙)
+  const steps: Record<number, { done: number; total: number; unit: string }> = {
+    1: { done: content.mainClassIds.filter((id) => progress.completedClassifications.includes(id)).length, total: content.mainClassIds.length, unit: '구역' },
+    2: { done: content.ruleIds.filter((id) => progress.completedRules.includes(id)).length, total: content.ruleIds.length, unit: '규칙' },
+  }
 
   return (
     <section aria-labelledby="levels-title">
@@ -21,8 +25,9 @@ export function LevelsScreen() {
 
       <ol className={styles.levels}>
         {GAME_LEVELS.map((level) => {
-          const unlocked = isLevelUnlocked(level.number, progress, mainIds, preview)
-          const done = isLevelCompleted(level.number, progress, mainIds)
+          const unlocked = isLevelUnlocked(level.number, progress, content, preview)
+          const done = isLevelCompleted(level.number, progress, content)
+          const step = steps[level.number]
           const playable = unlocked && level.ready
           return (
             <li key={level.number} className={`${styles.level} ${playable ? '' : styles.levelLocked}`}>
@@ -42,14 +47,14 @@ export function LevelsScreen() {
                       ? '🛠 준비 중이에요'
                       : done
                         ? '✔ 완료'
-                        : level.number === 1
-                          ? `진행 중 · 미션 ${level1Done} / ${mainIds.length}`
+                        : step
+                          ? `진행 중 · ${step.unit} ${step.done} / ${step.total}`
                           : '열림'}
                 </p>
               </div>
               {playable && (
                 <Link to={level.path} className="btn btn-primary">
-                  {done ? '다시 하기' : level.number === 1 && level1Done > 0 ? '이어하기' : '시작하기'}
+                  {done ? '다시 하기' : step && step.done > 0 ? '이어하기' : '시작하기'}
                   <span className="visually-hidden">: {level.title}</span>
                 </Link>
               )}

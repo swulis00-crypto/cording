@@ -94,20 +94,41 @@ describe('hasProgress / resetProgress', () => {
 })
 
 describe('게임 단계 열림', () => {
-  const ids = ['kdc-000', 'kdc-100']
+  const content = { mainClassIds: ['kdc-000', 'kdc-100'], ruleIds: ['rule-1', 'rule-2'] }
 
-  it('1단계는 항상 열려 있고, 2단계는 1단계 미션을 모두 마쳐야 열린다', () => {
+  it('1단계는 항상 열려 있고, 2단계는 1단계 구역을 모두 마쳐야 열린다', () => {
     let p = createEmptyProgress()
-    expect(isLevelUnlocked(1, p, ids, false)).toBe(true)
-    expect(isLevelUnlocked(2, p, ids, false)).toBe(false)
+    expect(isLevelUnlocked(1, p, content, false)).toBe(true)
+    expect(isLevelUnlocked(2, p, content, false)).toBe(false)
     p = recordMission(p, mission({ classificationId: 'kdc-000' }))
-    expect(isLevelCompleted(1, p, ids)).toBe(false)
+    expect(isLevelCompleted(1, p, content)).toBe(false)
     p = recordMission(p, mission({ classificationId: 'kdc-100' }))
-    expect(isLevelCompleted(1, p, ids)).toBe(true)
-    expect(isLevelUnlocked(2, p, ids, false)).toBe(true)
+    expect(isLevelCompleted(1, p, content)).toBe(true)
+    expect(isLevelUnlocked(2, p, content, false)).toBe(true)
+  })
+
+  it('3단계는 2단계 규칙을 모두 마쳐야 열린다', () => {
+    let p = createEmptyProgress()
+    const rule = (ruleId: string) => mission({ classificationId: null, ruleId })
+    p = recordMission(p, rule('rule-1'))
+    expect(isLevelUnlocked(3, p, content, false)).toBe(false)
+    p = recordMission(p, rule('rule-2'))
+    expect(isLevelCompleted(2, p, content)).toBe(true)
+    expect(isLevelUnlocked(3, p, content, false)).toBe(true)
   })
 
   it('미리보기 모드에서는 모든 단계가 열린다', () => {
-    expect(isLevelUnlocked(4, createEmptyProgress(), ids, true)).toBe(true)
+    expect(isLevelUnlocked(4, createEmptyProgress(), content, true)).toBe(true)
+  })
+})
+
+describe('규칙 미션 기록', () => {
+  it('규칙을 마치면 완료 규칙과 시도 기록에 남고, 영역 별은 바뀌지 않는다', () => {
+    const p = recordMission(createEmptyProgress(), mission({ classificationId: null, ruleId: 'rule-3' }))
+    expect(p.completedRules).toEqual(['rule-3'])
+    expect(p.quizAttempts[0].ruleId).toBe('rule-3')
+    expect(p.completedClassifications).toEqual([])
+    expect(totalStars(p)).toBe(0)
+    expect(hasProgress(p)).toBe(true)
   })
 })

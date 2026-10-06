@@ -185,18 +185,28 @@ describe('게임 단계', () => {
   it('1단계만 열려 있고 2~4단계는 잠겨 있다', () => {
     renderAt('/levels')
     expect(screen.getByRole('link', { name: '시작하기: 지식 구역 탐험' })).toBeInTheDocument()
-    expect(screen.getByText('진행 중 · 미션 0 / 10')).toBeInTheDocument()
+    expect(screen.getByText('진행 중 · 구역 0 / 10')).toBeInTheDocument()
     expect(screen.getByText('🔒 1단계를 마치면 열려요')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /저자기호 만들기/ })).toBeInTheDocument()
     expect(screen.getAllByRole('link', { name: /시작하기/ })).toHaveLength(1)
   })
 
-  it('1단계를 모두 마치면 완료로 표시되고 2단계가 열린다 (지금은 준비 중)', () => {
+  it('1단계를 모두 마치면 완료로 표시되고 2단계가 열린다', () => {
     const all = ['000', '100', '200', '300', '400', '500', '600', '700', '800', '900'].map((c) => `kdc-${c}`)
     seed({ completedClassifications: all })
     renderAt('/levels')
     expect(screen.getByText('✔ 완료')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '다시 하기: 지식 구역 탐험' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '시작하기: 번호 속 비밀 풀기' })).toBeInTheDocument()
+    expect(screen.getByText('진행 중 · 규칙 0 / 4')).toBeInTheDocument()
+    expect(screen.getByText('🔒 2단계를 마치면 열려요')).toBeInTheDocument()
+  })
+
+  it('2단계까지 마치면 3단계가 열리고 준비 중으로 표시된다', () => {
+    const all = ['000', '100', '200', '300', '400', '500', '600', '700', '800', '900'].map((c) => `kdc-${c}`)
+    seed({ completedClassifications: all, completedRules: ['rule-1', 'rule-2', 'rule-3', 'rule-4'] })
+    renderAt('/levels')
+    expect(screen.getAllByText('✔ 완료')).toHaveLength(2)
     expect(screen.getByText('🛠 준비 중이에요')).toBeInTheDocument()
   })
 })

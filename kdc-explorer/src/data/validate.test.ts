@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { validateClassifications, validateQuizzes } from './validate.ts'
+import { validateClassifications, validateQuizzes, validateRules } from './validate.ts'
 
 function classification(overrides: Record<string, unknown> = {}) {
   return {
@@ -121,5 +121,45 @@ describe('validateQuizzes', () => {
   it('보기가 중복되면 탐지한다', () => {
     const result = validateQuizzes([quiz({ options: ['총류', '총류', '철학', '역사'] })], classifications)
     expect(result.errors.join()).toContain('중복')
+  })
+})
+
+describe('게임 2단계 데이터', () => {
+  const classifications = validateClassifications([classification()]).items
+  const build = (overrides: Record<string, unknown> = {}) =>
+    quiz({ type: 'build-number', rule: 'rule-1', template: '7□0', options: ['1', '2', '3', '4'], correctAnswer: '740', ...overrides })
+
+  it('번호 조립: 틀과 숫자 카드로 만들 수 있는 정답이면 통과한다', () => {
+    const result = validateQuizzes([build(), build({ id: 'q2', template: '8□□', correctAnswer: '811' })], classifications, ['rule-1'])
+    expect(result.errors).toEqual([])
+    expect(result.items[0].template).toBe('7□0')
+  })
+
+  it('번호 조립: 틀이 없거나, 카드로 만들 수 없거나, 고정 숫자가 다르면 탐지한다', () => {
+    const result = validateQuizzes(
+      [
+        build({ id: 'a', template: undefined }),
+        build({ id: 'b', correctAnswer: '750' }),
+        build({ id: 'c', correctAnswer: '840' }),
+        build({ id: 'd', correctAnswer: '7400' }),
+      ],
+      classifications,
+      ['rule-1'],
+    )
+    expect(result.items).toEqual([])
+    expect(result.errors).toHaveLength(4)
+  })
+
+  it('존재하지 않는 규칙을 참조하면 탐지한다', () => {
+    const result = validateQuizzes([build({ rule: 'rule-9' })], classifications, ['rule-1'])
+    expect(result.errors.join()).toContain('rule-9')
+  })
+
+  it('규칙 데이터를 검증한다', () => {
+    const ok = { id: 'rule-1', emoji: '🔍', title: '제목', summary: '설명', examples: [{ code: '410', label: '수학' }], reviewStatus: 'draft' }
+    expect(validateRules([ok]).errors).toEqual([])
+    const result = validateRules([ok, ok, { ...ok, id: 'rule-2', examples: [{ code: 410, label: '수학' }] }])
+    expect(result.items).toHaveLength(1)
+    expect(result.errors).toHaveLength(2)
   })
 })

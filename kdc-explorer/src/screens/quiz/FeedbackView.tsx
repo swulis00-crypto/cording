@@ -76,13 +76,19 @@ export function FeedbackView({ quiz, answer, isLast, onNext }: Props) {
           {quiz.character && <p className={styles.reviewQuestionText}>{`${quiz.character.name}: "${quiz.character.line}"`}</p>}
           {quiz.book && <BookCard book={quiz.book} fictional={quiz.fictional} compact />}
           <p className={styles.reviewQuestionText}>{quiz.question}</p>
-          <ul className={styles.reviewOptions}>
-            {quiz.options.map((option) => (
-              <li key={option}>
-                <OptionMark option={option} quiz={quiz} answer={answer} />
-              </li>
-            ))}
-          </ul>
+          {quiz.type === 'build-number' && quiz.template ? (
+            <p>
+              틀: <strong>{quiz.template}</strong> · 숫자 카드: {quiz.options.join(', ')}
+            </p>
+          ) : (
+            <ul className={styles.reviewOptions}>
+              {quiz.options.map((option) => (
+                <li key={option}>
+                  <OptionMark option={option} quiz={quiz} answer={answer} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
 

@@ -1,7 +1,7 @@
 // 학습 데이터 검증 스크립트: npm run validate:data
 // 선생님이 JSON 파일을 수정한 뒤 이 명령으로 오류를 확인할 수 있다.
 import { readFileSync } from 'node:fs'
-import { validateClassifications, validateQuizzes } from '../src/data/validate.ts'
+import { validateClassifications, validateQuizzes, validateRules } from '../src/data/validate.ts'
 
 function readJson(fileName: string): unknown {
   const url = new URL(`../src/data/${fileName}`, import.meta.url)
@@ -21,10 +21,23 @@ function countByStatus(items: { reviewStatus: string }[]): string {
 
 const classifications = validateClassifications(readJson('classifications.json'))
 const quizzes = validateQuizzes(readJson('quizzes.json'), classifications.items)
-const errors = [...classifications.errors, ...quizzes.errors]
+const level2 = readJson('level2.json') as { rules?: unknown; quizzes?: unknown }
+const rules = validateRules(level2.rules)
+const level2Quizzes = validateQuizzes(level2.quizzes, classifications.items, rules.items.map((r) => r.id))
+const noRule = level2Quizzes.items.filter((q) => q.rule === undefined).map((q) => `퀴즈 "${q.id}": 규칙(rule)이 없습니다.`)
+const ids = [...quizzes.items, ...level2Quizzes.items].map((q) => q.id)
+const duplicated = ids.filter((id, i) => ids.indexOf(id) !== i).map((id) => `퀴즈 "${id}": 1단계와 2단계 사이에 id가 중복되었습니다.`)
+const errors = [
+  ...classifications.errors,
+  ...quizzes.errors,
+  ...[...rules.errors, ...level2Quizzes.errors, ...noRule].map((e) => `[게임 2단계] ${e}`),
+  ...duplicated,
+]
 
 console.log(`분류 ${classifications.items.length}개 (${countByStatus(classifications.items)})`)
-console.log(`퀴즈 ${quizzes.items.length}개 (${countByStatus(quizzes.items)})`)
+console.log(`게임 1단계 퀴즈 ${quizzes.items.length}개 (${countByStatus(quizzes.items)})`)
+console.log(`게임 2단계 규칙 ${rules.items.length}개 (${countByStatus(rules.items)})`)
+console.log(`게임 2단계 퀴즈 ${level2Quizzes.items.length}개 (${countByStatus(level2Quizzes.items)})`)
 
 if (errors.length > 0) {
   console.error(`\n✖ 오류 ${errors.length}건`)

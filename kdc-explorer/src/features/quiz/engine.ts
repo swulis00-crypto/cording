@@ -39,9 +39,12 @@ export function shuffle<T>(items: readonly T[], random: () => number = Math.rand
   return result
 }
 
-/** 미션용 문항: 문항 순서는 데이터 순서(쉬운 문항부터)를 지키고, 보기 순서만 섞는다. */
+/**
+ * 미션용 문항: 문항 순서는 데이터 순서(쉬운 문항부터)를 지키고, 보기 순서만 섞는다.
+ * 번호 조립의 숫자 카드는 찾기 쉽게 데이터 순서 그대로 둔다.
+ */
 export function prepareMission(quizzes: Quiz[], random: () => number = Math.random): Quiz[] {
-  return quizzes.map((q) => ({ ...q, options: shuffle(q.options, random) }))
+  return quizzes.map((q) => (q.type === 'build-number' ? q : { ...q, options: shuffle(q.options, random) }))
 }
 
 export const QUIZ_TYPE_LABELS: Record<QuizType, string> = {
@@ -49,6 +52,8 @@ export const QUIZ_TYPE_LABELS: Record<QuizType, string> = {
   'code-to-name': '🏷️ 이름표 찾기',
   'topic-to-classification': '📦 제자리 찾아 주기',
   'distinguish-similar': '🧠 도전 문제',
+  'rule-inference': '🧩 규칙 추리',
+  'build-number': '🔐 번호 조립',
 }
 
 const CORRECT_REACTIONS = ['책이 제자리를 찾았어요! 📚', '서가가 한결 깔끔해졌어요! ✨', '탐험대원다운 판단이에요! 🧭']

@@ -11,6 +11,7 @@ export function createEmptyProgress(): Progress {
     version: PROGRESS_VERSION,
     visitedClassifications: [],
     completedClassifications: [],
+    completedRules: [],
     bestCorrect: {},
     wrongQuestionIds: [],
     quizAttempts: [],
@@ -24,6 +25,7 @@ export function hasProgress(progress: Progress): boolean {
   return (
     progress.visitedClassifications.length > 0 ||
     progress.completedClassifications.length > 0 ||
+    progress.completedRules.length > 0 ||
     progress.quizAttempts.length > 0 ||
     progress.wrongQuestionIds.length > 0
   )
@@ -43,6 +45,8 @@ export function visitClassification(progress: Progress, classificationId: string
 export interface MissionResult {
   kind: MissionKind
   classificationId: string | null
+  /** 게임 2단계 규칙 미션이면 그 규칙 id */
+  ruleId?: string
   answers: AnswerRecord[]
   finishedAt: string
 }
@@ -58,6 +62,7 @@ export function recordMission(progress: Progress, result: MissionResult): Progre
   const attempt = {
     kind: result.kind,
     classificationId: result.classificationId,
+    ...(result.ruleId !== undefined && { ruleId: result.ruleId }),
     finishedAt: result.finishedAt,
     total: summary.total,
     correct: summary.correctCount,
@@ -69,6 +74,11 @@ export function recordMission(progress: Progress, result: MissionResult): Progre
   if (result.kind === 'mission' && id !== null) {
     if (!completedClassifications.includes(id)) completedClassifications = [...completedClassifications, id]
     if ((bestCorrect[id] ?? -1) < summary.correctCount) bestCorrect = { ...bestCorrect, [id]: summary.correctCount }
+  }
+
+  let { completedRules } = progress
+  if (result.kind === 'mission' && result.ruleId !== undefined && !completedRules.includes(result.ruleId)) {
+    completedRules = [...completedRules, result.ruleId]
   }
 
   const wrong = new Set(progress.wrongQuestionIds)
@@ -86,6 +96,7 @@ export function recordMission(progress: Progress, result: MissionResult): Progre
     ...progress,
     visitedClassifications: visited,
     completedClassifications,
+    completedRules,
     bestCorrect,
     wrongQuestionIds: [...wrong],
     quizAttempts: [...progress.quizAttempts, attempt].slice(-MAX_ATTEMPTS),

@@ -18,6 +18,8 @@ export interface MissionState {
 
 export type MissionAction =
   | { type: 'select'; option: string }
+  /** 번호 조립에서 빈칸을 다시 비웠을 때 */
+  | { type: 'deselect' }
   | { type: 'showHint' }
   | { type: 'submit' }
   | { type: 'next' }
@@ -44,6 +46,10 @@ export function missionReducer(state: MissionState, action: MissionAction): Miss
     case 'select':
       if (state.phase !== 'question') return state
       return { ...state, selected: action.option, needsSelection: false }
+
+    case 'deselect':
+      if (state.phase !== 'question') return state
+      return { ...state, selected: null }
 
     case 'showHint':
       if (state.phase !== 'question') return state

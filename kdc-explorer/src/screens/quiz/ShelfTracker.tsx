@@ -4,8 +4,15 @@ import type { Quiz } from '../../types/index.ts'
 import { hueStyle } from '../../utils/hue.ts'
 import styles from './Quiz.module.css'
 
+interface Props {
+  quizzes: Quiz[]
+  answers: AnswerRecord[]
+  /** 칸을 묶는 기준 (기본: 영역). 묶음이 바뀌는 곳은 조금 띄운다. */
+  groupOf?: (quiz: Quiz) => string
+}
+
 /** 서가 복구 진행판: 맞힌 문항마다 그 영역 색의 책 한 권이 제자리에 꽂힌다. */
-export function ShelfTracker({ quizzes, answers }: { quizzes: Quiz[]; answers: AnswerRecord[] }) {
+export function ShelfTracker({ quizzes, answers, groupOf = (q) => q.classificationId }: Props) {
   const restored = answers.filter((a) => a.correct).length
   const compact = quizzes.length > 10
 
@@ -19,7 +26,7 @@ export function ShelfTracker({ quizzes, answers }: { quizzes: Quiz[]; answers: A
           const answer = answers[i]
           const state = !answer ? (i === answers.length ? 'current' : 'empty') : answer.correct ? 'restored' : 'missed'
           const code = getClassification(quiz.classificationId)?.code
-          const groupStart = i > 0 && quizzes[i - 1].classificationId !== quiz.classificationId
+          const groupStart = i > 0 && groupOf(quizzes[i - 1]) !== groupOf(quiz)
           return (
             <li
               key={quiz.id}

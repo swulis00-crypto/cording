@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { isPreviewMode } from '../app/preview.ts'
 import { useProgress } from '../app/useProgress.ts'
-import { getClassification, quizzes } from '../data/index.ts'
+import { allQuizzes, getClassification, getRule } from '../data/index.ts'
 import { getPlayableQuizzes } from '../features/quiz/engine.ts'
 import type { Quiz } from '../types/index.ts'
 import { Mission } from './quiz/Mission.tsx'
@@ -15,7 +15,7 @@ export function ReviewScreen() {
   const [session, setSession] = useState<{ id: number; pool: Quiz[] } | null>(null)
 
   const wrongIds = new Set(progress.wrongQuestionIds)
-  const wrongQuizzes = getPlayableQuizzes(quizzes, isPreviewMode()).filter((q) => wrongIds.has(q.id))
+  const wrongQuizzes = getPlayableQuizzes(allQuizzes, isPreviewMode()).filter((q) => wrongIds.has(q.id))
 
   if (session) {
     return (
@@ -58,9 +58,11 @@ export function ReviewScreen() {
           <ul className={styles.reviewItems}>
             {wrongQuizzes.map((q) => {
               const c = getClassification(q.classificationId)
+              const rule = q.rule ? getRule(q.rule) : undefined
+              const where = rule ? `2단계 · ${rule.title}` : c ? `${c.code} ${c.name}` : ''
               return (
                 <li key={q.id}>
-                  <span className={styles.reviewArea}>{c ? `${c.code} ${c.name}` : ''}</span>
+                  <span className={styles.reviewArea}>{where}</span>
                   {q.book ? `『${q.book.title}』` : q.question}
                 </li>
               )

@@ -1,9 +1,11 @@
 // 학습 데이터 검증 (PRD 9.5). 앱과 `npm run validate:data` 스크립트가 함께 사용한다.
 // Node에서 바로 실행되도록 이 파일은 확장자를 붙인 import만 사용한다.
 import {
+  BLANK,
   QUIZ_TYPES,
   REVIEW_STATUSES,
   type Classification,
+  type NumberRule,
   type Quiz,
   type QuizType,
   type ReviewStatus,
@@ -128,11 +130,72 @@ export function validateClassifications(input: unknown): ValidationResult<Classi
   return { items, errors }
 }
 
+/** 게임 2단계 규칙 데이터를 검증한다. 오류가 있는 규칙은 제외한다. */
+export function validateRules(input: unknown): ValidationResult<NumberRule> {
+  const errors: string[] = []
+  if (!Array.isArray(input)) return { items: [], errors: ['규칙 데이터가 목록(배열) 형식이 아닙니다.'] }
+
+  const items: NumberRule[] = []
+  const seenIds = new Set<string>()
+  input.forEach((raw, index) => {
+    if (!isRecord(raw)) {
+      errors.push(`규칙 ${index + 1}번째 항목이 객체 형식이 아닙니다.`)
+      return
+    }
+    const where = `규칙 ${label(raw, index)}`
+    const problems: string[] = []
+    if (!isNonEmptyString(raw.id)) problems.push('id가 없습니다.')
+    else if (seenIds.has(raw.id)) problems.push('id가 중복되었습니다.')
+    if (!isNonEmptyString(raw.title)) problems.push('제목(title)이 없습니다.')
+    if (!isNonEmptyString(raw.summary)) problems.push('설명(summary)이 없습니다.')
+    const examples = raw.examples
+    const validExamples =
+      Array.isArray(examples) &&
+      examples.every((e) => isRecord(e) && typeof e.code === 'string' && CODE_PATTERN.test(e.code) && isNonEmptyString(e.label))
+    if (!validExamples) problems.push('예시(examples)는 { code: "000", label: "이름" } 목록이어야 합니다.')
+    if (!isReviewStatus(raw.reviewStatus)) {
+      problems.push(`검수 상태(reviewStatus)는 ${REVIEW_STATUSES.join(', ')} 중 하나여야 합니다.`)
+    }
+    if (problems.length > 0) {
+      errors.push(...problems.map((p) => `${where}: ${p}`))
+      return
+    }
+    seenIds.add(raw.id as string)
+    items.push({
+      id: raw.id as string,
+      emoji: typeof raw.emoji === 'string' ? raw.emoji : '🔎',
+      title: raw.title as string,
+      summary: raw.summary as string,
+      examples: examples as NumberRule['examples'],
+      reviewStatus: raw.reviewStatus as ReviewStatus,
+    })
+  })
+  return { items, errors }
+}
+
+/** 번호 조립 문제: 정답이 틀의 고정 숫자와 맞고, 빈칸 숫자는 모두 숫자 카드에 있어야 한다. */
+function buildAnswerProblem(template: unknown, options: string[], answer: unknown): string | null {
+  if (typeof template !== 'string' || !template.includes(BLANK)) {
+    return `번호 조립 문제에는 "${BLANK}" 빈칸이 있는 틀(template)이 있어야 합니다.`
+  }
+  if (typeof answer !== 'string' || [...answer].length !== [...template].length) {
+    return `정답 "${String(answer)}"의 길이가 틀 "${template}"과 다릅니다.`
+  }
+  const answerChars = [...answer]
+  const fits = [...template].every((t, i) => (t === BLANK ? options.includes(answerChars[i]) : t === answerChars[i]))
+  return fits ? null : `정답 "${answer}"을(를) 틀 "${template}"과 숫자 카드로 만들 수 없습니다.`
+}
+
 /**
  * 퀴즈 데이터를 검증한다. 오류가 있는 문항은 제외한다.
  * `approved` 문항은 문제·보기·정답·해설을 모두 갖춰야 한다.
+ * ruleIds를 주면 게임 2단계 문항의 규칙(rule) 참조도 검사한다.
  */
-export function validateQuizzes(input: unknown, classifications: Classification[]): ValidationResult<Quiz> {
+export function validateQuizzes(
+  input: unknown,
+  classifications: Classification[],
+  ruleIds: string[] = [],
+): ValidationResult<Quiz> {
   const errors: string[] = []
   if (!Array.isArray(input)) {
     return { items: [], errors: ['퀴즈 데이터가 목록(배열) 형식이 아닙니다.'] }
@@ -170,6 +233,9 @@ export function validateQuizzes(input: unknown, classifications: Classification[
     ) {
       problems.push('손님(character)에는 이름(name), 부탁(line), 감사 인사(thanks)가 있어야 합니다.')
     }
+    if (raw.rule !== undefined && !(typeof raw.rule === 'string' && ruleIds.includes(raw.rule))) {
+      problems.push(`존재하지 않는 규칙 "${String(raw.rule)}"을 참조합니다.`)
+    }
     if (raw.fictional !== undefined && typeof raw.fictional !== 'boolean') {
       problems.push('가상 예시 표시(fictional)는 true 또는 false여야 합니다.')
     }
@@ -179,6 +245,9 @@ export function validateQuizzes(input: unknown, classifications: Classification[
       problems.push('보기(options)는 비어 있지 않은 문자열 2개 이상이어야 합니다.')
     } else if (new Set(options).size !== options.length) {
       problems.push('보기(options)에 같은 값이 중복되었습니다.')
+    } else if (raw.type === 'build-number') {
+      const problem = buildAnswerProblem(raw.template, options, raw.correctAnswer)
+      if (problem) problems.push(problem)
     } else if (typeof raw.correctAnswer !== 'string' || !options.includes(raw.correctAnswer)) {
       problems.push(`정답 "${String(raw.correctAnswer)}"이(가) 보기 중에 없습니다.`)
     }
@@ -201,6 +270,8 @@ export function validateQuizzes(input: unknown, classifications: Classification[
       type: raw.type as QuizType,
       difficulty: typeof raw.difficulty === 'number' ? raw.difficulty : 1,
       question: raw.question as string,
+      ...(typeof raw.rule === 'string' && { rule: raw.rule }),
+      ...(raw.type === 'build-number' && { template: raw.template as string }),
       ...(isRecord(character) && {
         character: {
           name: character.name as string,

@@ -24,7 +24,7 @@ export const GAME_LEVELS: GameLevel[] = [
     title: '번호 속 비밀 풀기',
     summary: '813은 왜 한국 소설일까? 번호 둘째·셋째 자리의 규칙을 풀어요.',
     path: '/level/2',
-    ready: false,
+    ready: true,
   },
   {
     number: 3,
@@ -42,13 +42,24 @@ export const GAME_LEVELS: GameLevel[] = [
   },
 ]
 
-/** 게임 1단계 완료 = 주류 10개 미션을 모두 끝냄 */
-export function isLevelCompleted(level: number, progress: Progress, mainClassIds: string[]): boolean {
-  if (level === 1) return mainClassIds.length > 0 && mainClassIds.every((id) => progress.completedClassifications.includes(id))
+/** 단계별 완료 조건에 쓰는 콘텐츠 목록 */
+export interface LevelContent {
+  mainClassIds: string[]
+  ruleIds: string[]
+}
+
+/**
+ * 게임 1단계 완료 = 주류 10개 구역을 모두 마침
+ * 게임 2단계 완료 = 규칙을 모두 마침
+ */
+export function isLevelCompleted(level: number, progress: Progress, content: LevelContent): boolean {
+  const all = (ids: string[], done: string[]) => ids.length > 0 && ids.every((id) => done.includes(id))
+  if (level === 1) return all(content.mainClassIds, progress.completedClassifications)
+  if (level === 2) return all(content.ruleIds, progress.completedRules)
   return false
 }
 
 /** 1단계는 항상 열려 있고, 그다음은 이전 단계를 마치면 열린다. 미리보기 모드에서는 모두 열린다. */
-export function isLevelUnlocked(level: number, progress: Progress, mainClassIds: string[], preview: boolean): boolean {
-  return level === 1 || preview || isLevelCompleted(level - 1, progress, mainClassIds)
+export function isLevelUnlocked(level: number, progress: Progress, content: LevelContent, preview: boolean): boolean {
+  return level === 1 || preview || isLevelCompleted(level - 1, progress, content)
 }

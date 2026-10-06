@@ -9,6 +9,7 @@ import { MapScreen } from '../screens/MapScreen.tsx'
 import { NotFoundScreen } from '../screens/NotFoundScreen.tsx'
 import { QuizScreen } from '../screens/quiz/QuizScreen.tsx'
 import { ReviewScreen } from '../screens/ReviewScreen.tsx'
+import { RulesScreen } from '../screens/RulesScreen.tsx'
 import { SettingsScreen } from '../screens/SettingsScreen.tsx'
 import { TutorialScreen } from '../screens/TutorialScreen.tsx'
 import { ProgressProvider } from './ProgressContext.tsx'
@@ -22,6 +23,7 @@ export function AppRoutes() {
           <Route path="tutorial" element={<TutorialScreen />} />
           <Route path="levels" element={<LevelsScreen />} />
           <Route path="journey" element={<JourneyScreen />} />
+          <Route path="level/2" element={<RulesScreen />} />
           <Route path="map" element={<MapScreen />} />
           <Route path="classification/:id" element={<ClassificationScreen />} />
           <Route path="mission/:id" element={<QuizScreen />} />

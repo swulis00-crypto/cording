@@ -37,6 +37,7 @@ function attemptList(value: unknown): MissionAttempt[] {
         isRecord(a) &&
         KINDS.includes(a.kind as MissionKind) &&
         (a.classificationId === null || typeof a.classificationId === 'string') &&
+        (a.ruleId === undefined || typeof a.ruleId === 'string') &&
         typeof a.finishedAt === 'string' &&
         [a.total, a.correct, a.score].every((n) => typeof n === 'number' && n >= 0),
     )
@@ -59,6 +60,8 @@ export function parseProgress(raw: unknown): Progress | null {
     version: PROGRESS_VERSION,
     visitedClassifications: stringList(raw.visitedClassifications),
     completedClassifications: stringList(raw.completedClassifications),
+    // 게임 2단계 이전에 저장된 기록에는 없으므로 빈 목록으로 시작한다.
+    completedRules: stringList(raw.completedRules),
     bestCorrect,
     wrongQuestionIds: stringList(raw.wrongQuestionIds),
     quizAttempts: attemptList(raw.quizAttempts),

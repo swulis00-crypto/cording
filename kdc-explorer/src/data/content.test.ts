@@ -1,6 +1,6 @@
 // 실제 학습 데이터 파일 검사
 import { describe, expect, it } from 'vitest'
-import { dataErrors, mainClasses, quizzes } from './index.ts'
+import { allQuizzes, dataErrors, level2Quizzes, mainClasses, quizzes, rules } from './index.ts'
 
 // PRD 5.1 표, KDC 제6판 주류
 const EXPECTED_MAIN_CLASSES = [
@@ -54,6 +54,25 @@ describe('학습 데이터', () => {
   it('책이나 손님이 나오는 문항은 가상 예시로 표시된다', () => {
     for (const q of quizzes.filter((q) => q.book || q.character)) {
       expect(q.fictional, q.id).toBe(true)
+    }
+  })
+
+  it('게임 2단계: 규칙 4개, 규칙마다 4문항이고 번호 조립 문항을 포함한다', () => {
+    expect(rules.map((r) => r.id)).toEqual(['rule-1', 'rule-2', 'rule-3', 'rule-4'])
+    for (const r of rules) {
+      const qs = level2Quizzes.filter((q) => q.rule === r.id)
+      expect(qs, r.id).toHaveLength(4)
+      expect(qs.some((q) => q.type === 'build-number'), r.id).toBe(true)
+    }
+  })
+
+  it('모든 게임 단계의 문항 id가 겹치지 않고, 2단계 문항도 해설과 힌트를 가진다', () => {
+    const ids = allQuizzes.map((q) => q.id)
+    expect(new Set(ids).size).toBe(ids.length)
+    for (const q of level2Quizzes) {
+      expect(q.explanation, q.id).not.toBe('')
+      expect(q.hint, q.id).not.toBe('')
+      if (q.book || q.character) expect(q.fictional, q.id).toBe(true)
     }
   })
 
