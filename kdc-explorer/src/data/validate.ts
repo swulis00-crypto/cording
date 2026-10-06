@@ -89,10 +89,18 @@ export function validateClassifications(input: unknown): ValidationResult<Classi
     if (raw.parentId !== null && typeof raw.parentId !== 'string') {
       errors.push(`${where}: parentId는 null 또는 문자열이어야 합니다.`)
     }
-    if (!isNonEmptyString(raw.learnerDescription)) errors.push(`${where}: 쉬운 설명(learnerDescription)이 없습니다.`)
-    if (!isStringArray(raw.exampleTopics)) errors.push(`${where}: 대표 주제(exampleTopics)는 문자열 목록이어야 합니다.`)
-    if (typeof raw.hint !== 'string') errors.push(`${where}: 힌트(hint)는 문자열이어야 합니다.`)
-    if (!isStringArray(raw.confusedWith)) errors.push(`${where}: confusedWith는 문자열 목록이어야 합니다.`)
+    // 쉬운 설명·대표 주제·힌트·헷갈리는 영역은 주류(level 1)에만 필수다. 강목 등 하위 분류는 번호와 명칭만 있어도 된다.
+    const isMain = level === 1
+    if ((isMain || raw.learnerDescription !== undefined) && !isNonEmptyString(raw.learnerDescription)) {
+      errors.push(`${where}: 쉬운 설명(learnerDescription)이 없습니다.`)
+    }
+    if ((isMain || raw.exampleTopics !== undefined) && !isStringArray(raw.exampleTopics)) {
+      errors.push(`${where}: 대표 주제(exampleTopics)는 문자열 목록이어야 합니다.`)
+    }
+    if ((isMain || raw.hint !== undefined) && typeof raw.hint !== 'string') errors.push(`${where}: 힌트(hint)는 문자열이어야 합니다.`)
+    if ((isMain || raw.confusedWith !== undefined) && !isStringArray(raw.confusedWith)) {
+      errors.push(`${where}: confusedWith는 문자열 목록이어야 합니다.`)
+    }
     if (!isNonEmptyString(raw.sourceEdition)) errors.push(`${where}: 출처 판본(sourceEdition)이 없습니다.`)
     if (!isReviewStatus(raw.reviewStatus)) {
       errors.push(`${where}: 검수 상태(reviewStatus)는 ${REVIEW_STATUSES.join(', ')} 중 하나여야 합니다.`)
@@ -148,11 +156,6 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
     else if (seenIds.has(raw.id)) problems.push('id가 중복되었습니다.')
     if (!isNonEmptyString(raw.title)) problems.push('제목(title)이 없습니다.')
     if (!isNonEmptyString(raw.summary)) problems.push('설명(summary)이 없습니다.')
-    const examples = raw.examples
-    const validExamples =
-      Array.isArray(examples) &&
-      examples.every((e) => isRecord(e) && typeof e.code === 'string' && CODE_PATTERN.test(e.code) && isNonEmptyString(e.label))
-    if (!validExamples) problems.push('예시(examples)는 { code: "000", label: "이름" } 목록이어야 합니다.')
     if (!isReviewStatus(raw.reviewStatus)) {
       problems.push(`검수 상태(reviewStatus)는 ${REVIEW_STATUSES.join(', ')} 중 하나여야 합니다.`)
     }
@@ -166,7 +169,6 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
       emoji: typeof raw.emoji === 'string' ? raw.emoji : '🔎',
       title: raw.title as string,
       summary: raw.summary as string,
-      examples: examples as NumberRule['examples'],
       reviewStatus: raw.reviewStatus as ReviewStatus,
     })
   })
@@ -233,6 +235,7 @@ export function validateQuizzes(
     ) {
       problems.push('손님(character)에는 이름(name), 부탁(line), 감사 인사(thanks)가 있어야 합니다.')
     }
+    if (raw.table !== undefined && raw.table !== 'main') problems.push('구분표(table)는 "main"만 쓸 수 있습니다.')
     if (raw.rule !== undefined && !(typeof raw.rule === 'string' && ruleIds.includes(raw.rule))) {
       problems.push(`존재하지 않는 규칙 "${String(raw.rule)}"을 참조합니다.`)
     }
@@ -271,6 +274,7 @@ export function validateQuizzes(
       difficulty: typeof raw.difficulty === 'number' ? raw.difficulty : 1,
       question: raw.question as string,
       ...(typeof raw.rule === 'string' && { rule: raw.rule }),
+      ...(raw.table === 'main' && { table: 'main' as const }),
       ...(raw.type === 'build-number' && { template: raw.template as string }),
       ...(isRecord(character) && {
         character: {

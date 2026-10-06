@@ -53,7 +53,6 @@ export interface NumberRule {
   emoji: string
   title: string
   summary: string
-  examples: { code: string; label: string }[]
   reviewStatus: ReviewStatus
 }
 
@@ -83,6 +82,8 @@ export interface Quiz {
   rule?: string
   /** 번호 조립 문제의 틀 (예: "7□0"). 보기는 숫자 카드, 정답은 완성된 번호 */
   template?: string
+  /** 게임 2단계에서 문제 위에 보여 줄 구분표. 기본은 문항 영역의 10개 구분, 'main'이면 10개 주류 */
+  table?: 'main'
   character?: QuizCharacter
   book?: QuizBook
   options: string[]

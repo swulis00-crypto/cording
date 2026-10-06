@@ -156,9 +156,9 @@ describe('게임 2단계 데이터', () => {
   })
 
   it('규칙 데이터를 검증한다', () => {
-    const ok = { id: 'rule-1', emoji: '🔍', title: '제목', summary: '설명', examples: [{ code: '410', label: '수학' }], reviewStatus: 'draft' }
+    const ok = { id: 'rule-1', emoji: '🔍', title: '제목', summary: '설명', reviewStatus: 'draft' }
     expect(validateRules([ok]).errors).toEqual([])
-    const result = validateRules([ok, ok, { ...ok, id: 'rule-2', examples: [{ code: 410, label: '수학' }] }])
+    const result = validateRules([ok, ok, { ...ok, id: 'rule-2', title: '' }])
     expect(result.items).toHaveLength(1)
     expect(result.errors).toHaveLength(2)
   })

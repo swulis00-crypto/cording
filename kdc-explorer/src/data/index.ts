@@ -54,6 +54,11 @@ export function getClassificationByCode(code: string): Classification | undefine
   return classifications.find((c) => c.code === code)
 }
 
+/** 한 분류 바로 아래의 하위 분류 (번호순) */
+export function getChildren(parentId: string): Classification[] {
+  return classifications.filter((c) => c.parentId === parentId)
+}
+
 export function getRule(id: string): NumberRule | undefined {
   return rules.find((r) => r.id === id)
 }

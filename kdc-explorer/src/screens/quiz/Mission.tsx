@@ -7,6 +7,7 @@ import { createMission, currentQuiz, missionReducer } from '../../features/quiz/
 import type { Classification, MissionKind, Quiz } from '../../types/index.ts'
 import { hueStyle } from '../../utils/hue.ts'
 import { FeedbackView } from './FeedbackView.tsx'
+import { PastQuestionView } from './PastQuestionView.tsx'
 import { QuestionView } from './QuestionView.tsx'
 import { ResultView } from './ResultView.tsx'
 import { ShelfTracker } from './ShelfTracker.tsx'
@@ -45,6 +46,8 @@ export function Mission({ classification, groups, title, symbol, pool, kind, don
   const recordedRun = useRef(-1)
   /** 이번 판에서 이미 저장한 묶음 */
   const recordedGroups = useRef(new Set<string>())
+  /** 지난 문제 다시 보기: 보고 있는 지난 문제의 번호(0부터). 없으면 null */
+  const [peek, setPeek] = useState<number | null>(null)
   const quiz = currentQuiz(state)
   const total = state.quizzes.length
   const score = summarize(state.answers).score
@@ -53,7 +56,7 @@ export function Mission({ classification, groups, title, symbol, pool, kind, don
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [state.phase, state.index])
+  }, [state.phase, state.index, peek])
 
   // 이어 풀기: 한 묶음의 문제를 모두 답하면 바로 저장한다 (중간에 그만둬도 남도록).
   useEffect(() => {
@@ -81,18 +84,22 @@ export function Mission({ classification, groups, title, symbol, pool, kind, don
 
   const restart = (quizzes: Quiz[], wrongOnly: boolean) => {
     recordedGroups.current = new Set()
+    setPeek(null)
     setRun((r) => ({ id: r.id + 1, kind: wrongOnly ? 'retry' : kind }))
     dispatch({ type: 'restart', quizzes: prepareMission(quizzes) })
   }
 
-  // 지금 문제의 영역 색을 쓴다.
-  const inPlay = state.phase !== 'result' && quiz !== undefined
-  const hueCode = (inPlay ? getClassification(quiz.classificationId)?.code : undefined) ?? classification?.code
+  // 지난 문제를 보고 있으면 그 문제, 아니면 지금 문제를 기준으로 안내와 색을 정한다.
+  const peeking = peek !== null && state.phase === 'question'
+  const shown = peeking ? state.quizzes[peek] : quiz
+  const inPlay = state.phase !== 'result' && shown !== undefined
+  const hueCode = (inPlay ? getClassification(shown.classificationId)?.code : undefined) ?? classification?.code
   const isFirstOfGroup =
     groups !== undefined &&
     inPlay &&
+    !peeking &&
     state.phase === 'question' &&
-    state.quizzes.findIndex((q) => groups.keyOf(q) === groups.keyOf(quiz)) === state.index
+    state.quizzes.findIndex((q) => groups.keyOf(q) === groups.keyOf(shown)) === state.index
 
   return (
     <div className={styles.mission} style={hueCode ? hueStyle(hueCode) : undefined}>
@@ -119,21 +126,45 @@ export function Mission({ classification, groups, title, symbol, pool, kind, don
             <ShelfTracker quizzes={state.quizzes} answers={state.answers} groupOf={groups?.keyOf} />
           </>
         )}
-        {groups && inPlay && groups.renderBanner(quiz, isFirstOfGroup)}
+        {groups && inPlay && groups.renderBanner(shown, isFirstOfGroup)}
       </header>
 
-      {state.phase === 'question' && quiz && (
-        <QuestionView
-          key={quiz.id}
-          quiz={quiz}
-          selected={state.selected}
-          hintShown={state.hintShown}
-          needsSelection={state.needsSelection}
-          onSelect={(option) => dispatch({ type: 'select', option })}
-          onClear={() => dispatch({ type: 'deselect' })}
-          onHint={() => dispatch({ type: 'showHint' })}
-          onSubmit={() => dispatch({ type: 'submit' })}
+      {peeking && (
+        <PastQuestionView
+          quiz={state.quizzes[peek]}
+          answer={state.answers[peek]}
+          number={peek + 1}
+          canGoEarlier={peek > 0}
+          canGoLater={peek < state.index - 1}
+          onEarlier={() => setPeek(peek - 1)}
+          onLater={() => setPeek(peek + 1)}
+          onBack={() => setPeek(null)}
         />
+      )}
+
+      {state.phase === 'question' && quiz && state.index > 0 && !peeking && (
+        <p className={styles.pastNav}>
+          <button type="button" className={styles.pastLink} onClick={() => setPeek(state.index - 1)}>
+            ◀ 이전 문제 다시 보기
+          </button>
+        </p>
+      )}
+
+      {/* 지난 문제를 보는 동안에도 지금 문제의 선택(번호 조립 포함)이 남도록 숨겨만 둔다 */}
+      {state.phase === 'question' && quiz && (
+        <div hidden={peeking}>
+          <QuestionView
+            key={quiz.id}
+            quiz={quiz}
+            selected={state.selected}
+            hintShown={state.hintShown}
+            needsSelection={state.needsSelection}
+            onSelect={(option) => dispatch({ type: 'select', option })}
+            onClear={() => dispatch({ type: 'deselect' })}
+            onHint={() => dispatch({ type: 'showHint' })}
+            onSubmit={() => dispatch({ type: 'submit' })}
+          />
+        </div>
       )}
 
       {state.phase === 'feedback' && quiz && (
@@ -142,7 +173,10 @@ export function Mission({ classification, groups, title, symbol, pool, kind, don
           quiz={quiz}
           answer={state.answers[state.answers.length - 1]}
           isLast={state.index === total - 1}
-          onNext={() => dispatch({ type: 'next' })}
+          onNext={() => {
+            setPeek(null)
+            dispatch({ type: 'next' })
+          }}
         />
       )}
 

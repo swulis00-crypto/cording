@@ -6,9 +6,17 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "어느 한 분야에만 속하지 않고 여러 분야의 지식을 두루 담은 책, 그리고 책·도서관·정보 자체를 다루는 책이 모이는 영역이에요.",
-    "exampleTopics": ["백과사전", "도서관과 정보", "신문과 저널리즘", "여러 분야를 묶은 전집·총서", "컴퓨터 과학"],
+    "exampleTopics": [
+      "백과사전",
+      "도서관과 정보",
+      "신문과 저널리즘",
+      "여러 분야를 묶은 전집·총서",
+      "컴퓨터 과학"
+    ],
     "hint": "한 가지 주제로 정하기 어렵게 여러 분야를 모았거나, 책·정보·도서관에 관한 책이라면 000을 떠올려 보세요.",
-    "confusedWith": ["kdc-500"],
+    "confusedWith": [
+      "kdc-500"
+    ],
     "symbol": "📚",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -20,9 +28,18 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "사람은 어떻게 생각하고 느끼는지, 어떻게 살아야 하는지 같은 근본적인 질문을 탐구하는 영역이에요.",
-    "exampleTopics": ["동양 철학", "서양 철학", "논리학", "심리학", "윤리학"],
+    "exampleTopics": [
+      "동양 철학",
+      "서양 철학",
+      "논리학",
+      "심리학",
+      "윤리학"
+    ],
     "hint": "생각하는 방법, 마음의 움직임, 옳고 그름에 대해 묻는 책이라면 100을 떠올려 보세요.",
-    "confusedWith": ["kdc-200", "kdc-300"],
+    "confusedWith": [
+      "kdc-200",
+      "kdc-300"
+    ],
     "symbol": "💭",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -34,9 +51,18 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "여러 종교의 가르침, 경전, 역사와 의식을 다루는 영역이에요.",
-    "exampleTopics": ["불교", "기독교", "이슬람교", "힌두교", "여러 종교 비교"],
+    "exampleTopics": [
+      "불교",
+      "기독교",
+      "이슬람교",
+      "힌두교",
+      "여러 종교 비교"
+    ],
     "hint": "특정 종교의 가르침이나 신앙생활을 다루는 책이라면 200을 떠올려 보세요.",
-    "confusedWith": ["kdc-100", "kdc-900"],
+    "confusedWith": [
+      "kdc-100",
+      "kdc-900"
+    ],
     "symbol": "🕊️",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -48,9 +74,19 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "사람들이 함께 모여 사는 사회의 규칙과 제도, 생활 모습을 연구하는 영역이에요.",
-    "exampleTopics": ["경제", "정치", "법", "교육", "사회 문제", "풍습과 민속"],
+    "exampleTopics": [
+      "경제",
+      "정치",
+      "법",
+      "교육",
+      "사회 문제",
+      "풍습과 민속"
+    ],
     "hint": "돈과 시장, 법과 제도, 학교와 교육처럼 사회가 움직이는 방식을 다룬 책이라면 300을 떠올려 보세요.",
-    "confusedWith": ["kdc-900", "kdc-100"],
+    "confusedWith": [
+      "kdc-900",
+      "kdc-100"
+    ],
     "symbol": "🏛️",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -62,9 +98,18 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "자연에서 일어나는 현상과 그 원리를 관찰하고 밝혀내는 영역이에요.",
-    "exampleTopics": ["수학", "물리학", "화학", "천문학", "지구과학", "생물·동물·식물"],
+    "exampleTopics": [
+      "수학",
+      "물리학",
+      "화학",
+      "천문학",
+      "지구과학",
+      "생물·동물·식물"
+    ],
     "hint": "자연이 '왜, 어떻게' 그렇게 되는지 원리를 설명하는 책이라면 400을 떠올려 보세요.",
-    "confusedWith": ["kdc-500"],
+    "confusedWith": [
+      "kdc-500"
+    ],
     "symbol": "🔭",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -76,9 +121,18 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "과학 지식을 활용해 사람의 생활에 필요한 것을 만들고 고치는 방법을 다루는 영역이에요.",
-    "exampleTopics": ["의학과 건강", "농업", "건축", "기계·전기·전자", "요리와 생활"],
+    "exampleTopics": [
+      "의학과 건강",
+      "농업",
+      "건축",
+      "기계·전기·전자",
+      "요리와 생활"
+    ],
     "hint": "원리를 '어디에, 어떻게 쓰는지' 실제로 활용하는 방법을 다룬 책이라면 500을 떠올려 보세요.",
-    "confusedWith": ["kdc-000", "kdc-400"],
+    "confusedWith": [
+      "kdc-000",
+      "kdc-400"
+    ],
     "symbol": "⚙️",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -90,9 +144,17 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "그림, 음악, 공연처럼 아름다움을 표현하고 즐기는 활동과, 스포츠·오락을 다루는 영역이에요.",
-    "exampleTopics": ["회화와 디자인", "음악", "사진", "연극·영화", "스포츠와 오락"],
+    "exampleTopics": [
+      "회화와 디자인",
+      "음악",
+      "사진",
+      "연극·영화",
+      "스포츠와 오락"
+    ],
     "hint": "만들고 표현하고 즐기는 활동에 관한 책이라면 600을 떠올려 보세요. 스포츠도 여기에 속해요.",
-    "confusedWith": ["kdc-800"],
+    "confusedWith": [
+      "kdc-800"
+    ],
     "symbol": "🎨",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -104,9 +166,16 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "한국어, 영어처럼 말과 글 자체를 배우고 연구하는 영역이에요.",
-    "exampleTopics": ["한국어 문법", "영어 회화", "중국어·일본어", "국어사전·영어사전"],
+    "exampleTopics": [
+      "한국어 문법",
+      "영어 회화",
+      "중국어·일본어",
+      "국어사전·영어사전"
+    ],
     "hint": "말과 글 '그 자체'를 배우는 책이라면 700을 떠올려 보세요. 그 언어로 쓴 이야기는 문학이에요.",
-    "confusedWith": ["kdc-800"],
+    "confusedWith": [
+      "kdc-800"
+    ],
     "symbol": "🗣️",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -118,9 +187,20 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "시, 소설, 희곡, 수필처럼 작가가 말과 글로 창작한 작품이 모이는 영역이에요.",
-    "exampleTopics": ["한국 문학", "영미 문학", "시", "소설", "희곡", "수필"],
+    "exampleTopics": [
+      "한국 문학",
+      "영미 문학",
+      "시",
+      "소설",
+      "희곡",
+      "수필"
+    ],
     "hint": "작가가 지어낸 이야기나 작품이라면 800을 떠올려 보세요. 역사를 배경으로 한 소설도 문학이에요.",
-    "confusedWith": ["kdc-600", "kdc-700", "kdc-900"],
+    "confusedWith": [
+      "kdc-600",
+      "kdc-700",
+      "kdc-900"
+    ],
     "symbol": "📖",
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
@@ -132,10 +212,810 @@
     "parentId": null,
     "level": 1,
     "learnerDescription": "과거에 있었던 일과 여러 나라·지역의 역사, 그리고 지리와 인물의 삶을 다루는 영역이에요.",
-    "exampleTopics": ["한국사", "세계사", "지리와 여행", "인물 이야기(전기)"],
+    "exampleTopics": [
+      "한국사",
+      "세계사",
+      "지리와 여행",
+      "인물 이야기(전기)"
+    ],
     "hint": "실제로 있었던 과거의 일, 장소, 인물을 다룬 책이라면 900을 떠올려 보세요.",
-    "confusedWith": ["kdc-300", "kdc-800"],
+    "confusedWith": [
+      "kdc-300",
+      "kdc-800"
+    ],
     "symbol": "🗺️",
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-010",
+    "code": "010",
+    "name": "도서학, 서지학",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-020",
+    "code": "020",
+    "name": "문헌정보학",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-030",
+    "code": "030",
+    "name": "백과사전",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-040",
+    "code": "040",
+    "name": "강연집, 수필집, 연설문집",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-050",
+    "code": "050",
+    "name": "일반 연속간행물",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-060",
+    "code": "060",
+    "name": "일반 학회, 단체, 협회, 기관, 연구기관",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-070",
+    "code": "070",
+    "name": "신문, 저널리즘",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-080",
+    "code": "080",
+    "name": "일반 전집, 총서",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-090",
+    "code": "090",
+    "name": "향토자료",
+    "parentId": "kdc-000",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-110",
+    "code": "110",
+    "name": "형이상학",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-120",
+    "code": "120",
+    "name": "인식론, 인과론, 인간학",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-130",
+    "code": "130",
+    "name": "철학의 체계",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-140",
+    "code": "140",
+    "name": "경학",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-150",
+    "code": "150",
+    "name": "동양철학, 동양사상",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-160",
+    "code": "160",
+    "name": "서양철학",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-170",
+    "code": "170",
+    "name": "논리학",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-180",
+    "code": "180",
+    "name": "심리학",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-190",
+    "code": "190",
+    "name": "윤리학, 도덕철학",
+    "parentId": "kdc-100",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-210",
+    "code": "210",
+    "name": "비교종교",
+    "parentId": "kdc-200",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-220",
+    "code": "220",
+    "name": "불교",
+    "parentId": "kdc-200",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-230",
+    "code": "230",
+    "name": "기독교",
+    "parentId": "kdc-200",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-240",
+    "code": "240",
+    "name": "도교",
+    "parentId": "kdc-200",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-250",
+    "code": "250",
+    "name": "천도교",
+    "parentId": "kdc-200",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-270",
+    "code": "270",
+    "name": "힌두교, 브라만교",
+    "parentId": "kdc-200",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-280",
+    "code": "280",
+    "name": "이슬람교(회교)",
+    "parentId": "kdc-200",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-290",
+    "code": "290",
+    "name": "기타 제종교",
+    "parentId": "kdc-200",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-310",
+    "code": "310",
+    "name": "통계자료",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-320",
+    "code": "320",
+    "name": "경제학",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-330",
+    "code": "330",
+    "name": "사회학, 사회문제",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-340",
+    "code": "340",
+    "name": "정치학",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-350",
+    "code": "350",
+    "name": "행정학",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-360",
+    "code": "360",
+    "name": "법률, 법학",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-370",
+    "code": "370",
+    "name": "교육학",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-380",
+    "code": "380",
+    "name": "풍습, 예절, 민속학",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-390",
+    "code": "390",
+    "name": "국방, 군사학",
+    "parentId": "kdc-300",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-410",
+    "code": "410",
+    "name": "수학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-420",
+    "code": "420",
+    "name": "물리학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-430",
+    "code": "430",
+    "name": "화학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-440",
+    "code": "440",
+    "name": "천문학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-450",
+    "code": "450",
+    "name": "지학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-460",
+    "code": "460",
+    "name": "광물학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-470",
+    "code": "470",
+    "name": "생명과학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-480",
+    "code": "480",
+    "name": "식물학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-490",
+    "code": "490",
+    "name": "동물학",
+    "parentId": "kdc-400",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-510",
+    "code": "510",
+    "name": "의학",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-520",
+    "code": "520",
+    "name": "농업, 농학",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-530",
+    "code": "530",
+    "name": "공학, 공업일반, 토목공학, 환경공학",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-540",
+    "code": "540",
+    "name": "건축, 건축학",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-550",
+    "code": "550",
+    "name": "기계공학",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-560",
+    "code": "560",
+    "name": "전기공학, 통신공학, 전자공학",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-570",
+    "code": "570",
+    "name": "화학공학",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-580",
+    "code": "580",
+    "name": "제조업",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-590",
+    "code": "590",
+    "name": "생활과학",
+    "parentId": "kdc-500",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-620",
+    "code": "620",
+    "name": "조각, 조형미술",
+    "parentId": "kdc-600",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-630",
+    "code": "630",
+    "name": "공예",
+    "parentId": "kdc-600",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-640",
+    "code": "640",
+    "name": "서예",
+    "parentId": "kdc-600",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-650",
+    "code": "650",
+    "name": "회화, 도화, 디자인",
+    "parentId": "kdc-600",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-660",
+    "code": "660",
+    "name": "사진예술",
+    "parentId": "kdc-600",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-670",
+    "code": "670",
+    "name": "음악",
+    "parentId": "kdc-600",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-680",
+    "code": "680",
+    "name": "공연예술, 매체예술",
+    "parentId": "kdc-600",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-690",
+    "code": "690",
+    "name": "오락, 스포츠",
+    "parentId": "kdc-600",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-710",
+    "code": "710",
+    "name": "한국어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-720",
+    "code": "720",
+    "name": "중국어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-730",
+    "code": "730",
+    "name": "일본어 및 기타 아시아제어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-740",
+    "code": "740",
+    "name": "영어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-750",
+    "code": "750",
+    "name": "독일어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-760",
+    "code": "760",
+    "name": "프랑스어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-770",
+    "code": "770",
+    "name": "스페인어 및 포르투갈어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-780",
+    "code": "780",
+    "name": "이탈리아어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-790",
+    "code": "790",
+    "name": "기타 제어",
+    "parentId": "kdc-700",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-810",
+    "code": "810",
+    "name": "한국문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-820",
+    "code": "820",
+    "name": "중국문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-830",
+    "code": "830",
+    "name": "일본문학 및 기타 아시아문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-840",
+    "code": "840",
+    "name": "영미문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-850",
+    "code": "850",
+    "name": "독일문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-860",
+    "code": "860",
+    "name": "프랑스문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-870",
+    "code": "870",
+    "name": "스페인 및 포르투갈문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-880",
+    "code": "880",
+    "name": "이탈리아문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-890",
+    "code": "890",
+    "name": "기타 제문학",
+    "parentId": "kdc-800",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-910",
+    "code": "910",
+    "name": "아시아",
+    "parentId": "kdc-900",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-920",
+    "code": "920",
+    "name": "유럽",
+    "parentId": "kdc-900",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-930",
+    "code": "930",
+    "name": "아프리카",
+    "parentId": "kdc-900",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-940",
+    "code": "940",
+    "name": "북아메리카",
+    "parentId": "kdc-900",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-950",
+    "code": "950",
+    "name": "남아메리카",
+    "parentId": "kdc-900",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-960",
+    "code": "960",
+    "name": "오세아니아",
+    "parentId": "kdc-900",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-970",
+    "code": "970",
+    "name": "양극지방",
+    "parentId": "kdc-900",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-980",
+    "code": "980",
+    "name": "지리",
+    "parentId": "kdc-900",
+    "level": 2,
+    "sourceEdition": "KDC 제6판",
+    "reviewStatus": "needs-review"
+  },
+  {
+    "id": "kdc-990",
+    "code": "990",
+    "name": "전기",
+    "parentId": "kdc-900",
+    "level": 2,
     "sourceEdition": "KDC 제6판",
     "reviewStatus": "needs-review"
   }

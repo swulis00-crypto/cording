@@ -631,21 +631,112 @@
   cursor: not-allowed;
 }
 
-/* ---- 규칙 카드 예시 ---- */
-.ruleExamples {
+/* ---- 10개 구분표 ---- */
+.divisions {
+  margin-top: 10px;
+}
+
+.divisionsTitle {
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.divisionGrid {
   margin: 6px 0 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
 }
 
-.ruleExamples li {
-  padding: 1px 10px;
-  border-radius: 999px;
-  background: var(--hue, var(--primary));
-  color: var(--hue-on, #fff);
-  font-size: 0.85rem;
+@media (min-width: 600px) {
+  .divisionGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.divisionCell {
+  min-height: 52px;
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  border-left: 5px solid var(--hue, var(--primary));
+  border-radius: 6px;
+  background: #f6f1e6;
+  line-height: 1.3;
+}
+
+.divisionCode {
+  color: var(--hue-ink, var(--primary));
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.divisionName {
+  font-size: 0.82rem;
   font-weight: 700;
+  word-break: keep-all;
+}
+
+.divisionUnknown {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+/* ---- 지난 문제 다시 보기 ---- */
+.pastNav {
+  margin-bottom: 8px;
+}
+
+.pastLink {
+  min-height: 44px;
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  color: var(--primary);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.pastCard {
+  border-style: dashed;
+}
+
+.pastTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+}
+
+.pastTitle:focus {
+  outline: none;
+}
+
+.pastCorrect,
+.pastWrong {
+  padding: 0.05em 0.6em;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.pastCorrect {
+  color: var(--status-completed);
+}
+
+.pastWrong {
+  color: var(--status-in-progress);
+}
+
+.pastSteps {
+  display: flex;
+  gap: 8px;
 }

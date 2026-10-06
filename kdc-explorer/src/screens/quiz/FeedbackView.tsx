@@ -110,7 +110,7 @@ export function FeedbackView({ quiz, answer, isLast, onNext }: Props) {
   )
 }
 
-function OptionMark({ option, quiz, answer }: { option: string; quiz: Quiz; answer: AnswerRecord }) {
+export function OptionMark({ option, quiz, answer }: { option: string; quiz: Quiz; answer: AnswerRecord }) {
   const isCorrect = option === quiz.correctAnswer
   const isMine = option === answer.selected
   return (

@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { isPreviewMode } from '../app/preview.ts'
 import { useProgress } from '../app/useProgress.ts'
-import { getRule, getRuleQuizzes, rules } from '../data/index.ts'
+import { getClassification, getRule, getRuleQuizzes, rules } from '../data/index.ts'
 import type { Quiz } from '../types/index.ts'
+import { DivisionTable } from './quiz/DivisionTable.tsx'
 import { GroupBanner } from './quiz/GroupBanner.tsx'
 import { Mission, type MissionGroups } from './quiz/Mission.tsx'
 import styles from './quiz/Quiz.module.css'
 
-/** 규칙별로 묶기: 지금 규칙 카드를 보여 주고, 규칙의 문제를 마치면 그 규칙을 완료로 저장한다. */
+/** 규칙별로 묶기: 지금 규칙과 문제 영역의 10개 구분표를 보여 주고, 규칙의 문제를 마치면 그 규칙을 완료로 저장한다. */
 const RULE_GROUPS: MissionGroups = {
   keyOf: (quiz: Quiz) => quiz.rule ?? '',
   toResult: (ruleId) => ({ classificationId: null, ruleId }),
@@ -23,13 +24,7 @@ const RULE_GROUPS: MissionGroups = {
         newLabel={isFirst ? '새 규칙 발견!' : undefined}
       >
         <p className={styles.areaDesc}>{rule.summary}</p>
-        <ul className={styles.ruleExamples} aria-label="예시 번호">
-          {rule.examples.map((e) => (
-            <li key={e.code}>
-              {e.code} {e.label}
-            </li>
-          ))}
-        </ul>
+        <DivisionTable area={quiz.table === 'main' ? undefined : getClassification(quiz.classificationId)} />
       </GroupBanner>
     )
   },
