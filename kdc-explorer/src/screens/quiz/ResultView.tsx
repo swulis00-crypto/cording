@@ -11,11 +11,13 @@ interface Props {
   answers: AnswerRecord[]
   onRetry: () => void
   onRetryWrong: (wrong: Quiz[]) => void
+  /** 모두 맞혔을 때의 완료 문구 */
+  doneText?: string
   extraActions?: ReactNode
 }
 
 /** SCR-07 결과. 정답률로 평가하거나 순위를 매기지 않는다. */
-export function ResultView({ classification, quizzes, answers, onRetry, onRetryWrong, extraActions }: Props) {
+export function ResultView({ classification, quizzes, answers, onRetry, onRetryWrong, doneText, extraActions }: Props) {
   const summary = summarize(answers)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const answerById = new Map(answers.map((a) => [a.quizId, a]))
@@ -32,7 +34,7 @@ export function ResultView({ classification, quizzes, answers, onRetry, onRetryW
       </h1>
       <p className={styles.gap}>
         {wrong.length === 0
-          ? `책 ${summary.total}권이 모두 제자리를 찾았어요! ${classification ? `${classification.name} 서가가 깨끗하게 복구됐어요.` : '헤매던 책을 모두 찾아 주었어요.'}`
+          ? `책 ${summary.total}권이 모두 제자리를 찾았어요! ${doneText ?? (classification ? `${classification.name} 서가가 깨끗하게 복구됐어요.` : '헤매던 책을 모두 찾아 주었어요.')}`
           : `책 ${summary.correctCount}권이 제자리를 찾았어요. 아직 ${wrong.length}권이 길을 헤매고 있어요. 해설을 읽고 다시 찾아 줄까요?`}
       </p>
 

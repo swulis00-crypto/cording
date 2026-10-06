@@ -32,9 +32,8 @@ async function answer(user: User, option: string, next: string) {
   await user.click(screen.getByRole('button', { name: next }))
 }
 
-/** kdc-600 미션을 1문제 틀리고(2번) 끝낸다. */
+/** kdc-600 미션(2문제)을 첫 문제만 틀리고 끝낸다. */
 async function playArtMission(user: User) {
-  await answer(user, '예술', '다음 문제')
   await answer(user, '500 기술과학', '다음 문제')
   await answer(user, '마법 학교의 비밀 (판타지 소설)', '결과 보기')
 }
@@ -47,7 +46,7 @@ describe('진행 저장', () => {
     expect(screen.getByRole('heading', { name: /미션 완료!/ })).toBeInTheDocument()
 
     expect(saved().completedClassifications).toEqual(['kdc-600'])
-    expect(saved().bestCorrect).toEqual({ 'kdc-600': 2 })
+    expect(saved().bestCorrect).toEqual({ 'kdc-600': 1 })
     expect(saved().quizAttempts).toHaveLength(1)
     expect(saved().wrongQuestionIds).toEqual(['quiz-600-002'])
 
@@ -56,9 +55,9 @@ describe('진행 저장', () => {
     renderAt('/map', { preview: true })
     const tile = screen.getByRole('link', { name: /600\s*예술/ })
     expect(within(tile).getByText('학습 완료')).toBeInTheDocument()
-    expect(within(tile).getByText('2개')).toBeInTheDocument()
+    expect(within(tile).getByText('1개')).toBeInTheDocument()
     expect(screen.getByText('미션 완료 1 / 10')).toBeInTheDocument()
-    expect(screen.getByText(/모은 별 2개/)).toBeInTheDocument()
+    expect(screen.getByText(/모은 별 1개/)).toBeInTheDocument()
   })
 
   it('결과 화면에서 다시 도전해도 완료는 한 번만 집계된다', async () => {

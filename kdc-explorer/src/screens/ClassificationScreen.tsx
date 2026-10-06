@@ -109,7 +109,7 @@ export function ClassificationScreen() {
       <div className={styles.actions}>
         {missionCount > 0 ? (
           <Link to={`/mission/${classification.id}`} className="btn btn-primary">
-            미션 시작 ({missionCount}문제)
+            이 구역 문제 풀기 ({missionCount}문제)
           </Link>
         ) : (
           <>

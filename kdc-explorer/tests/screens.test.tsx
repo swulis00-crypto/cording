@@ -28,7 +28,7 @@ describe('SCR-01 시작 화면', () => {
 })
 
 describe('SCR-02 튜토리얼', () => {
-  it('다음 버튼으로 끝까지 넘기고 탐험 지도로 간다', async () => {
+  it('다음 버튼으로 끝까지 넘기고 구역 탐험으로 간다', async () => {
     renderAt('/tutorial')
     const user = userEvent.setup()
     expect(screen.getByRole('button', { name: '이전' })).toBeDisabled()
@@ -36,13 +36,14 @@ describe('SCR-02 튜토리얼', () => {
     expect(screen.getByRole('heading', { name: '번호가 주제를 알려 줘요' })).toHaveFocus()
     await user.click(screen.getByRole('button', { name: '다음' }))
     await user.click(screen.getByRole('button', { name: '탐험 시작' }))
-    expect(screen.getByRole('heading', { name: '탐험 지도' })).toBeInTheDocument()
+    // 기본 플레이에서는 검토 전 문항이 없어 아직 열리지 않았다고 안내한다
+    expect(screen.getByRole('heading', { name: '아직 열리지 않은 탐험이에요' })).toBeInTheDocument()
   })
 
-  it('건너뛰기로 바로 탐험 지도에 갈 수 있다', async () => {
+  it('건너뛰기로 바로 구역 탐험에 갈 수 있다', async () => {
     renderAt('/tutorial')
     await userEvent.click(screen.getByRole('link', { name: '건너뛰기' }))
-    expect(screen.getByRole('heading', { name: '탐험 지도' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: '아직 열리지 않은 탐험이에요' })).toBeInTheDocument()
   })
 })
 

@@ -13,8 +13,8 @@ function renderAt(path: string, { preview = false } = {}) {
   )
 }
 
-// kdc-600 미션: ① 600 이름표 → 예술  ② 도윤이의 축구 책 → 600 예술  ③ 잘못 꽂힌 책 → 판타지 소설
-const Q3_ANSWER = '마법 학교의 비밀 (판타지 소설)'
+// kdc-600 구역 문제: ① 도윤이의 축구 책 → 600 예술  ② 잘못 꽂힌 책 → 판타지 소설
+const Q2_ANSWER = '마법 학교의 비밀 (판타지 소설)'
 
 async function answer(user: ReturnType<typeof userEvent.setup>, option: string) {
   await user.click(screen.getByRole('radio', { name: option }))
@@ -35,15 +35,15 @@ describe('기본 플레이 (검토 전 문항 숨김)', () => {
   })
 })
 
-describe('미리보기 모드 미션', () => {
-  it('미리보기 안내와 미션 시작 버튼(문항 수)을 보여 준다', async () => {
+describe('미리보기 모드: 한 구역 문제 풀기', () => {
+  it('미리보기 안내와 구역 문제 풀기 버튼(문항 수)을 보여 준다', async () => {
     renderAt('/classification/kdc-600', { preview: true })
     expect(screen.getByText('미리보기 모드')).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('link', { name: '미션 시작 (3문제)' }))
-    expect(screen.getByText('문제 1 / 3')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('link', { name: '이 구역 문제 풀기 (2문제)' }))
+    expect(screen.getByText('문제 1 / 2')).toBeInTheDocument()
     expect(screen.getByText('점수 0점')).toBeInTheDocument()
-    expect(screen.getByText('서가 복구 0 / 3')).toBeInTheDocument()
-    expect(screen.getByText('🏷️ 이름표 찾기')).toBeInTheDocument()
+    expect(screen.getByText('서가 복구 0 / 2')).toBeInTheDocument()
+    expect(screen.getByText('📦 제자리 찾아 주기')).toBeInTheDocument()
     expect(screen.getByText('검토 전 문항 (미리보기)')).toBeInTheDocument()
     expect(screen.getAllByRole('radio')).toHaveLength(4)
   })
@@ -52,24 +52,21 @@ describe('미리보기 모드 미션', () => {
     renderAt('/mission/kdc-600', { preview: true })
     await userEvent.click(screen.getByRole('button', { name: '제출하기' }))
     expect(screen.getByRole('alert')).toHaveTextContent('답을 하나 골라 주세요.')
-    expect(screen.getByText('문제 1 / 3')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 2')).toBeInTheDocument()
   })
 
   it('힌트를 볼 수 있고 힌트를 봐도 진행할 수 있다', async () => {
     const user = userEvent.setup()
     renderAt('/mission/kdc-600', { preview: true })
     await user.click(screen.getByRole('button', { name: '힌트 보기' }))
-    expect(screen.getByText(/표현하고 즐기는 활동이 모인 서가예요/)).toBeInTheDocument()
-    await answer(user, '예술')
+    expect(screen.getByText(/운동도 '즐기는 활동'이에요/)).toBeInTheDocument()
+    await answer(user, '600 예술')
     expect(screen.getByRole('heading', { name: /정답이에요!/ })).toBeInTheDocument()
   })
 
   it('손님의 부탁과 가상 예시 책 카드를 보여 주고, 맞히면 손님이 고마워한다', async () => {
     const user = userEvent.setup()
     renderAt('/mission/kdc-600', { preview: true })
-    await answer(user, '예술')
-    await user.click(screen.getByRole('button', { name: '다음 문제' }))
-
     expect(screen.getByText(/다음 주가 축구 결승전이에요/)).toBeInTheDocument()
     expect(screen.getByText('『하루 10분 축구 드리블 특훈』')).toBeInTheDocument()
     expect(screen.getByText('가상 예시')).toBeInTheDocument()
@@ -81,8 +78,6 @@ describe('미리보기 모드 미션', () => {
   it('틀리면 손님이 엉뚱한 서가에 간 반응과 정답·해설을 보여 준다', async () => {
     const user = userEvent.setup()
     renderAt('/mission/kdc-600', { preview: true })
-    await answer(user, '예술')
-    await user.click(screen.getByRole('button', { name: '다음 문제' }))
     await answer(user, '500 기술과학')
 
     expect(screen.getByRole('heading', { name: /정답이 아니에요/ })).toBeInTheDocument()
@@ -99,23 +94,20 @@ describe('미리보기 모드 미션', () => {
     const user = userEvent.setup()
     renderAt('/mission/kdc-600', { preview: true })
 
-    await answer(user, '예술')
-    await user.click(screen.getByRole('button', { name: '다음 문제' }))
     await answer(user, '600 예술')
     await user.click(screen.getByRole('button', { name: '다음 문제' }))
-
-    expect(screen.getByText('서가 복구 2 / 3')).toBeInTheDocument()
-    expect(screen.getByText('2연속 정답!')).toBeInTheDocument()
+    expect(screen.getByText('서가 복구 1 / 2')).toBeInTheDocument()
     expect(screen.getByText('📚 보기의 책 제목은 모두 가상 예시예요.')).toBeInTheDocument()
 
-    await answer(user, 'K-팝 아이돌 댄스 완벽 따라잡기')
+    await answer(user, Q2_ANSWER)
+    expect(screen.getByText('2연속 정답!')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: '결과 보기' }))
 
     expect(screen.getByRole('heading', { name: /미션 완료!/ })).toBeInTheDocument()
     const stats = screen.getByText('전체 문항').closest('dl')!
-    expect(stats).toHaveTextContent('전체 문항3문항')
+    expect(stats).toHaveTextContent('전체 문항2문항')
     expect(stats).toHaveTextContent('맞힌 문항2문항')
-    expect(stats).toHaveTextContent('정답률67%')
+    expect(stats).toHaveTextContent('정답률100%')
     expect(stats).toHaveTextContent('점수20점')
     expect(stats).toHaveTextContent('획득한 별⭐ 2개')
   })
@@ -123,23 +115,22 @@ describe('미리보기 모드 미션', () => {
   it('헤매는 책(틀린 문제)만 다시 풀 수 있고, 다시 도전하면 처음부터 시작한다', async () => {
     const user = userEvent.setup()
     renderAt('/mission/kdc-600', { preview: true })
-    await answer(user, '문학')
+    await answer(user, '500 기술과학')
     await user.click(screen.getByRole('button', { name: '다음 문제' }))
-    await answer(user, '600 예술')
-    await user.click(screen.getByRole('button', { name: '다음 문제' }))
-    await answer(user, Q3_ANSWER)
+    await answer(user, Q2_ANSWER)
     await user.click(screen.getByRole('button', { name: '결과 보기' }))
+    expect(screen.getByText('전체 문항').closest('dl')).toHaveTextContent('정답률50%')
 
     await user.click(screen.getByRole('button', { name: '헤매는 책 다시 찾아 주기 (1)' }))
     expect(screen.getByText('헤매는 책 다시 찾기')).toBeInTheDocument()
     expect(screen.getByText('문제 1 / 1')).toBeInTheDocument()
-    expect(screen.getByText(/600번 서가에서는 그림, 음악/)).toBeInTheDocument()
-    await answer(user, '예술')
+    expect(screen.getByText(/다음 주가 축구 결승전이에요/)).toBeInTheDocument()
+    await answer(user, '600 예술')
     await user.click(screen.getByRole('button', { name: '결과 보기' }))
     expect(screen.getByText('정답률').closest('div')).toHaveTextContent('100%')
 
     await user.click(screen.getByRole('button', { name: '다시 도전' }))
-    expect(screen.getByText('문제 1 / 3')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 2')).toBeInTheDocument()
     expect(screen.queryByText('헤매는 책 다시 찾기')).not.toBeInTheDocument()
   })
 

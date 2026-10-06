@@ -43,9 +43,9 @@ const STEPS: Step[] = [
     body: (
       <>
         <ol className={styles.howTo}>
-          <li>탐험 지도에서 가고 싶은 영역을 골라요.</li>
-          <li>영역의 번호와 뜻을 읽어요.</li>
-          <li>미션을 풀고 열쇠를 모아요.</li>
+          <li>000 총류부터 900 역사까지 10개 구역을 차례로 돌아요.</li>
+          <li>구역마다 손님 2명이 찾는 책을 제자리 서가로 안내해요.</li>
+          <li>책을 제자리에 꽂아 서가를 복구해요.</li>
         </ol>
         <p>틀려도 괜찮아요. 해설을 읽고 다시 도전하면 돼요!</p>
       </>
@@ -76,7 +76,7 @@ export function TutorialScreen() {
         <p className={styles.counter}>
           안내 {index + 1} / {STEPS.length}
         </p>
-        <Link to="/map" className={styles.skip}>
+        <Link to="/journey" className={styles.skip}>
           건너뛰기
         </Link>
       </div>
@@ -91,7 +91,7 @@ export function TutorialScreen() {
           이전
         </button>
         {isLast ? (
-          <button type="button" className="btn btn-primary" onClick={() => navigate('/map')}>
+          <button type="button" className="btn btn-primary" onClick={() => navigate('/journey')}>
             탐험 시작
           </button>
         ) : (

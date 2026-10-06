@@ -1,6 +1,5 @@
 // 실제 학습 데이터 파일 검사
 import { describe, expect, it } from 'vitest'
-import { QUIZ_TYPES } from '../types/index.ts'
 import { dataErrors, mainClasses, quizzes } from './index.ts'
 
 // PRD 5.1 표, KDC 제6판 주류
@@ -30,10 +29,11 @@ describe('학습 데이터', () => {
     for (const c of mainClasses) expect(c.sourceEdition).toBe('KDC 제6판')
   })
 
-  it('퀴즈는 주류당 3문항, 총 30문항이다', () => {
-    expect(quizzes).toHaveLength(30)
+  it('퀴즈는 주류당 2문항(손님 부탁 1 + 도전 1), 총 20문항이다', () => {
+    expect(quizzes).toHaveLength(20)
     for (const c of mainClasses) {
-      expect(quizzes.filter((q) => q.classificationId === c.id)).toHaveLength(3)
+      const types = quizzes.filter((q) => q.classificationId === c.id).map((q) => q.type)
+      expect(types, c.id).toEqual(['topic-to-classification', 'distinguish-similar'])
     }
   })
 
@@ -55,10 +55,6 @@ describe('학습 데이터', () => {
     for (const q of quizzes.filter((q) => q.book || q.character)) {
       expect(q.fictional, q.id).toBe(true)
     }
-  })
-
-  it('네 가지 문항 유형을 모두 포함한다', () => {
-    expect(new Set(quizzes.map((q) => q.type))).toEqual(new Set(QUIZ_TYPES))
   })
 
   it('모든 주류에 쉬운 설명·대표 주제·힌트가 있다', () => {

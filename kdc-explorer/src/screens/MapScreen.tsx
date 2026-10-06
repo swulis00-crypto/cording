@@ -16,7 +16,14 @@ export function MapScreen() {
       <h1 id="map-title" className={styles.title}>
         탐험 지도
       </h1>
-      <p className={styles.intro}>가고 싶은 지식 영역을 골라 보세요. 10개 영역 모두 자유롭게 탐험할 수 있어요.</p>
+      <p className={styles.intro}>
+        구역을 골라 설명을 다시 읽거나, 그 구역 문제만 다시 풀 수 있어요. 처음이라면 차례로 도는 탐험부터 시작해 보세요.
+      </p>
+      <p className={styles.journeyLink}>
+        <Link to="/journey" className="btn btn-primary">
+          <span aria-hidden="true">🧭 </span>10개 구역 차례로 탐험하기
+        </Link>
+      </p>
       <p className={styles.summary}>
         <span>
           미션 완료 {completed} / {mainClasses.length}

@@ -49,7 +49,7 @@ export function LevelsScreen() {
               </div>
               {playable && (
                 <Link to={level.path} className="btn btn-primary">
-                  {done ? '다시 하기' : '시작하기'}
+                  {done ? '다시 하기' : level.number === 1 && level1Done > 0 ? '이어하기' : '시작하기'}
                   <span className="visually-hidden">: {level.title}</span>
                 </Link>
               )}

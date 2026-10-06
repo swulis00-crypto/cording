@@ -3,6 +3,13 @@
   margin: 0 auto;
 }
 
+.resumeNote {
+  max-width: 760px;
+  margin: 0 auto 10px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
 .missionHeader {
   margin-bottom: 16px;
 }
@@ -46,6 +53,48 @@
   }
 }
 
+/* ---- 이어 풀기: 지금 구역 ---- */
+.areaBanner {
+  margin-top: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 8px solid var(--hue, var(--primary));
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.areaSymbol {
+  font-size: 1.8rem;
+}
+
+.areaName {
+  color: var(--hue-ink, var(--primary));
+  font-weight: 800;
+}
+
+.areaCount {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.newArea {
+  margin-left: 8px;
+  padding: 0.05em 0.6em;
+  border-radius: 999px;
+  background: var(--hue, var(--primary));
+  color: var(--hue-on, #fff);
+  font-size: 0.8rem;
+  animation: pop 0.4s ease;
+}
+
+.areaDesc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 /* ---- 서가 복구 진행판 ---- */
 .shelf {
   margin-top: 10px;
@@ -77,6 +126,22 @@
   border-radius: 6px 6px 0 0;
   font-size: 1.5rem;
   font-weight: 800;
+}
+
+/* 20문제 이어 풀기: 칸을 작게, 영역이 바뀌는 곳은 조금 띄운다 */
+.shelfCompact {
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.shelfCompact .slot {
+  width: 26px;
+  height: 38px;
+  font-size: 0.95rem;
+}
+
+.groupStart {
+  margin-left: 6px;
 }
 
 .empty {

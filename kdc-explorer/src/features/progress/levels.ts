@@ -15,8 +15,8 @@ export const GAME_LEVELS: GameLevel[] = [
   {
     number: 1,
     title: '지식 구역 탐험',
-    summary: '000부터 900까지, KDC의 10개 큰 영역을 탐험해요.',
-    path: '/map',
+    summary: '000부터 900까지 10개 구역을 차례로 돌며, 손님이 찾는 책을 제자리에 돌려놓아요.',
+    path: '/journey',
     ready: true,
   },
   {
