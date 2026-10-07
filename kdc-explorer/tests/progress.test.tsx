@@ -189,11 +189,13 @@ describe('탐험 지도 (탐험 단계 고르기)', () => {
     expect(screen.getByText('🔒 2단계를 마치면 열려요')).toBeInTheDocument()
   })
 
-  it('2단계까지 마치면 3단계가 열리고 준비 중으로 표시된다', () => {
+  it('2단계까지 마치면 3단계가 열리고, 4단계는 3단계를 마쳐야 열린다', () => {
     const all = ['000', '100', '200', '300', '400', '500', '600', '700', '800', '900'].map((c) => `kdc-${c}`)
     seed({ completedClassifications: all, completedRules: ['rule-1', 'rule-2', 'rule-3', 'rule-4'] })
     renderAt('/map')
     expect(screen.getAllByText('✔ 완료')).toHaveLength(2)
-    expect(screen.getByText('🛠 준비 중이에요')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '시작하기: 저자기호 만들기' })).toBeInTheDocument()
+    expect(screen.getByText('진행 중 · 단계 0 / 4')).toBeInTheDocument()
+    expect(screen.getByText('🔒 3단계를 마치면 열려요')).toBeInTheDocument()
   })
 })

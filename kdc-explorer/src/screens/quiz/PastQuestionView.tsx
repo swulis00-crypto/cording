@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { AnswerRecord } from '../../features/quiz/engine.ts'
-import type { Quiz } from '../../types/index.ts'
+import { isBuildQuiz, type Quiz } from '../../types/index.ts'
 import { BookCard } from './BookCard.tsx'
 import { OptionMark } from './FeedbackView.tsx'
 import styles from './Quiz.module.css'
@@ -38,9 +38,9 @@ export function PastQuestionView({ quiz, answer, number, canGoEarlier, canGoLate
       {quiz.book && <BookCard book={quiz.book} fictional={quiz.fictional} compact />}
       <p className={styles.reviewQuestionText}>{quiz.question}</p>
 
-      {quiz.type === 'build-number' && quiz.template ? (
+      {isBuildQuiz(quiz) && quiz.template ? (
         <p>
-          틀: <strong>{quiz.template}</strong> · 내가 만든 번호: {answer.selected} · 정답: <strong>{quiz.correctAnswer}</strong>
+          틀: <strong>{quiz.template}</strong> · 내가 만든 답: {answer.selected} · 정답: <strong>{quiz.correctAnswer}</strong>
         </p>
       ) : (
         <ul className={styles.reviewOptions}>

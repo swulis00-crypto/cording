@@ -1,6 +1,7 @@
 // 실제 학습 데이터 파일 검사
 import { describe, expect, it } from 'vitest'
-import { allQuizzes, dataErrors, level2Quizzes, mainClasses, quizzes, rules } from './index.ts'
+import { authorMark } from '../features/author/authorMark.ts'
+import { allQuizzes, authorSteps, dataErrors, level2Quizzes, level3Quizzes, mainClasses, quizzes, rules } from './index.ts'
 
 // PRD 5.1 표, KDC 제6판 주류
 const EXPECTED_MAIN_CLASSES = [
@@ -74,6 +75,30 @@ describe('학습 데이터', () => {
       expect(q.explanation, q.id).not.toBe('')
       expect(q.hint, q.id).not.toBe('')
       if (q.book || q.character) expect(q.fictional, q.id).toBe(true)
+    }
+  })
+
+  it('게임 3단계: 단계 4개, 모든 단계에 문항이 있고 저자기호 만들기 문항을 포함한다', () => {
+    expect(authorSteps.map((s) => s.id)).toEqual(['author-1', 'author-2', 'author-3', 'author-4'])
+    for (const s of authorSteps) expect(level3Quizzes.some((q) => q.rule === s.id), s.id).toBe(true)
+    expect(level3Quizzes.some((q) => q.type === 'build-author')).toBe(true)
+  })
+
+  it('게임 3단계: 책이 나오는 문항의 정답 저자기호가 기호표 계산과 같다', () => {
+    // 책 → 작가 짝 (작가 이름은 문항 문장 속에 있으므로 여기서 짝을 정해 검사한다)
+    const authors: Record<string, string> = {
+      아몬드: '손원평',
+      페인트: '이희영',
+      '불편한 편의점': '김호연',
+      '우리가 빛의 속도로 갈 수 없다면': '김초엽',
+      '소년이 온다': '한강',
+    }
+    const withBook = level3Quizzes.filter((q) => q.book)
+    expect(withBook.length).toBeGreaterThan(0)
+    for (const q of withBook) {
+      const author = authors[q.book!.title]
+      expect(author, q.id).toBeDefined()
+      expect(q.correctAnswer, q.id).toBe(authorMark(author, q.book!.title))
     }
   })
 

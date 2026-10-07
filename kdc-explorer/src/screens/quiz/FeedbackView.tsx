@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { getClassificationByCode } from '../../data/index.ts'
 import { codeFromOption, reactionFor, type AnswerRecord } from '../../features/quiz/engine.ts'
-import type { Quiz } from '../../types/index.ts'
+import { isBuildQuiz, type Quiz } from '../../types/index.ts'
 import { BookCard } from './BookCard.tsx'
 import { SpeechBubble } from './SpeechBubble.tsx'
 import styles from './Quiz.module.css'
@@ -76,7 +76,7 @@ export function FeedbackView({ quiz, answer, isLast, onNext }: Props) {
           {quiz.character && <p className={styles.reviewQuestionText}>{`${quiz.character.name}: "${quiz.character.line}"`}</p>}
           {quiz.book && <BookCard book={quiz.book} fictional={quiz.fictional} compact />}
           <p className={styles.reviewQuestionText}>{quiz.question}</p>
-          {quiz.type === 'build-number' && quiz.template ? (
+          {isBuildQuiz(quiz) && quiz.template ? (
             <p>
               틀: <strong>{quiz.template}</strong> · 숫자 카드: {quiz.options.join(', ')}
             </p>

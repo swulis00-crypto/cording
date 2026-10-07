@@ -94,7 +94,7 @@ describe('hasProgress / resetProgress', () => {
 })
 
 describe('게임 단계 열림', () => {
-  const content = { mainClassIds: ['kdc-000', 'kdc-100'], ruleIds: ['rule-1', 'rule-2'] }
+  const content = { mainClassIds: ['kdc-000', 'kdc-100'], ruleIds: ['rule-1', 'rule-2'], authorStepIds: ['author-1'] }
 
   it('1단계는 항상 열려 있고, 2단계는 1단계 구역을 모두 마쳐야 열린다', () => {
     let p = createEmptyProgress()
@@ -115,6 +115,15 @@ describe('게임 단계 열림', () => {
     p = recordMission(p, rule('rule-2'))
     expect(isLevelCompleted(2, p, content)).toBe(true)
     expect(isLevelUnlocked(3, p, content, false)).toBe(true)
+  })
+
+  it('4단계는 3단계 저자기호 단계를 모두 마쳐야 열린다', () => {
+    let p = recordMission(createEmptyProgress(), mission({ classificationId: null, ruleId: 'rule-1' }))
+    p = recordMission(p, mission({ classificationId: null, ruleId: 'rule-2' }))
+    expect(isLevelUnlocked(4, p, content, false)).toBe(false)
+    p = recordMission(p, mission({ classificationId: null, ruleId: 'author-1' }))
+    expect(isLevelCompleted(3, p, content)).toBe(true)
+    expect(isLevelUnlocked(4, p, content, false)).toBe(true)
   })
 
   it('미리보기 모드에서는 모든 단계가 열린다', () => {

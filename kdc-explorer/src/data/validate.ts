@@ -2,6 +2,7 @@
 // Node에서 바로 실행되도록 이 파일은 확장자를 붙인 import만 사용한다.
 import {
   BLANK,
+  isBuildQuiz,
   QUIZ_TYPES,
   REVIEW_STATUSES,
   type Classification,
@@ -156,6 +157,9 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
     else if (seenIds.has(raw.id)) problems.push('id가 중복되었습니다.')
     if (!isNonEmptyString(raw.title)) problems.push('제목(title)이 없습니다.')
     if (!isNonEmptyString(raw.summary)) problems.push('설명(summary)이 없습니다.')
+    if (raw.visual !== undefined && raw.visual !== 'author-parts' && raw.visual !== 'author-table') {
+      problems.push('그림(visual)은 "author-parts" 또는 "author-table"이어야 합니다.')
+    }
     const key = raw.key
     const validKey =
       key === undefined ||
@@ -175,6 +179,7 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
     seenIds.add(raw.id as string)
     items.push({
       ...(isRecord(key) && { key: key as unknown as NumberRule['key'] }),
+      ...((raw.visual === 'author-parts' || raw.visual === 'author-table') && { visual: raw.visual }),
       id: raw.id as string,
       emoji: typeof raw.emoji === 'string' ? raw.emoji : '🔎',
       title: raw.title as string,
@@ -185,17 +190,17 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
   return { items, errors }
 }
 
-/** 번호 조립 문제: 정답이 틀의 고정 숫자와 맞고, 빈칸 숫자는 모두 숫자 카드에 있어야 한다. */
+/** 카드로 빈칸 채우기 문제(번호 조립·저자기호): 정답이 틀의 고정 글자와 맞고, 빈칸 글자는 모두 카드에 있어야 한다. */
 function buildAnswerProblem(template: unknown, options: string[], answer: unknown): string | null {
   if (typeof template !== 'string' || !template.includes(BLANK)) {
-    return `번호 조립 문제에는 "${BLANK}" 빈칸이 있는 틀(template)이 있어야 합니다.`
+    return `빈칸 채우기 문제에는 "${BLANK}" 빈칸이 있는 틀(template)이 있어야 합니다.`
   }
   if (typeof answer !== 'string' || [...answer].length !== [...template].length) {
     return `정답 "${String(answer)}"의 길이가 틀 "${template}"과 다릅니다.`
   }
   const answerChars = [...answer]
   const fits = [...template].every((t, i) => (t === BLANK ? options.includes(answerChars[i]) : t === answerChars[i]))
-  return fits ? null : `정답 "${answer}"을(를) 틀 "${template}"과 숫자 카드로 만들 수 없습니다.`
+  return fits ? null : `정답 "${answer}"을(를) 틀 "${template}"과 카드로 만들 수 없습니다.`
 }
 
 /**
@@ -261,7 +266,7 @@ export function validateQuizzes(
       problems.push('보기(options)는 비어 있지 않은 문자열 2개 이상이어야 합니다.')
     } else if (new Set(options).size !== options.length) {
       problems.push('보기(options)에 같은 값이 중복되었습니다.')
-    } else if (raw.type === 'build-number') {
+    } else if (isBuildQuiz({ type: raw.type as QuizType })) {
       const problem = buildAnswerProblem(raw.template, options, raw.correctAnswer)
       if (problem) problems.push(problem)
     } else if (typeof raw.correctAnswer !== 'string' || !options.includes(raw.correctAnswer)) {
@@ -289,7 +294,7 @@ export function validateQuizzes(
       ...(typeof raw.rule === 'string' && { rule: raw.rule }),
       ...(typeof raw.callNumber === 'string' && { callNumber: raw.callNumber }),
       ...(raw.table === 'main' && { table: 'main' as const }),
-      ...(raw.type === 'build-number' && { template: raw.template as string }),
+      ...(isBuildQuiz({ type: raw.type as QuizType }) && { template: raw.template as string }),
       ...(isRecord(character) && {
         character: {
           name: character.name as string,

@@ -46,6 +46,23 @@
   text-decoration: none;
 }
 
+.navButton {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.navButton:hover,
+.navButton[aria-expanded='true'] {
+  background: #eef3f8;
+}
+
 .nav a:hover {
   background: #eef3f8;
 }

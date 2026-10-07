@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router'
 import { Layout } from '../components/Layout.tsx'
+import { AuthorScreen } from '../screens/AuthorScreen.tsx'
 import { ClassificationScreen } from '../screens/ClassificationScreen.tsx'
 import { CodexScreen } from '../screens/CodexScreen.tsx'
 import { HomeScreen } from '../screens/HomeScreen.tsx'
@@ -24,6 +25,7 @@ export function AppRoutes() {
           <Route path="levels" element={<Navigate to="/map" replace />} />
           <Route path="journey" element={<JourneyScreen />} />
           <Route path="level/2" element={<RulesScreen />} />
+          <Route path="level/3" element={<AuthorScreen />} />
           <Route path="classification/:id" element={<ClassificationScreen />} />
           <Route path="codex" element={<CodexScreen />} />
           <Route path="review" element={<ReviewScreen />} />

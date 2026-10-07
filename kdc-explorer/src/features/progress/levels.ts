@@ -31,7 +31,7 @@ export const GAME_LEVELS: GameLevel[] = [
     title: '저자기호 만들기',
     summary: '이15ㄷ은 무슨 뜻일까? 저자기호를 직접 만들어 봐요.',
     path: '/level/3',
-    ready: false,
+    ready: true,
   },
   {
     number: 4,
@@ -46,16 +46,20 @@ export const GAME_LEVELS: GameLevel[] = [
 export interface LevelContent {
   mainClassIds: string[]
   ruleIds: string[]
+  /** 게임 3단계 단계(저자기호) */
+  authorStepIds: string[]
 }
 
 /**
  * 게임 1단계 완료 = 주류 10개 구역을 모두 마침
  * 게임 2단계 완료 = 규칙을 모두 마침
+ * 게임 3단계 완료 = 저자기호 단계를 모두 마침
  */
 export function isLevelCompleted(level: number, progress: Progress, content: LevelContent): boolean {
   const all = (ids: string[], done: string[]) => ids.length > 0 && ids.every((id) => done.includes(id))
   if (level === 1) return all(content.mainClassIds, progress.completedClassifications)
   if (level === 2) return all(content.ruleIds, progress.completedRules)
+  if (level === 3) return all(content.authorStepIds, progress.completedRules)
   return false
 }
 

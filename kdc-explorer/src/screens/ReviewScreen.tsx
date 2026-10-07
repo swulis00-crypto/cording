@@ -59,7 +59,7 @@ export function ReviewScreen() {
             {wrongQuizzes.map((q) => {
               const c = getClassification(q.classificationId)
               const rule = q.rule ? getRule(q.rule) : undefined
-              const where = rule ? `2단계 · ${rule.title}` : c ? `${c.code} ${c.name}` : ''
+              const where = rule ? rule.title : c ? `${c.code} ${c.name}` : ''
               return (
                 <li key={q.id}>
                   <span className={styles.reviewArea}>{where}</span>

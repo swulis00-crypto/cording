@@ -7,12 +7,14 @@ interface Props {
   template: string
   /** 숫자 카드 (같은 카드를 여러 번 쓸 수 있다) */
   cards: string[]
-  /** 빈칸을 모두 채우면 완성된 번호, 하나라도 비면 null */
+  /** 빈칸을 모두 채우면 완성된 답, 하나라도 비면 null */
   onChange: (value: string | null) => void
+  /** 화면 읽기 프로그램에 읽어 줄 이름 (번호 / 저자기호) */
+  noun?: string
 }
 
-/** 🔐 번호 조립: 숫자 카드를 눌러 틀의 빈칸을 왼쪽부터 채운다. */
-export function NumberBuilder({ template, cards, onChange }: Props) {
+/** 🔐 번호 조립·🛠 저자기호 만들기: 카드를 눌러 틀의 빈칸을 왼쪽부터 채운다. */
+export function NumberBuilder({ template, cards, onChange, noun = '번호' }: Props) {
   const chars = [...template]
   const blankCount = chars.filter((c) => c === BLANK).length
   const [filled, setFilled] = useState<string[]>([])
@@ -46,16 +48,16 @@ export function NumberBuilder({ template, cards, onChange }: Props) {
         ))}
       </p>
       <p className="visually-hidden" aria-live="polite">
-        만든 번호: {spoken}
+        만든 {noun}: {spoken}
       </p>
 
-      <div className={styles.builderCards} role="group" aria-label="숫자 카드">
+      <div className={styles.builderCards} role="group" aria-label="카드">
         {cards.map((card) => (
           <button
             key={card}
             type="button"
             className={styles.builderCard}
-            aria-label={`숫자 ${card}`}
+            aria-label={/^\d$/.test(card) ? `숫자 ${card}` : `글자 ${card}`}
             disabled={filled.length >= blankCount}
             onClick={() => update([...filled, card])}
           >

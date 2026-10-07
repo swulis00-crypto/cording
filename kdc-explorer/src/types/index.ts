@@ -34,6 +34,8 @@ export type QuizType =
   | 'rule-inference'
   /** 숫자 카드로 빈칸을 채워 번호 만들기 (게임 2단계) */
   | 'build-number'
+  /** 카드로 빈칸을 채워 저자기호 만들기 (게임 3단계) */
+  | 'build-author'
 
 export const QUIZ_TYPES: readonly QuizType[] = [
   'name-recall',
@@ -42,7 +44,13 @@ export const QUIZ_TYPES: readonly QuizType[] = [
   'distinguish-similar',
   'rule-inference',
   'build-number',
+  'build-author',
 ]
+
+/** 카드로 빈칸을 채우는 문제인지 (번호 조립·저자기호 만들기) */
+export function isBuildQuiz(quiz: { type: QuizType }): boolean {
+  return quiz.type === 'build-number' || quiz.type === 'build-author'
+}
 
 /** 번호 조립 문제의 빈칸 표시 */
 export const BLANK = '□'
@@ -55,6 +63,8 @@ export interface NumberRule {
   summary: string
   /** 숫자 해독표: 규칙이 다루는 자리의 숫자별 뜻 (예: 셋째 자리 1 시, 2 희곡 …) */
   key?: RuleKey
+  /** 게임 3단계: 문제 위에 보여 줄 그림 (저자기호 구성 / 저자기호 기호표) */
+  visual?: 'author-parts' | 'author-table'
   reviewStatus: ReviewStatus
 }
 

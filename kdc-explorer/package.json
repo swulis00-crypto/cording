@@ -14,6 +14,7 @@
     "og": "node scripts/render-og.mjs"
   },
   "dependencies": {
+    "qrcode-generator": "^2.0.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router": "^8.4.0"

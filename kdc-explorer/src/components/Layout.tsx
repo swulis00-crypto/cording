@@ -1,14 +1,18 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { isPreviewMode } from '../app/preview.ts'
 import { useProgress } from '../app/useProgress.ts'
 import { dataErrors } from '../data/index.ts'
 import { DataErrorBanner } from './DataErrorBanner.tsx'
+import { QrPanel } from './QrPanel.tsx'
 import styles from './Layout.module.css'
 
 export function Layout() {
   const { pathname } = useLocation()
   const { recoveredNotice, dismissRecoveredNotice } = useProgress()
+  const [qrFor, setQrFor] = useState<string | null>(null)
+  // 다른 화면으로 옮기면 QR 패널은 닫힌다.
+  const qrOpen = qrFor === pathname
 
   // 다른 화면으로 이동하면 맨 위부터 보여 준다.
   useEffect(() => {
@@ -36,11 +40,23 @@ export function Layout() {
               <li>
                 <NavLink to="/settings">설정</NavLink>
               </li>
+              <li>
+                <button
+                  type="button"
+                  className={styles.navButton}
+                  aria-expanded={qrOpen}
+                  aria-controls="qr-panel"
+                  onClick={() => setQrFor(qrOpen ? null : pathname)}
+                >
+                  <span aria-hidden="true">📱 </span>QR
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
       </header>
       <div className={styles.gutter}>
+        {qrOpen && <QrPanel onClose={() => setQrFor(null)} />}
         <DataErrorBanner errors={dataErrors} />
         {recoveredNotice && (
           <div className={styles.notice} role="alert">

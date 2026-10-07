@@ -1,6 +1,6 @@
 import type { FormEvent } from 'react'
 import { QUIZ_TYPE_LABELS } from '../../features/quiz/engine.ts'
-import type { Quiz } from '../../types/index.ts'
+import { isBuildQuiz, type Quiz } from '../../types/index.ts'
 import { BookCard } from './BookCard.tsx'
 import { NumberBuilder } from './NumberBuilder.tsx'
 import { SpeechBubble } from './SpeechBubble.tsx'
@@ -27,7 +27,7 @@ export function QuestionView({ quiz, selected, hintShown, needsSelection, onSele
 
   const titleOptions = quiz.fictional && !quiz.book
   /** 번호 조립 문제면 틀 (예: "7□0") */
-  const template = quiz.type === 'build-number' ? quiz.template : undefined
+  const template = isBuildQuiz(quiz) ? quiz.template : undefined
   const building = template !== undefined
 
   return (
@@ -51,6 +51,7 @@ export function QuestionView({ quiz, selected, hintShown, needsSelection, onSele
         {template !== undefined ? (
           <NumberBuilder
             template={template}
+            noun={quiz.type === 'build-author' ? '저자기호' : '번호'}
             cards={quiz.options}
             onChange={(value) => (value === null ? onClear() : onSelect(value))}
           />
@@ -81,7 +82,11 @@ export function QuestionView({ quiz, selected, hintShown, needsSelection, onSele
 
       {needsSelection && (
         <p className={styles.alert} role="alert">
-          {building ? '숫자 카드로 빈칸을 모두 채워 주세요.' : '답을 하나 골라 주세요.'}
+          {building
+            ? quiz.type === 'build-author'
+              ? '카드로 빈칸을 모두 채워 주세요.'
+              : '숫자 카드로 빈칸을 모두 채워 주세요.'
+            : '답을 하나 골라 주세요.'}
         </p>
       )}
 

@@ -1,5 +1,5 @@
 // 퀴즈 규칙 (PRD 10.1). 화면과 분리한 순수 함수.
-import type { Quiz, QuizType } from '../../types/index.ts'
+import { isBuildQuiz, type Quiz, type QuizType } from '../../types/index.ts'
 
 export const POINTS_PER_CORRECT = 10
 
@@ -44,7 +44,7 @@ export function shuffle<T>(items: readonly T[], random: () => number = Math.rand
  * 번호 조립의 숫자 카드는 찾기 쉽게 데이터 순서 그대로 둔다.
  */
 export function prepareMission(quizzes: Quiz[], random: () => number = Math.random): Quiz[] {
-  return quizzes.map((q) => (q.type === 'build-number' ? q : { ...q, options: shuffle(q.options, random) }))
+  return quizzes.map((q) => (isBuildQuiz(q) ? q : { ...q, options: shuffle(q.options, random) }))
 }
 
 export const QUIZ_TYPE_LABELS: Record<QuizType, string> = {
@@ -54,6 +54,7 @@ export const QUIZ_TYPE_LABELS: Record<QuizType, string> = {
   'distinguish-similar': '🧠 도전 문제',
   'rule-inference': '🧩 규칙 추리',
   'build-number': '🔐 번호 조립',
+  'build-author': '🛠 저자기호 만들기',
 }
 
 const CORRECT_REACTIONS = ['책이 제자리를 찾았어요! 📚', '서가가 한결 깔끔해졌어요! ✨', '탐험대원다운 판단이에요! 🧭']

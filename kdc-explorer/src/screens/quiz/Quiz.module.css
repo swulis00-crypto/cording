@@ -808,3 +808,74 @@
   word-break: keep-all;
 }
 
+
+/* ---- 게임 3단계: 저자기호 구성도 · 기호표 (10개 구분표와 같은 크기) ---- */
+.authorParts,
+.authorTable {
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.authorPartList,
+.authorGrid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.authorPartList {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.authorGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (min-width: 600px) {
+  .authorPartList {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .authorGrid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+.authorPartList li,
+.authorGrid li {
+  min-height: 40px;
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  border-left: 5px solid var(--hue, var(--primary));
+  border-radius: 6px;
+  background: #f6f1e6;
+  line-height: 1.3;
+}
+
+.authorPartValue {
+  color: var(--hue-ink, var(--primary));
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.authorPartNote {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.authorCode {
+  color: var(--hue-ink, var(--primary));
+  font-size: 0.85rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.authorChieut {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
