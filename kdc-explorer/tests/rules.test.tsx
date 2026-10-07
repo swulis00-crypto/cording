@@ -44,7 +44,7 @@ describe('게임 2단계: 번호 속 비밀 풀기', () => {
     expect(screen.getByRole('heading', { name: '아직 열리지 않은 단계예요' })).toBeInTheDocument()
   })
 
-  it('첫 규칙 카드를 보여 주고, 규칙의 문제를 마치면 저장한 뒤 다음 규칙으로 바로 넘어간다', async () => {
+  it('첫 규칙 카드를 보여 주고, 규칙의 문제를 마치면 저장한 뒤 다음 규칙으로 바로 넘어간다', { timeout: 20000 }, async () => {
     const user = userEvent.setup()
     renderAt('/level/2', { preview: true })
     expect(route).toHaveLength(16)

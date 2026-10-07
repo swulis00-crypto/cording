@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router'
-import { isPreviewMode } from '../app/preview.ts'
 import { useProgress } from '../app/useProgress.ts'
 import { StatusBadge } from '../components/StatusBadge.tsx'
-import { getClassification, getMissionQuizzes } from '../data/index.ts'
+import { getClassification } from '../data/index.ts'
 import { learningStatus } from '../features/progress/progress.ts'
 import { hueStyle } from '../utils/hue.ts'
+import { DivisionTable } from './quiz/DivisionTable.tsx'
 import styles from './ClassificationScreen.module.css'
 
-/** SCR-04 주류 소개 */
+/** SCR-04 주류 소개 (분류 도감 상세). 설명만 하고, 문제는 탐험 지도의 단계에서 푼다. */
 export function ClassificationScreen() {
   const { id = '' } = useParams()
   const classification = getClassification(id)
@@ -25,13 +25,12 @@ export function ClassificationScreen() {
         <h1 className={styles.name}>영역을 찾을 수 없어요</h1>
         <p className={styles.section}>주소가 잘못되었거나 아직 준비되지 않은 영역이에요.</p>
         <p className={styles.section}>
-          <Link to="/map">탐험 지도로 돌아가기</Link>
+          <Link to="/codex">분류 도감으로 돌아가기</Link>
         </p>
       </section>
     )
   }
 
-  const missionCount = getMissionQuizzes(classification.id, isPreviewMode()).length
   const confused = classification.confusedWith
     .map((cid) => getClassification(cid))
     .filter((c) => c !== undefined)
@@ -39,7 +38,7 @@ export function ClassificationScreen() {
   return (
     <article className={styles.card} style={hueStyle(classification.code)} aria-labelledby="classification-title">
       <p className={styles.back}>
-        <Link to="/map">← 탐험 지도</Link>
+        <Link to="/codex">← 분류 도감</Link>
       </p>
 
       <header className={styles.header}>
@@ -67,16 +66,10 @@ export function ClassificationScreen() {
         <p>{classification.learnerDescription}</p>
       </section>
 
-      {classification.exampleTopics.length > 0 && (
-        <section className={styles.section} aria-labelledby="topics-title">
-          <h2 id="topics-title">대표 주제</h2>
-          <ul className={styles.topics}>
-            {classification.exampleTopics.map((topic) => (
-              <li key={topic}>{topic}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <section className={styles.section} aria-labelledby="topics-title">
+        <h2 id="topics-title">대표 주제 · 10개 구분</h2>
+        <DivisionTable area={classification} />
+      </section>
 
       {classification.hint && (
         <section className={`${styles.section} ${styles.hint}`} aria-labelledby="hint-title">
@@ -102,25 +95,11 @@ export function ClassificationScreen() {
         </section>
       )}
 
-      <p className={styles.scope}>
-        지금은 10개의 큰 영역(주류)만 배워요. 더 자세한 분류는 다음 탐험에서 열려요.
-      </p>
-
       <div className={styles.actions}>
-        {missionCount > 0 ? (
-          <Link to={`/mission/${classification.id}`} className="btn btn-primary">
-            이 구역 문제 풀기 ({missionCount}문제)
-          </Link>
-        ) : (
-          <>
-            <button type="button" className="btn btn-primary" disabled aria-describedby="mission-note">
-              미션 시작
-            </button>
-            <p id="mission-note" className={styles.note}>
-              아직 공개된 문항이 없어요. 선생님 검토가 끝나면 미션이 열려요.
-            </p>
-          </>
-        )}
+        <Link to="/map" className="btn btn-primary">
+          <span aria-hidden="true">🧭 </span>탐험 지도에서 문제 풀기
+        </Link>
+        <p className={styles.note}>문제는 탐험 지도의 단계에서 차례로 풀어요.</p>
       </div>
     </article>
   )

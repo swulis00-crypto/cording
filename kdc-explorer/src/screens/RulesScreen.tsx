@@ -53,7 +53,7 @@ export function RulesScreen() {
         <h1 className={styles.heading}>아직 열리지 않은 단계예요</h1>
         <p className={styles.gap}>문항은 선생님 검토가 끝나면 열려요.</p>
         <p className={styles.gap}>
-          <Link to="/levels">게임 단계로 돌아가기</Link>
+          <Link to="/map">탐험 지도로 돌아가기</Link>
         </p>
       </section>
     )
@@ -75,11 +75,6 @@ export function RulesScreen() {
         pool={plan.pool}
         kind="mission"
         doneText="번호 속에 숨은 규칙을 모두 찾아냈어요."
-        extraActions={
-          <Link to="/levels" className="btn">
-            게임 단계로
-          </Link>
-        }
       />
     </>
   )

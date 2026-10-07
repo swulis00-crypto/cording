@@ -32,42 +32,29 @@ async function answer(user: User, option: string, next: string) {
   await user.click(screen.getByRole('button', { name: next }))
 }
 
-/** kdc-600 미션(2문제)을 첫 문제만 틀리고 끝낸다. */
-async function playArtMission(user: User) {
-  await answer(user, '500 기술과학', '다음 문제')
-  await answer(user, '마법 학교의 비밀 (판타지 소설)', '결과 보기')
-}
-
 describe('진행 저장', () => {
-  it('미션을 마치면 지도에 학습 완료와 별이 표시되고, 다시 열어도 유지된다', async () => {
+  it('구역을 마치면 도감에 학습 완료, 탐험 지도에 별이 표시되고, 다시 열어도 유지된다', async () => {
     const user = userEvent.setup()
-    const { unmount } = renderAt('/mission/kdc-600', { preview: true })
-    await playArtMission(user)
-    expect(screen.getByRole('heading', { name: /미션 완료!/ })).toBeInTheDocument()
+    const { unmount } = renderAt('/journey', { preview: true })
+    // 000 총류 구역 2문제: 첫 문제만 틀린다
+    await answer(user, '700 언어', '다음 문제')
+    await answer(user, '000 총류', '다음 문제')
 
-    expect(saved().completedClassifications).toEqual(['kdc-600'])
-    expect(saved().bestCorrect).toEqual({ 'kdc-600': 1 })
+    expect(saved().completedClassifications).toEqual(['kdc-000'])
+    expect(saved().bestCorrect).toEqual({ 'kdc-000': 1 })
     expect(saved().quizAttempts).toHaveLength(1)
-    expect(saved().wrongQuestionIds).toEqual(['quiz-600-002'])
+    expect(saved().wrongQuestionIds).toEqual(['quiz-000-002'])
 
     // 새로고침처럼 앱을 다시 띄운다
     unmount()
-    renderAt('/map', { preview: true })
-    const tile = screen.getByRole('link', { name: /600\s*예술/ })
-    expect(within(tile).getByText('학습 완료')).toBeInTheDocument()
-    expect(within(tile).getByText('1개')).toBeInTheDocument()
-    expect(screen.getByText('미션 완료 1 / 10')).toBeInTheDocument()
-    expect(screen.getByText(/모은 별 1개/)).toBeInTheDocument()
-  })
+    renderAt('/codex', { preview: true })
+    const entry = screen.getByRole('heading', { level: 2, name: '000 총류' }).closest('li')!
+    expect(within(entry).getByText('학습 완료')).toBeInTheDocument()
+    expect(screen.getByText('학습 완료 1 / 10')).toBeInTheDocument()
 
-  it('결과 화면에서 다시 도전해도 완료는 한 번만 집계된다', async () => {
-    const user = userEvent.setup()
-    renderAt('/mission/kdc-600', { preview: true })
-    await playArtMission(user)
-    await user.click(screen.getByRole('button', { name: '다시 도전' }))
-    await playArtMission(user)
-    expect(saved().completedClassifications).toEqual(['kdc-600'])
-    expect(saved().quizAttempts).toHaveLength(2)
+    await user.click(screen.getByRole('link', { name: '탐험 지도' }))
+    expect(screen.getByText(/모은 별 1개/)).toBeInTheDocument()
+    expect(screen.getByText('진행 중 · 구역 1 / 10')).toBeInTheDocument()
   })
 
   it('영역 소개를 열면 학습 중으로 기록된다', () => {
@@ -87,11 +74,11 @@ describe('진행 저장', () => {
 })
 
 describe('시작 화면', () => {
-  it('기록이 있으면 이어하기로 게임 단계 화면에 간다', async () => {
+  it('기록이 있으면 이어하기로 탐험 지도에 간다', async () => {
     seed({ visitedClassifications: ['kdc-000'] })
     renderAt('/')
     await userEvent.click(screen.getByRole('button', { name: '이어하기' }))
-    expect(screen.getByRole('heading', { level: 1, name: '게임 단계' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: '탐험 지도' })).toBeInTheDocument()
   })
 
   it('기록이 있는데 새 탐험을 누르면 먼저 확인하고, 지우면 튜토리얼로 간다', async () => {
@@ -181,9 +168,9 @@ describe('SCR-10 설정', () => {
   })
 })
 
-describe('게임 단계', () => {
+describe('탐험 지도 (탐험 단계 고르기)', () => {
   it('1단계만 열려 있고 2~4단계는 잠겨 있다', () => {
-    renderAt('/levels')
+    renderAt('/map')
     expect(screen.getByRole('link', { name: '시작하기: 지식 구역 탐험' })).toBeInTheDocument()
     expect(screen.getByText('진행 중 · 구역 0 / 10')).toBeInTheDocument()
     expect(screen.getByText('🔒 1단계를 마치면 열려요')).toBeInTheDocument()
@@ -194,7 +181,7 @@ describe('게임 단계', () => {
   it('1단계를 모두 마치면 완료로 표시되고 2단계가 열린다', () => {
     const all = ['000', '100', '200', '300', '400', '500', '600', '700', '800', '900'].map((c) => `kdc-${c}`)
     seed({ completedClassifications: all })
-    renderAt('/levels')
+    renderAt('/map')
     expect(screen.getByText('✔ 완료')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '다시 하기: 지식 구역 탐험' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '시작하기: 번호 속 비밀 풀기' })).toBeInTheDocument()
@@ -205,7 +192,7 @@ describe('게임 단계', () => {
   it('2단계까지 마치면 3단계가 열리고 준비 중으로 표시된다', () => {
     const all = ['000', '100', '200', '300', '400', '500', '600', '700', '800', '900'].map((c) => `kdc-${c}`)
     seed({ completedClassifications: all, completedRules: ['rule-1', 'rule-2', 'rule-3', 'rule-4'] })
-    renderAt('/levels')
+    renderAt('/map')
     expect(screen.getAllByText('✔ 완료')).toHaveLength(2)
     expect(screen.getByText('🛠 준비 중이에요')).toBeInTheDocument()
   })

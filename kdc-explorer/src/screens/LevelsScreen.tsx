@@ -3,9 +3,10 @@ import { isPreviewMode } from '../app/preview.ts'
 import { useProgress } from '../app/useProgress.ts'
 import { mainClasses, rules } from '../data/index.ts'
 import { GAME_LEVELS, isLevelCompleted, isLevelUnlocked } from '../features/progress/levels.ts'
+import { totalStars } from '../features/progress/progress.ts'
 import styles from './Pages.module.css'
 
-/** 게임 단계 선택 */
+/** 탐험 지도: 탐험 단계(게임 1~4단계)를 고르는 화면. 단계를 마치면 이곳으로 돌아온다. */
 export function LevelsScreen() {
   const { progress } = useProgress()
   const preview = isPreviewMode()
@@ -19,9 +20,12 @@ export function LevelsScreen() {
   return (
     <section aria-labelledby="levels-title">
       <h1 id="levels-title" className={styles.title}>
-        게임 단계
+        탐험 지도
       </h1>
-      <p className={styles.intro}>단계를 하나씩 마치면 다음 단계가 열려요. 마친 단계는 언제든 다시 할 수 있어요.</p>
+      <p className={styles.intro}>탐험 단계를 하나씩 마치면 다음 단계가 열려요. 마친 단계는 언제든 다시 할 수 있어요.</p>
+      <p className={styles.stars}>
+        <span aria-hidden="true">⭐ </span>모은 별 {totalStars(progress)}개
+      </p>
 
       <ol className={styles.levels}>
         {GAME_LEVELS.map((level) => {

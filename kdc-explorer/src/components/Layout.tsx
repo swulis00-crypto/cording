@@ -25,9 +25,6 @@ export function Layout() {
           <nav aria-label="주요 메뉴">
             <ul className={styles.nav}>
               <li>
-                <NavLink to="/levels">게임 단계</NavLink>
-              </li>
-              <li>
                 <NavLink to="/map">탐험 지도</NavLink>
               </li>
               <li>

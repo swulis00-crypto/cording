@@ -86,7 +86,8 @@ describe('게임 1단계: 20문제 구역 탐험', () => {
     expect(saved().completedClassifications).toHaveLength(10)
     expect(saved().quizAttempts).toHaveLength(10)
 
-    await user.click(screen.getByRole('link', { name: '게임 단계로' }))
+    await user.click(screen.getByRole('link', { name: '탐험 지도로 돌아가기' }))
+    expect(screen.getByRole('heading', { level: 1, name: '탐험 지도' })).toBeInTheDocument()
     expect(screen.getByText('✔ 완료')).toBeInTheDocument()
   }, 30000)
 })

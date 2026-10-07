@@ -39,7 +39,7 @@ export function HomeScreen() {
           className="btn"
           disabled={!hasSaved}
           aria-describedby={hasSaved ? undefined : 'continue-note'}
-          onClick={() => navigate('/levels')}
+          onClick={() => navigate('/map')}
         >
           이어하기
         </button>

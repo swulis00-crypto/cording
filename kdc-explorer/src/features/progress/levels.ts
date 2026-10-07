@@ -1,4 +1,4 @@
-// 게임 단계 (docs/GAME_LEVELS.md)
+// 탐험 지도의 단계 = 게임 1~4단계 (docs/GAME_LEVELS.md)
 import type { Progress } from '../../types/index.ts'
 
 export interface GameLevel {

@@ -5,7 +5,8 @@ import { describe, expect, it } from 'vitest'
 import { AppRoutes } from '../src/app/AppRoutes'
 import { DataErrorBanner } from '../src/components/DataErrorBanner'
 
-function renderAt(path: string) {
+function renderAt(path: string, { preview = false } = {}) {
+  window.history.replaceState(null, '', preview ? '/?preview=1' : '/')
   return render(
     <MemoryRouter initialEntries={[path]}>
       <AppRoutes />
@@ -47,35 +48,38 @@ describe('SCR-02 튜토리얼', () => {
   })
 })
 
-describe('SCR-03 탐험 지도', () => {
-  it('10개 주류를 번호순으로 번호·명칭·학습 상태와 함께 표시한다', () => {
-    renderAt('/map')
-    const list = within(screen.getByRole('main')).getByRole('list')
-    const items = within(list).getAllByRole('listitem')
-    expect(items).toHaveLength(10)
-    expect(items[0]).toHaveTextContent('000')
-    expect(items[0]).toHaveTextContent('총류')
-    expect(items[0]).toHaveTextContent('학습 전')
-    expect(items[9]).toHaveTextContent('900')
-    expect(items[9]).toHaveTextContent('역사')
+describe('탐험 지도', () => {
+  it('상단 메뉴의 탐험 지도는 탐험 단계를 고르는 화면이다', async () => {
+    renderAt('/codex')
+    await userEvent.click(screen.getByRole('link', { name: '탐험 지도' }))
+    expect(screen.getByRole('heading', { level: 1, name: '탐험 지도' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /지식 구역 탐험/ })).toBeInTheDocument()
   })
 
-  it('영역을 고르면 주류 소개로 이동한다', async () => {
-    renderAt('/map')
-    await userEvent.click(screen.getByRole('link', { name: /400\s*자연과학/ }))
-    expect(screen.getByRole('heading', { level: 1, name: '자연과학' })).toBeInTheDocument()
+  it('예전 주소(/levels)로 들어와도 탐험 지도로 간다', () => {
+    renderAt('/levels')
+    expect(screen.getByRole('heading', { level: 1, name: '탐험 지도' })).toBeInTheDocument()
   })
 })
 
-describe('SCR-04 주류 소개', () => {
-  it('번호·분류명·설명·대표 주제·주류 수준 안내를 표시한다', () => {
+describe('SCR-04 주류 소개 (분류 도감 상세)', () => {
+  it('번호·분류명·설명과 대표 주제로 10개 구분을 모두 보여 준다', () => {
     renderAt('/classification/kdc-600')
-    expect(screen.getByText('600')).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: '예술' })).toBeInTheDocument()
     expect(screen.getByText(/아름다움을 표현하고/)).toBeInTheDocument()
-    expect(screen.getByText('음악')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: '대표 주제 · 10개 구분' })).toBeInTheDocument()
+    const table = screen.getByRole('list', { name: '600 예술 구역의 10개 구분' })
+    expect(within(table).getAllByRole('listitem')).toHaveLength(10)
+    expect(table).toHaveTextContent('670음악')
     expect(screen.getByText(/주류 \(10개의 큰 영역 중 하나\)/)).toBeInTheDocument()
     expect(screen.getByText('선생님 검토 중인 내용')).toBeInTheDocument()
+  })
+
+  it('설명만 하고 문제는 탐험 지도에서 풀도록 안내한다', async () => {
+    renderAt('/classification/kdc-600', { preview: true })
+    expect(screen.queryByRole('radio')).not.toBeInTheDocument()
+    await userEvent.click(screen.getByRole('link', { name: /탐험 지도에서 문제 풀기/ }))
+    expect(screen.getByRole('heading', { level: 1, name: '탐험 지도' })).toBeInTheDocument()
   })
 
   it('헷갈리기 쉬운 영역으로 이동할 수 있다', async () => {
@@ -87,7 +91,7 @@ describe('SCR-04 주류 소개', () => {
   it('없는 영역이면 안내와 돌아가기 링크를 보여 준다', () => {
     renderAt('/classification/kdc-999')
     expect(screen.getByRole('heading', { name: '영역을 찾을 수 없어요' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: '탐험 지도로 돌아가기' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '분류 도감으로 돌아가기' })).toBeInTheDocument()
   })
 })
 

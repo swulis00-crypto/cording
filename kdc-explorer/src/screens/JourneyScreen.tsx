@@ -50,7 +50,7 @@ export function JourneyScreen() {
         <h1 className={styles.heading}>아직 열리지 않은 탐험이에요</h1>
         <p className={styles.gap}>문항은 선생님 검토가 끝나면 열려요.</p>
         <p className={styles.gap}>
-          <Link to="/map">탐험 지도 보기</Link>
+          <Link to="/map">탐험 지도로 돌아가기</Link>
         </p>
       </section>
     )
@@ -72,11 +72,6 @@ export function JourneyScreen() {
         pool={plan.pool}
         kind="mission"
         doneText="10개 구역의 서가가 모두 깨끗하게 복구됐어요."
-        extraActions={
-          <Link to="/levels" className="btn">
-            게임 단계로
-          </Link>
-        }
       />
     </>
   )
