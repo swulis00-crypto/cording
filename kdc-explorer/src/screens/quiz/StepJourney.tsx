@@ -44,7 +44,6 @@ export function StepJourney({ title, symbol, steps, quizzes, stepNoun, doneText,
       if (!step) return null
       return (
         <GroupBanner
-          symbol={step.emoji}
           title={step.title}
           count={`${stepNoun} ${steps.findIndex((s) => s.id === step.id) + 1} / ${steps.length}`}
           newLabel={isFirst ? `새 ${stepNoun} 발견!` : undefined}

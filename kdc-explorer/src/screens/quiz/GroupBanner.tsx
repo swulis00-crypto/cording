@@ -2,7 +2,8 @@ import type { ReactNode } from 'react'
 import styles from './Quiz.module.css'
 
 interface Props {
-  symbol: string
+  /** 제목 앞에 작게 붙이는 그림 (없으면 생략). 휴대폰에서도 폭을 다 쓰도록 따로 칸을 두지 않는다. */
+  symbol?: string
   title: string
   /** 예: "구역 3 / 10" */
   count: string
@@ -15,17 +16,13 @@ interface Props {
 export function GroupBanner({ symbol, title, count, newLabel, children }: Props) {
   return (
     <div className={styles.areaBanner}>
-      <span className={styles.areaSymbol} aria-hidden="true">
-        {symbol}
-      </span>
-      <div>
-        <p className={styles.areaName}>
-          {title}
-          <span className={styles.areaCount}> · {count}</span>
-          {newLabel && <span className={styles.newArea}>{newLabel}</span>}
-        </p>
-        {children}
-      </div>
+      <p className={styles.areaName}>
+        {symbol && <span aria-hidden="true">{symbol} </span>}
+        {title}
+        <span className={styles.areaCount}> · {count}</span>
+        {newLabel && <span className={styles.newArea}>{newLabel}</span>}
+      </p>
+      {children}
     </div>
   )
 }
