@@ -150,6 +150,12 @@ describe('게임 2단계 데이터', () => {
     expect(result.errors).toHaveLength(4)
   })
 
+  it('청구기호(callNumber) 형식이 틀리면 탐지한다', () => {
+    const result = validateQuizzes([build({ callNumber: '8xx' }), build({ id: 'ok', callNumber: '813.7' })], classifications, ['rule-1'])
+    expect(result.items.map((q) => q.id)).toEqual(['ok'])
+    expect(result.errors.join()).toContain('8xx')
+  })
+
   it('존재하지 않는 규칙을 참조하면 탐지한다', () => {
     const result = validateQuizzes([build({ rule: 'rule-9' })], classifications, ['rule-1'])
     expect(result.errors.join()).toContain('rule-9')

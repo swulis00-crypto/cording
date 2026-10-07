@@ -53,7 +53,17 @@ export interface NumberRule {
   emoji: string
   title: string
   summary: string
+  /** 숫자 해독표: 규칙이 다루는 자리의 숫자별 뜻 (예: 셋째 자리 1 시, 2 희곡 …) */
+  key?: RuleKey
   reviewStatus: ReviewStatus
+}
+
+export interface RuleKey {
+  /** 예: "셋째 자리" */
+  position: string
+  /** 그 자리를 □로 표시한 번호 모양 (예: "8□□") */
+  pattern: string
+  digits: { digit: string; label: string }[]
 }
 
 /** 문제에 등장하는 책 (표지 카드로 보여 준다) */
@@ -80,6 +90,8 @@ export interface Quiz {
   question: string
   /** 게임 2단계 문항이 속한 규칙 id */
   rule?: string
+  /** 이 문제가 다루는 청구기호(분류번호). 규칙 안에서 이 번호 순서로 출제한다 */
+  callNumber?: string
   /** 번호 조립 문제의 틀 (예: "7□0"). 보기는 숫자 카드, 정답은 완성된 번호 */
   template?: string
   /** 게임 2단계에서 문제 위에 보여 줄 구분표. 기본은 문항 영역의 10개 구분, 'main'이면 10개 주류 */

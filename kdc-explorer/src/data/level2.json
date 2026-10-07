@@ -11,28 +11,151 @@
       "id": "rule-2",
       "emoji": "🌏",
       "title": "언어와 문학은 나라 순서가 같아요",
-      "summary": "7□0 언어와 8□0 문학은 둘째 자리가 같은 나라를 뜻해요. 1 한국, 2 중국, 3 일본, 4 영어(영미)",
-      "reviewStatus": "needs-review"
+      "summary": "7□0 언어와 8□0 문학은 둘째 자리 숫자가 같은 나라를 뜻해요. 아래 해독표를 보세요.",
+      "reviewStatus": "needs-review",
+      "key": {
+        "position": "둘째 자리",
+        "pattern": "7□0 · 8□0",
+        "digits": [
+          {
+            "digit": "1",
+            "label": "한국"
+          },
+          {
+            "digit": "2",
+            "label": "중국"
+          },
+          {
+            "digit": "3",
+            "label": "일본"
+          },
+          {
+            "digit": "4",
+            "label": "영어(영미)"
+          },
+          {
+            "digit": "5",
+            "label": "독일"
+          },
+          {
+            "digit": "6",
+            "label": "프랑스"
+          },
+          {
+            "digit": "7",
+            "label": "스페인·포르투갈"
+          },
+          {
+            "digit": "8",
+            "label": "이탈리아"
+          },
+          {
+            "digit": "9",
+            "label": "기타"
+          }
+        ]
+      }
     },
     {
       "id": "rule-3",
       "emoji": "✍️",
       "title": "문학의 셋째 자리는 글의 형식",
-      "summary": "문학 번호의 셋째 자리는 어떤 형식의 글인지 알려 줘요. 1 시, 2 희곡, 3 소설, 4 수필",
-      "reviewStatus": "needs-review"
+      "summary": "문학 번호의 셋째 자리는 어떤 형식의 글인지 알려 줘요. 둘째 자리(나라)와 함께 읽어요.",
+      "reviewStatus": "needs-review",
+      "key": {
+        "position": "셋째 자리",
+        "pattern": "81□ · 84□",
+        "digits": [
+          {
+            "digit": "1",
+            "label": "시"
+          },
+          {
+            "digit": "2",
+            "label": "희곡"
+          },
+          {
+            "digit": "3",
+            "label": "소설"
+          },
+          {
+            "digit": "4",
+            "label": "수필"
+          },
+          {
+            "digit": "5",
+            "label": "연설·웅변"
+          },
+          {
+            "digit": "6",
+            "label": "일기·서간·기행"
+          },
+          {
+            "digit": "7",
+            "label": "풍자·유머"
+          },
+          {
+            "digit": "8",
+            "label": "르포르타주·기타"
+          }
+        ]
+      }
     },
     {
       "id": "rule-4",
       "emoji": "🗺️",
       "title": "역사의 둘째 자리는 대륙",
-      "summary": "역사 번호의 둘째 자리는 대륙을 알려 줘요. 1 아시아, 2 유럽 … 그리고 98은 지리, 99는 전기(실제 인물 이야기)예요.",
-      "reviewStatus": "needs-review"
+      "summary": "역사 번호의 둘째 자리는 대륙을 알려 줘요. 8은 지리, 9는 전기(실제 인물 이야기)예요.",
+      "reviewStatus": "needs-review",
+      "key": {
+        "position": "둘째 자리",
+        "pattern": "9□0",
+        "digits": [
+          {
+            "digit": "1",
+            "label": "아시아"
+          },
+          {
+            "digit": "2",
+            "label": "유럽"
+          },
+          {
+            "digit": "3",
+            "label": "아프리카"
+          },
+          {
+            "digit": "4",
+            "label": "북아메리카"
+          },
+          {
+            "digit": "5",
+            "label": "남아메리카"
+          },
+          {
+            "digit": "6",
+            "label": "오세아니아"
+          },
+          {
+            "digit": "7",
+            "label": "양극지방"
+          },
+          {
+            "digit": "8",
+            "label": "지리"
+          },
+          {
+            "digit": "9",
+            "label": "전기"
+          }
+        ]
+      }
     }
   ],
   "quizzes": [
     {
       "id": "l2-rule1-001",
       "rule": "rule-1",
+      "callNumber": "510",
       "classificationId": "kdc-500",
       "type": "rule-inference",
       "difficulty": 1,
@@ -53,6 +176,7 @@
     {
       "id": "l2-rule1-002",
       "rule": "rule-1",
+      "callNumber": "440",
       "classificationId": "kdc-400",
       "type": "topic-to-classification",
       "difficulty": 2,
@@ -82,6 +206,7 @@
     {
       "id": "l2-rule1-003",
       "rule": "rule-1",
+      "callNumber": "690",
       "classificationId": "kdc-600",
       "type": "build-number",
       "difficulty": 2,
@@ -102,6 +227,7 @@
     {
       "id": "l2-rule1-004",
       "rule": "rule-1",
+      "callNumber": "180",
       "classificationId": "kdc-100",
       "type": "topic-to-classification",
       "difficulty": 3,
@@ -131,6 +257,7 @@
     {
       "id": "l2-rule2-001",
       "rule": "rule-2",
+      "callNumber": "730",
       "classificationId": "kdc-700",
       "type": "build-number",
       "difficulty": 1,
@@ -151,6 +278,7 @@
     {
       "id": "l2-rule2-002",
       "rule": "rule-2",
+      "callNumber": "840",
       "classificationId": "kdc-800",
       "type": "build-number",
       "difficulty": 2,
@@ -171,6 +299,7 @@
     {
       "id": "l2-rule2-003",
       "rule": "rule-2",
+      "callNumber": "820",
       "classificationId": "kdc-800",
       "type": "rule-inference",
       "difficulty": 2,
@@ -190,6 +319,7 @@
     {
       "id": "l2-rule2-004",
       "rule": "rule-2",
+      "callNumber": "840",
       "classificationId": "kdc-800",
       "type": "distinguish-similar",
       "difficulty": 3,
@@ -219,6 +349,7 @@
     {
       "id": "l2-rule3-001",
       "rule": "rule-3",
+      "callNumber": "813",
       "classificationId": "kdc-800",
       "type": "build-number",
       "difficulty": 1,
@@ -239,6 +370,7 @@
     {
       "id": "l2-rule3-002",
       "rule": "rule-3",
+      "callNumber": "841",
       "classificationId": "kdc-800",
       "type": "build-number",
       "difficulty": 2,
@@ -259,6 +391,7 @@
     {
       "id": "l2-rule3-003",
       "rule": "rule-3",
+      "callNumber": "813",
       "classificationId": "kdc-800",
       "type": "topic-to-classification",
       "difficulty": 2,
@@ -288,6 +421,7 @@
     {
       "id": "l2-rule3-004",
       "rule": "rule-3",
+      "callNumber": "834",
       "classificationId": "kdc-800",
       "type": "rule-inference",
       "difficulty": 3,
@@ -307,6 +441,7 @@
     {
       "id": "l2-rule4-001",
       "rule": "rule-4",
+      "callNumber": "911",
       "classificationId": "kdc-900",
       "type": "topic-to-classification",
       "difficulty": 1,
@@ -336,6 +471,7 @@
     {
       "id": "l2-rule4-002",
       "rule": "rule-4",
+      "callNumber": "980",
       "classificationId": "kdc-900",
       "type": "distinguish-similar",
       "difficulty": 3,
@@ -365,6 +501,7 @@
     {
       "id": "l2-rule4-003",
       "rule": "rule-4",
+      "callNumber": "990",
       "classificationId": "kdc-900",
       "type": "rule-inference",
       "difficulty": 2,
@@ -384,6 +521,7 @@
     {
       "id": "l2-rule4-004",
       "rule": "rule-4",
+      "callNumber": "920",
       "classificationId": "kdc-900",
       "type": "build-number",
       "difficulty": 2,

@@ -6,6 +6,7 @@ import { getClassification, getRule, getRuleQuizzes, rules } from '../data/index
 import type { Quiz } from '../types/index.ts'
 import { DivisionTable } from './quiz/DivisionTable.tsx'
 import { GroupBanner } from './quiz/GroupBanner.tsx'
+import { RuleKeyCard } from './quiz/RuleKeyCard.tsx'
 import { Mission, type MissionGroups } from './quiz/Mission.tsx'
 import styles from './quiz/Quiz.module.css'
 
@@ -24,6 +25,7 @@ const RULE_GROUPS: MissionGroups = {
         newLabel={isFirst ? '새 규칙 발견!' : undefined}
       >
         <p className={styles.areaDesc}>{rule.summary}</p>
+        {rule.key && <RuleKeyCard ruleKey={rule.key} />}
         <DivisionTable area={quiz.table === 'main' ? undefined : getClassification(quiz.classificationId)} />
       </GroupBanner>
     )

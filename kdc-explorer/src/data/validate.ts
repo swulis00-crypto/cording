@@ -156,6 +156,15 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
     else if (seenIds.has(raw.id)) problems.push('id가 중복되었습니다.')
     if (!isNonEmptyString(raw.title)) problems.push('제목(title)이 없습니다.')
     if (!isNonEmptyString(raw.summary)) problems.push('설명(summary)이 없습니다.')
+    const key = raw.key
+    const validKey =
+      key === undefined ||
+      (isRecord(key) &&
+        isNonEmptyString(key.position) &&
+        isNonEmptyString(key.pattern) &&
+        Array.isArray(key.digits) &&
+        key.digits.every((d) => isRecord(d) && isNonEmptyString(d.digit) && isNonEmptyString(d.label)))
+    if (!validKey) problems.push('해독표(key)에는 position, pattern, digits[{ digit, label }]가 있어야 합니다.')
     if (!isReviewStatus(raw.reviewStatus)) {
       problems.push(`검수 상태(reviewStatus)는 ${REVIEW_STATUSES.join(', ')} 중 하나여야 합니다.`)
     }
@@ -165,6 +174,7 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
     }
     seenIds.add(raw.id as string)
     items.push({
+      ...(isRecord(key) && { key: key as unknown as NumberRule['key'] }),
       id: raw.id as string,
       emoji: typeof raw.emoji === 'string' ? raw.emoji : '🔎',
       title: raw.title as string,
@@ -236,6 +246,9 @@ export function validateQuizzes(
       problems.push('손님(character)에는 이름(name), 부탁(line), 감사 인사(thanks)가 있어야 합니다.')
     }
     if (raw.table !== undefined && raw.table !== 'main') problems.push('구분표(table)는 "main"만 쓸 수 있습니다.')
+    if (raw.callNumber !== undefined && !(typeof raw.callNumber === 'string' && CODE_PATTERN.test(raw.callNumber))) {
+      problems.push(`청구기호(callNumber) "${String(raw.callNumber)}"의 형식이 올바르지 않습니다. 예: "813"`)
+    }
     if (raw.rule !== undefined && !(typeof raw.rule === 'string' && ruleIds.includes(raw.rule))) {
       problems.push(`존재하지 않는 규칙 "${String(raw.rule)}"을 참조합니다.`)
     }
@@ -274,6 +287,7 @@ export function validateQuizzes(
       difficulty: typeof raw.difficulty === 'number' ? raw.difficulty : 1,
       question: raw.question as string,
       ...(typeof raw.rule === 'string' && { rule: raw.rule }),
+      ...(typeof raw.callNumber === 'string' && { callNumber: raw.callNumber }),
       ...(raw.table === 'main' && { table: 'main' as const }),
       ...(raw.type === 'build-number' && { template: raw.template as string }),
       ...(isRecord(character) && {

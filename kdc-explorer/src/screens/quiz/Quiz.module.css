@@ -740,3 +740,75 @@
   display: flex;
   gap: 8px;
 }
+
+/* ---- 🔑 숫자 해독표 ---- */
+.ruleKey {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 2px solid var(--hue, var(--primary));
+  border-radius: 12px;
+  background: #fff;
+}
+
+.ruleKeyTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.ruleKeyPattern {
+  display: inline-flex;
+  gap: 2px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ruleKeyBlank {
+  color: var(--hue-ink, var(--primary));
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+
+.ruleKeyDigits {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 6px;
+}
+
+.ruleKeyDigits li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 4px;
+  border-radius: 10px;
+  background: #f6f1e6;
+}
+
+.ruleKeyDigit {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--hue, var(--primary));
+  color: var(--hue-on, #fff);
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.ruleKeyLabel {
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.25;
+  word-break: keep-all;
+}

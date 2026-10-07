@@ -68,8 +68,16 @@ export function getMissionQuizzes(classificationId: string, preview: boolean): Q
   return getPlayableQuizzes(quizzes, preview).filter((q) => q.classificationId === classificationId)
 }
 
-/** 게임 2단계에서 출제할 수 있는 문항 (규칙 순서 → 데이터 순서) */
+/** 청구기호(분류번호) 순서 비교. 번호가 없는 문항은 뒤로, 같으면 데이터 순서를 지킨다. */
+function byCallNumber(a: Quiz, b: Quiz): number {
+  if (a.callNumber === undefined || b.callNumber === undefined) {
+    return Number(a.callNumber === undefined) - Number(b.callNumber === undefined)
+  }
+  return Number(a.callNumber) - Number(b.callNumber)
+}
+
+/** 게임 2단계에서 출제할 수 있는 문항 (규칙 순서 → 규칙 안에서는 청구기호 순서) */
 export function getRuleQuizzes(preview: boolean): Quiz[] {
   const playable = getPlayableQuizzes(level2Quizzes, preview)
-  return rules.flatMap((r) => playable.filter((q) => q.rule === r.id))
+  return rules.flatMap((r) => playable.filter((q) => q.rule === r.id).sort(byCallNumber))
 }
