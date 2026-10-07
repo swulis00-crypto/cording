@@ -57,13 +57,14 @@ describe('학습 데이터', () => {
     }
   })
 
-  it('게임 2단계: 규칙 4개, 규칙마다 4문항이고 번호 조립 문항을 포함한다', () => {
+  it('게임 2단계: 규칙 4개(6·3·3·3문항, 사회과학 포함)이고 규칙마다 번호 조립 문항을 포함한다', () => {
     expect(rules.map((r) => r.id)).toEqual(['rule-1', 'rule-2', 'rule-3', 'rule-4'])
     for (const r of rules) {
       const qs = level2Quizzes.filter((q) => q.rule === r.id)
-      expect(qs, r.id).toHaveLength(4)
+      expect(qs.length, r.id).toBe(r.id === 'rule-1' ? 6 : 3)
       expect(qs.some((q) => q.type === 'build-number'), r.id).toBe(true)
     }
+    expect(level2Quizzes.filter((q) => q.classificationId === 'kdc-300').length).toBeGreaterThanOrEqual(2)
   })
 
   it('모든 게임 단계의 문항 id가 겹치지 않고, 2단계 문항도 해설과 힌트를 가진다', () => {

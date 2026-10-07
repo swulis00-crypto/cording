@@ -276,27 +276,6 @@
       "reviewStatus": "draft"
     },
     {
-      "id": "l2-rule2-002",
-      "rule": "rule-2",
-      "callNumber": "840",
-      "classificationId": "kdc-800",
-      "type": "build-number",
-      "difficulty": 2,
-      "question": "영국·미국 작가들의 소설과 시가 모인 영미문학 구역의 번호를 완성해 보세요.",
-      "template": "8□0",
-      "options": [
-        "1",
-        "2",
-        "3",
-        "4"
-      ],
-      "correctAnswer": "840",
-      "explanation": "문학(8)의 둘째 자리 4는 영어(영미)예요. 영어 책(740)과 같은 4를 써요.",
-      "hint": "영어 책은 7□0에서 둘째 자리가 몇이었나요?",
-      "fictional": false,
-      "reviewStatus": "draft"
-    },
-    {
       "id": "l2-rule2-003",
       "rule": "rule-2",
       "callNumber": "820",
@@ -344,27 +323,6 @@
       "explanation": "번역한 책도 원래 작품을 쓴 언어의 문학으로 분류해요. 영국 작가가 영어로 쓴 소설이니 840 영미문학이에요.",
       "hint": "누가, 어느 나라 말로 처음 쓴 작품인지 생각해 보세요.",
       "fictional": true,
-      "reviewStatus": "draft"
-    },
-    {
-      "id": "l2-rule3-001",
-      "rule": "rule-3",
-      "callNumber": "813",
-      "classificationId": "kdc-800",
-      "type": "build-number",
-      "difficulty": 1,
-      "question": "한국 소설의 번호를 숫자 카드로 완성해 보세요.",
-      "template": "81□",
-      "options": [
-        "1",
-        "2",
-        "3",
-        "4"
-      ],
-      "correctAnswer": "813",
-      "explanation": "한국문학 81에 소설 3을 붙이면 813이에요. 학교도서관에서 가장 많이 빌려 가는 번호랍니다!",
-      "hint": "형식 순서: 1 시, 2 희곡, 3 소설, 4 수필",
-      "fictional": false,
       "reviewStatus": "draft"
     },
     {
@@ -499,26 +457,6 @@
       "reviewStatus": "draft"
     },
     {
-      "id": "l2-rule4-003",
-      "rule": "rule-4",
-      "callNumber": "990",
-      "classificationId": "kdc-900",
-      "type": "rule-inference",
-      "difficulty": 2,
-      "question": "990번대 전기 서가에는 어떤 책이 꽂혀 있을까요?",
-      "options": [
-        "실제 인물의 삶을 기록한 책",
-        "여러 나라의 지도책",
-        "세계 여러 나라의 요리책",
-        "인물이 나오는 판타지 소설"
-      ],
-      "correctAnswer": "실제 인물의 삶을 기록한 책",
-      "explanation": "99는 전기, 곧 실제 인물의 삶을 기록한 책이에요. 인물이 나와도 지어낸 이야기라면 800 문학이에요.",
-      "hint": "전기는 사람의 일생을 적은 기록이에요.",
-      "fictional": false,
-      "reviewStatus": "draft"
-    },
-    {
       "id": "l2-rule4-004",
       "rule": "rule-4",
       "callNumber": "920",
@@ -537,6 +475,57 @@
       "explanation": "역사(9)의 둘째 자리 2는 유럽이에요. 그래서 유럽 역사는 920이에요.",
       "hint": "1 아시아, 2 유럽 …",
       "fictional": false,
+      "reviewStatus": "draft"
+    },
+    {
+      "id": "l2-rule1-005",
+      "rule": "rule-1",
+      "callNumber": "340",
+      "classificationId": "kdc-300",
+      "type": "build-number",
+      "difficulty": 2,
+      "question": "선거와 국회가 하는 일을 다룬 정치학 서가의 번호를 숫자 카드로 완성해 보세요.",
+      "template": "3□0",
+      "options": [
+        "2",
+        "4",
+        "6",
+        "8"
+      ],
+      "correctAnswer": "340",
+      "explanation": "정치학은 300 사회과학 구역 안의 340이에요. 둘째 자리 4가 정치학을 뜻해요.",
+      "hint": "아래 300 사회과학 구분표에서 정치학을 찾아보세요.",
+      "fictional": false,
+      "reviewStatus": "draft"
+    },
+    {
+      "id": "l2-rule1-006",
+      "rule": "rule-1",
+      "callNumber": "380",
+      "classificationId": "kdc-300",
+      "type": "topic-to-classification",
+      "difficulty": 2,
+      "question": "소율이에게 어느 번호를 안내할까요?",
+      "character": {
+        "name": "소율",
+        "emoji": "👧",
+        "line": "다문화 친구에게 우리 설날과 추석 풍습을 소개하고 싶어요! 명절 풍습을 다룬 책은 몇 번에 있어요?",
+        "thanks": "고마워! 친구랑 같이 송편 빚는 법도 찾아봐야지."
+      },
+      "book": {
+        "title": "설날과 추석, 우리 명절 이야기",
+        "emoji": "🌕"
+      },
+      "options": [
+        "380 풍습, 예절, 민속학",
+        "370 교육학",
+        "900 역사",
+        "590 생활과학"
+      ],
+      "correctAnswer": "380 풍습, 예절, 민속학",
+      "explanation": "명절 풍습처럼 사람들이 함께 지켜 온 생활 관습은 300 사회과학 구역의 380 풍습, 예절, 민속학이에요. 옛날 일을 다뤄도 지금까지 이어지는 풍습이면 900 역사가 아니에요.",
+      "hint": "사람들이 함께 지켜 온 생활 관습을 다루는 구분을 찾아보세요.",
+      "fictional": true,
       "reviewStatus": "draft"
     }
   ]

@@ -47,20 +47,20 @@ describe('게임 2단계: 번호 속 비밀 풀기', () => {
   it('첫 규칙 카드를 보여 주고, 규칙의 문제를 마치면 저장한 뒤 다음 규칙으로 바로 넘어간다', { timeout: 20000 }, async () => {
     const user = userEvent.setup()
     renderAt('/level/2', { preview: true })
-    expect(route).toHaveLength(16)
-    expect(screen.getByText('문제 1 / 16')).toBeInTheDocument()
+    expect(route).toHaveLength(15)
+    expect(screen.getByText('문제 1 / 15')).toBeInTheDocument()
     expect(screen.getByText('둘째 자리는 더 좁은 주제')).toBeInTheDocument()
     expect(screen.getByText(/규칙 1 \/ 4/)).toBeInTheDocument()
     expect(screen.getByText('새 규칙 발견!')).toBeInTheDocument()
     // 청구기호 순서로 첫 문제는 180 심리학 → 100 철학 구분표
     expect(screen.getByRole('list', { name: '100 철학 구역의 10개 구분' })).toBeInTheDocument()
 
-    for (const quiz of route.slice(0, 4)) {
+    for (const quiz of route.slice(0, 6)) {
       await solve(user, quiz)
       await user.click(screen.getByRole('button', { name: '다음 문제' }))
     }
     expect(saved().completedRules).toEqual(['rule-1'])
-    expect(screen.getByText('문제 5 / 16')).toBeInTheDocument()
+    expect(screen.getByText('문제 7 / 15')).toBeInTheDocument()
     expect(screen.getByText('언어와 문학은 나라 순서가 같아요')).toBeInTheDocument()
     expect(screen.getByText('새 규칙 발견!')).toBeInTheDocument()
   })
@@ -107,7 +107,7 @@ describe('게임 2단계: 번호 속 비밀 풀기', () => {
   it('문제마다 그 영역의 10개 구분표를 보여 주고, 확인하지 못한 칸은 비워 둔다', async () => {
     const user = userEvent.setup()
     renderAt('/level/2', { preview: true })
-    for (const quiz of route.slice(0, 3)) {
+    for (const quiz of route.slice(0, 5)) {
       await solve(user, quiz)
       await user.click(screen.getByRole('button', { name: '다음 문제' }))
     }
@@ -156,10 +156,10 @@ describe('게임 2단계: 번호 속 비밀 풀기', () => {
 
   it('규칙 안의 문제는 청구기호 순서로 나온다', () => {
     const byRule = (id: string) => route.filter((q) => q.rule === id).map((q) => q.callNumber)
-    expect(byRule('rule-1')).toEqual(['180', '440', '510', '690'])
-    expect(byRule('rule-2')).toEqual(['730', '820', '840', '840'])
-    expect(byRule('rule-3')).toEqual(['813', '813', '834', '841'])
-    expect(byRule('rule-4')).toEqual(['911', '920', '980', '990'])
+    expect(byRule('rule-1')).toEqual(['180', '340', '380', '440', '510', '690'])
+    expect(byRule('rule-2')).toEqual(['730', '820', '840'])
+    expect(byRule('rule-3')).toEqual(['813', '834', '841'])
+    expect(byRule('rule-4')).toEqual(['911', '920', '980'])
   })
 
   it('문학 규칙에서는 셋째 자리 해독표(1 시, 2 희곡, 3 소설, 4 수필 …)를 크게 보여 준다', () => {
@@ -184,15 +184,15 @@ describe('게임 2단계: 번호 속 비밀 풀기', () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...createEmptyProgress(), completedRules: ['rule-1', 'rule-2'] }))
     renderAt('/level/2', { preview: true })
     expect(screen.getByRole('status')).toHaveTextContent("지난번에 이어서 '문학의 셋째 자리는 글의 형식' 규칙부터 시작해요.")
-    expect(screen.getByText('문제 1 / 8')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 6')).toBeInTheDocument()
     expect(screen.getByText(/규칙 3 \/ 4/)).toBeInTheDocument()
   })
 
-  it('16문제를 끝까지 풀면 4개 규칙이 모두 완료되고, 틀린 문제는 오답 복습에 모인다', async () => {
+  it('15문제를 끝까지 풀면 4개 규칙이 모두 완료되고, 틀린 문제는 오답 복습에 모인다', async () => {
     const user = userEvent.setup()
     renderAt('/level/2', { preview: true })
     for (const [i, quiz] of route.entries()) {
-      if (i === 1) {
+      if (quiz.id === 'l2-rule1-002') {
         // 은호의 별자리 책: 일부러 틀린다
         await user.click(screen.getByRole('radio', { name: '410 수학' }))
         await user.click(screen.getByRole('button', { name: '제출하기' }))
