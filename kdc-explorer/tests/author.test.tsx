@@ -44,9 +44,10 @@ async function solve(user: User, quiz: Quiz) {
 }
 
 describe('게임 3단계: 저자기호 만들기', () => {
-  it('기본 플레이에서는 검토 전 문항이 없어 아직 열리지 않았다고 안내한다', () => {
+  it('기본 플레이에서 3단계가 정상적으로 열린다', () => {
     renderAt('/level/3')
-    expect(screen.getByRole('heading', { name: '아직 열리지 않은 단계예요' })).toBeInTheDocument()
+    expect(screen.getByText('저자기호 만들기')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 14')).toBeInTheDocument()
   })
 
   it('첫 단계에서 저자기호의 네 부분(성·자음·모음·제목 초성)을 보여 준다', () => {

@@ -24,13 +24,13 @@ async function answer(user: User, option: string) {
 
 // 1단계 여정의 첫 구역(000 총류): ① 하준이의 백과사전 → 000 총류  ② 서윤이의 코딩 책 → 000 총류
 describe('미션 진행 (1단계 여정의 첫 구역)', () => {
-  it('문제 번호·점수·서가 진행판과 문제 유형, 검토 전 표시를 보여 준다', () => {
-    renderAt('/journey', { preview: true })
+  it('문제 번호·점수·서가 진행판과 문제 유형을 보여 준다', () => {
+    renderAt('/journey')
     expect(screen.getByText('문제 1 / 20')).toBeInTheDocument()
     expect(screen.getByText('점수 0점')).toBeInTheDocument()
     expect(screen.getByText('서가 복구 0 / 20')).toBeInTheDocument()
     expect(screen.getByText('📦 제자리 찾아 주기')).toBeInTheDocument()
-    expect(screen.getByText('검토 전 문항 (미리보기)')).toBeInTheDocument()
+    expect(screen.queryByText('검토 전 문항 (미리보기)')).not.toBeInTheDocument()
     expect(screen.getAllByRole('radio')).toHaveLength(4)
   })
 

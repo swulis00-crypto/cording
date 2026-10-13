@@ -32,9 +32,10 @@ async function solve(user: User, option: string) {
 }
 
 describe('게임 1단계: 20문제 구역 탐험', () => {
-  it('기본 플레이에서는 검토 전 문항이 없어 아직 열리지 않았다고 안내한다', () => {
+  it('기본 플레이에서 1단계가 정상적으로 열린다', () => {
     renderAt('/journey')
-    expect(screen.getByRole('heading', { name: '아직 열리지 않은 탐험이에요' })).toBeInTheDocument()
+    expect(screen.getByText('지식 구역 탐험')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 20')).toBeInTheDocument()
   })
 
   it('000 구역부터 시작하고, 구역을 마치면 지도로 돌아가지 않고 다음 구역 문제로 바로 넘어간다', async () => {

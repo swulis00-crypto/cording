@@ -37,14 +37,15 @@ describe('SCR-02 튜토리얼', () => {
     expect(screen.getByRole('heading', { name: '번호가 주제를 알려 줘요' })).toHaveFocus()
     await user.click(screen.getByRole('button', { name: '다음' }))
     await user.click(screen.getByRole('button', { name: '탐험 시작' }))
-    // 기본 플레이에서는 검토 전 문항이 없어 아직 열리지 않았다고 안내한다
-    expect(screen.getByRole('heading', { name: '아직 열리지 않은 탐험이에요' })).toBeInTheDocument()
+    expect(screen.getByText('지식 구역 탐험')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 20')).toBeInTheDocument()
   })
 
   it('건너뛰기로 바로 구역 탐험에 갈 수 있다', async () => {
     renderAt('/tutorial')
     await userEvent.click(screen.getByRole('link', { name: '건너뛰기' }))
-    expect(screen.getByRole('heading', { name: '아직 열리지 않은 탐험이에요' })).toBeInTheDocument()
+    expect(screen.getByText('지식 구역 탐험')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 20')).toBeInTheDocument()
   })
 })
 

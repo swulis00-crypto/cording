@@ -41,12 +41,17 @@
       "type": "rule-inference",
       "difficulty": 1,
       "question": "라벨 맨 위에 붙은 'R'은 무엇일까요?",
-      "options": ["별치기호", "분류기호", "저자기호", "복본기호"],
+      "options": [
+        "별치기호",
+        "분류기호",
+        "저자기호",
+        "복본기호"
+      ],
       "correctAnswer": "별치기호",
       "explanation": "별치기호는 사전·백과사전 같은 참고자료(Reference)처럼 따로 모아 두는 책에 붙여, 어느 서가에 있는지 알려 줘요.",
       "hint": "'따로(별) 둔다(치)'는 뜻이에요.",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call1-002",
@@ -55,12 +60,17 @@
       "type": "rule-inference",
       "difficulty": 1,
       "question": "책 주소에서 책의 '주제'를 알려 주는 부분은 어디일까요?",
-      "options": ["분류기호 (예: 813.7)", "저자기호 (예: 최67ㅂ)", "권차기호 (예: v.1)", "복본기호 (예: c.2)"],
+      "options": [
+        "분류기호 (예: 813.7)",
+        "저자기호 (예: 최67ㅂ)",
+        "권차기호 (예: v.1)",
+        "복본기호 (예: c.2)"
+      ],
       "correctAnswer": "분류기호 (예: 813.7)",
       "explanation": "분류기호는 2단계에서 배운 KDC 번호예요. 813.7은 한국 소설(2000년 이후 작품)을 뜻해요.",
       "hint": "2단계에서 풀었던 번호를 떠올려 보세요.",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call1-003",
@@ -69,12 +79,17 @@
       "type": "rule-inference",
       "difficulty": 2,
       "question": "라벨의 'v.1'은 무엇을 알려 줄까요?",
-      "options": ["시리즈나 전집의 1권", "같은 책의 첫 번째 복사본", "책이 처음 나온 해", "도서관에 들어온 순서"],
+      "options": [
+        "시리즈나 전집의 1권",
+        "같은 책의 첫 번째 복사본",
+        "책이 처음 나온 해",
+        "도서관에 들어온 순서"
+      ],
       "correctAnswer": "시리즈나 전집의 1권",
       "explanation": "v.는 권(volume)을 뜻하는 권차기호예요. 여러 권으로 된 시리즈나 전집에서 몇 권인지 알려 줘요.",
       "hint": "v는 volume(권)의 첫 글자예요.",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call1-004",
@@ -83,12 +98,17 @@
       "type": "rule-inference",
       "difficulty": 2,
       "question": "라벨의 'c.2'는 무엇을 알려 줄까요?",
-      "options": ["같은 책이 2권 이상 있을 때 두 번째 책", "시리즈의 2권", "책의 두 번째 장", "2층 서가"],
+      "options": [
+        "같은 책이 2권 이상 있을 때 두 번째 책",
+        "시리즈의 2권",
+        "책의 두 번째 장",
+        "2층 서가"
+      ],
       "correctAnswer": "같은 책이 2권 이상 있을 때 두 번째 책",
       "explanation": "c.는 복본(copy)을 뜻하는 복본기호예요. 인기 있는 책을 여러 권 갖추었을 때 몇 번째 책인지 알려 줘요.",
       "hint": "c는 copy(복사본)의 첫 글자예요.",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call2-001",
@@ -97,14 +117,22 @@
       "type": "build-author",
       "difficulty": 2,
       "question": "이꽃님 작가의 2000년 이후 한국 소설이에요. 분류기호와 저자기호 빈칸을 채워 책 주소를 완성해 보세요.",
-      "book": { "title": "당연하게도 나는 너를", "emoji": "💌" },
+      "book": {
+        "title": "당연하게도 나는 너를",
+        "emoji": "💌"
+      },
       "template": "8□□.7 이□□ㄷ",
-      "options": ["1", "3", "5", "7"],
+      "options": [
+        "1",
+        "3",
+        "5",
+        "7"
+      ],
       "correctAnswer": "813.7 이15ㄷ",
       "explanation": "한국 소설은 813(81 한국문학 + 3 소설), 2000년 이후 작품이라 813.7이에요. 저자기호는 '꽃'(ㄲ 1, ㅗ 5)과 제목 초성 ㄷ으로 이15ㄷ이에요.",
       "hint": "앞 칸은 2단계, 뒤 칸은 3단계에서 배운 방법으로 채워요.",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call2-002",
@@ -113,13 +141,21 @@
       "type": "topic-to-classification",
       "difficulty": 2,
       "question": "손원평 작가의 이 소설에 붙을 책 주소로 바른 것은?",
-      "book": { "title": "아몬드", "emoji": "🌰" },
-      "options": ["813.7 손66ㅇ", "813 손66ㅇ", "손66ㅇ 813.7", "813.7 손66ㅁ"],
+      "book": {
+        "title": "아몬드",
+        "emoji": "🌰"
+      },
+      "options": [
+        "813.7 손66ㅇ",
+        "813 손66ㅇ",
+        "손66ㅇ 813.7",
+        "813.7 손66ㅁ"
+      ],
       "correctAnswer": "813.7 손66ㅇ",
       "explanation": "책 주소는 분류기호(813.7) 다음에 저자기호(손66ㅇ)를 써요. 제목 『아몬드』의 첫 글자 '아'의 초성은 ㅇ이에요.",
       "hint": "분류기호와 저자기호 중 무엇이 먼저 올까요?",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call2-003",
@@ -128,12 +164,17 @@
       "type": "rule-inference",
       "difficulty": 2,
       "question": "박서진 작가의 판타지 시리즈 『별빛 도서관』 2권의 책 주소로 바른 것은? (가상 예시)",
-      "options": ["813.7 박54ㅂ v.2", "813.7 박54ㅂ c.2", "813.7 박54ㅂ", "813.7 박54ㅂ v.1"],
+      "options": [
+        "813.7 박54ㅂ v.2",
+        "813.7 박54ㅂ c.2",
+        "813.7 박54ㅂ",
+        "813.7 박54ㅂ v.1"
+      ],
       "correctAnswer": "813.7 박54ㅂ v.2",
       "explanation": "시리즈의 몇 권인지는 권차기호 v.로 써요. 2권이니 v.2예요. c.2는 같은 책의 두 번째 복본이라는 뜻이라 달라요.",
       "hint": "시리즈의 '권'은 v., 같은 책의 '복사본'은 c.예요.",
       "fictional": true,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call2-004",
@@ -142,12 +183,17 @@
       "type": "rule-inference",
       "difficulty": 2,
       "question": "인기가 많은 『아몬드』를 도서관에 3권 갖추었어요. 세 번째 책의 라벨 맨 아래에 붙는 것은?",
-      "options": ["c.3", "v.3", "3권", "R"],
+      "options": [
+        "c.3",
+        "v.3",
+        "3권",
+        "R"
+      ],
       "correctAnswer": "c.3",
       "explanation": "같은 책의 세 번째 복본이니 복본기호 c.3을 붙여요. 세 권 모두 813.7 손66ㅇ은 같아요.",
       "hint": "같은 책을 여러 권 갖춘 것은 '복본'이에요.",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call3-001",
@@ -156,12 +202,16 @@
       "type": "shelf-order",
       "difficulty": 2,
       "question": "분류기호가 모두 813.7인 책 세 권을 서가에 왼쪽부터 순서대로 꽂아 보세요.",
-      "options": ["813.7 손66ㅇ", "813.7 김95ㅂ", "813.7 김84ㅇ"],
+      "options": [
+        "813.7 손66ㅇ",
+        "813.7 김95ㅂ",
+        "813.7 김84ㅇ"
+      ],
       "correctAnswer": "813.7 김84ㅇ | 813.7 김95ㅂ | 813.7 손66ㅇ",
       "explanation": "분류기호가 같으면 저자기호 순서예요. 성은 김 → 손(가나다순), 같은 '김'끼리는 0.84 → 0.95 순서라 김84ㅇ(김초엽) → 김95ㅂ(김호연) → 손66ㅇ(손원평)이에요.",
       "hint": "먼저 성을 가나다순으로, 성이 같으면 숫자를 소수로 비교해요.",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call3-002",
@@ -170,12 +220,17 @@
       "type": "shelf-order",
       "difficulty": 3,
       "question": "분류기호가 서로 다른 책 네 권을 서가에 왼쪽부터 순서대로 꽂아 보세요. (가상 예시 포함)",
-      "options": ["814.7 김52ㅅ", "813.7 최67ㅂ", "811.7 박45ㅅ", "813.7 김95ㅂ"],
+      "options": [
+        "814.7 김52ㅅ",
+        "813.7 최67ㅂ",
+        "811.7 박45ㅅ",
+        "813.7 김95ㅂ"
+      ],
       "correctAnswer": "811.7 박45ㅅ | 813.7 김95ㅂ | 813.7 최67ㅂ | 814.7 김52ㅅ",
       "explanation": "분류기호가 먼저예요. 811.7(시) → 813.7(소설) → 814.7(수필) 순서이고, 813.7끼리는 저자기호 김 → 최 순서예요. 저자기호가 '김'이어도 814.7 책은 813.7 책들보다 뒤에 와요.",
       "hint": "저자기호보다 분류기호를 먼저 비교해요.",
       "fictional": true,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call3-003",
@@ -184,12 +239,17 @@
       "type": "shelf-order",
       "difficulty": 3,
       "question": "🚨 함정 주의! 모두 813.7 최○ 책이에요. 저자기호 숫자를 보고 왼쪽부터 순서대로 꽂아 보세요.",
-      "options": ["813.7 최6", "813.7 최52", "813.7 최5", "813.7 최19"],
+      "options": [
+        "813.7 최6",
+        "813.7 최52",
+        "813.7 최5",
+        "813.7 최19"
+      ],
       "correctAnswer": "813.7 최19 | 813.7 최5 | 813.7 최52 | 813.7 최6",
       "explanation": "저자기호 숫자는 소수처럼 읽어요. 0.19 → 0.5 → 0.52 → 0.6 순서라 최19 → 최5 → 최52 → 최6이에요. 52가 6보다 크다고 생각하면 틀려요!",
       "hint": "숫자 앞에 '0.'을 붙여 보세요.",
       "fictional": true,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call3-004",
@@ -198,12 +258,16 @@
       "type": "shelf-order",
       "difficulty": 1,
       "question": "『별빛 도서관』 시리즈 세 권을 왼쪽부터 순서대로 꽂아 보세요. (가상 예시)",
-      "options": ["813.7 박54ㅂ v.2", "813.7 박54ㅂ v.3", "813.7 박54ㅂ v.1"],
+      "options": [
+        "813.7 박54ㅂ v.2",
+        "813.7 박54ㅂ v.3",
+        "813.7 박54ㅂ v.1"
+      ],
       "correctAnswer": "813.7 박54ㅂ v.1 | 813.7 박54ㅂ v.2 | 813.7 박54ㅂ v.3",
       "explanation": "분류기호와 저자기호가 같으면 권차기호 v.1 → v.2 → v.3 순서로 꽂아요.",
       "hint": "같은 시리즈는 권 순서대로 읽기 좋게 꽂아요.",
       "fictional": true,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call4-001",
@@ -218,13 +282,21 @@
         "line": "김초엽 작가의 『우리가 빛의 속도로 갈 수 없다면』을 빌리고 싶어요. 라벨을 보고 찾아갈게요!",
         "thanks": "813.7 김84ㅇ, 바로 여기 있다! 고마워!"
       },
-      "book": { "title": "우리가 빛의 속도로 갈 수 없다면", "emoji": "🚀" },
-      "options": ["813.7 김84ㅇ", "813.7 김85ㅇ", "843.7 김84ㅇ", "813.7 김84ㅂ"],
+      "book": {
+        "title": "우리가 빛의 속도로 갈 수 없다면",
+        "emoji": "🚀"
+      },
+      "options": [
+        "813.7 김84ㅇ",
+        "813.7 김85ㅇ",
+        "843.7 김84ㅇ",
+        "813.7 김84ㅂ"
+      ],
       "correctAnswer": "813.7 김84ㅇ",
       "explanation": "한국 소설이라 813.7, '초'는 ㅊ(8)과 ㅗ(ㅊ일 때 4)라서 김84, 제목 '우리가…'의 초성은 ㅇ이에요. 843.7은 영미 소설 번호예요.",
       "hint": "3단계에서 배운 ㅊ 예외를 떠올려 보세요.",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call4-002",
@@ -233,12 +305,17 @@
       "type": "rule-inference",
       "difficulty": 3,
       "question": "서가에 '813.7 김84ㅇ'과 '813.7 김95ㅂ'이 나란히 꽂혀 있어요. 두 책 사이에 꽂아야 할 책은? (가상 예시 포함)",
-      "options": ["813.7 김9ㅅ", "813.7 김96ㅂ", "813.7 김8ㅇ", "813.7 손66ㅇ"],
+      "options": [
+        "813.7 김9ㅅ",
+        "813.7 김96ㅂ",
+        "813.7 김8ㅇ",
+        "813.7 손66ㅇ"
+      ],
       "correctAnswer": "813.7 김9ㅅ",
       "explanation": "소수로 읽으면 0.84 < 0.9 < 0.95예요. 그래서 김9ㅅ이 두 책 사이에 와요. 김96ㅂ(0.96)은 뒤, 김8ㅇ(0.8)은 앞에 와요.",
       "hint": "0.84와 0.95 사이에 있는 수를 찾아보세요.",
       "fictional": true,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     },
     {
       "id": "l4-call4-003",
@@ -247,12 +324,17 @@
       "type": "rule-inference",
       "difficulty": 2,
       "question": "라벨에 'R 030'이 붙은 백과사전은 어디에서 찾아야 할까요?",
-      "options": ["참고자료만 따로 모아 둔 서가", "000 총류 서가의 맨 앞", "800 문학 서가", "대출 반납대 옆"],
+      "options": [
+        "참고자료만 따로 모아 둔 서가",
+        "000 총류 서가의 맨 앞",
+        "800 문학 서가",
+        "대출 반납대 옆"
+      ],
       "correctAnswer": "참고자료만 따로 모아 둔 서가",
       "explanation": "별치기호 R이 붙은 책은 일반 서가가 아니라 참고자료 서가에 따로 모여 있어요. 분류기호 030(백과사전)으로는 그 서가 안에서 자리를 찾아요.",
       "hint": "R은 무엇을 알려 주는 기호였나요?",
       "fictional": false,
-      "reviewStatus": "draft"
+      "reviewStatus": "approved"
     }
   ]
 }

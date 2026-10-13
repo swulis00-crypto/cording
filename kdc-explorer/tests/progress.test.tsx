@@ -125,10 +125,10 @@ describe('SCR-09 오답 복습', () => {
     expect(screen.queryByText('『하루 10분 축구 드리블 특훈』')).not.toBeInTheDocument()
   })
 
-  it('기본 플레이에서는 검토 전 문항을 복습에도 내지 않는다', () => {
+  it('기본 플레이에서도 승인된 오답 문항을 복습할 수 있다', () => {
     seed({ wrongQuestionIds: ['quiz-600-002'] })
     renderAt('/review')
-    expect(screen.getByText(/지금은 복습할 문항이 없어요/)).toBeInTheDocument()
+    expect(screen.getByText('『하루 10분 축구 드리블 특훈』')).toBeInTheDocument()
   })
 })
 

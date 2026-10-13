@@ -39,9 +39,10 @@ async function solve(user: User, quiz: Quiz) {
 }
 
 describe('게임 2단계: 번호 속 비밀 풀기', () => {
-  it('기본 플레이에서는 검토 전 문항이 없어 아직 열리지 않았다고 안내한다', () => {
+  it('기본 플레이에서 2단계가 정상적으로 열린다', () => {
     renderAt('/level/2')
-    expect(screen.getByRole('heading', { name: '아직 열리지 않은 단계예요' })).toBeInTheDocument()
+    expect(screen.getByText('번호 속 비밀 풀기')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 15')).toBeInTheDocument()
   })
 
   it('첫 규칙 카드를 보여 주고, 규칙의 문제를 마치면 저장한 뒤 다음 규칙으로 바로 넘어간다', { timeout: 20000 }, async () => {

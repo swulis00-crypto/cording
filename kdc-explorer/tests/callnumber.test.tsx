@@ -50,9 +50,10 @@ async function solve(user: User, quiz: Quiz) {
 }
 
 describe('게임 4단계: 책 주소 완성하기', () => {
-  it('기본 플레이에서는 검토 전 문항이 없어 아직 열리지 않았다고 안내한다', () => {
+  it('기본 플레이에서 4단계가 정상적으로 열린다', () => {
     renderAt('/level/4')
-    expect(screen.getByRole('heading', { name: '아직 열리지 않은 단계예요' })).toBeInTheDocument()
+    expect(screen.getByText('책 주소 완성하기')).toBeInTheDocument()
+    expect(screen.getByText('문제 1 / 15')).toBeInTheDocument()
   })
 
   it('첫 단계에서 라벨의 다섯 부분(별치·분류·저자·권차·복본)을 보여 준다', () => {

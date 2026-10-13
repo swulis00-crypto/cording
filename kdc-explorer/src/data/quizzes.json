@@ -25,7 +25,7 @@
     "explanation": "백과사전은 과학, 역사, 예술 등 여러 분야를 한 권에 두루 담아서 000 총류에 꽂혀요.",
     "hint": "이 책은 한 가지 분야만 다룰까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-000-003",
@@ -53,7 +53,7 @@
     "explanation": "컴퓨터 과학과 프로그래밍은 KDC에서 000 총류에 속해요. 기계·전자처럼 보여서 500 기술과학과 헷갈리기 쉬워요. 파이썬은 '프로그래밍 언어'지만 사람이 쓰는 말이 아니라서 700 언어도 아니에요.",
     "hint": "도서관 맨 앞, 정보와 컴퓨터를 다루는 서가를 떠올려 보세요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-100-002",
@@ -81,7 +81,7 @@
     "explanation": "KDC에서 심리학은 100 철학에 속해요. 사람의 마음과 생각이 어떻게 움직이는지 탐구하기 때문이에요.",
     "hint": "'마음'과 '생각'을 탐구하는 서가예요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-100-003",
@@ -99,7 +99,7 @@
     "explanation": "특정 종교의 가르침을 다룬 책은 200 종교예요. 옳고 그름(윤리학), 생각하는 방법(논리학), 마음(심리학)은 모두 100 철학이에요.",
     "hint": "종교 이야기가 섞여 있지 않나요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-200-002",
@@ -127,7 +127,7 @@
     "explanation": "특정 종교의 믿음과 의식을 소개하는 책은 200 종교예요.",
     "hint": "이 책은 어떤 종교에 관한 책일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-200-003",
@@ -155,7 +155,7 @@
     "explanation": "여러 종교를 다뤄도 주제는 '종교' 하나예요. 그래서 000 총류가 아니라 200 종교에 꽂혀요.",
     "hint": "여러 가지를 다뤄도 주제가 한 분야라면 그 분야 서가로 가요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-300-002",
@@ -183,7 +183,7 @@
     "explanation": "물건값이 오르내리는 원리는 경제학이라서 300 사회과학이에요. 떡볶이 '만드는 법'을 다룬 요리책이라면 500 기술과학으로 가요.",
     "hint": "떡볶이를 만드는 책일까요, 값이 정해지는 원리를 다룬 책일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-300-003",
@@ -201,7 +201,7 @@
     "explanation": "지나간 시대의 일을 다룬 '조선 왕들의 하루'는 900 역사예요. 선거(정치), 법, 풍습은 모두 300 사회과학이에요.",
     "hint": "지금 사회의 제도가 아니라 '과거'를 다룬 책을 찾아보세요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-400-002",
@@ -229,7 +229,7 @@
     "explanation": "아주 먼 옛날 일이지만, 공룡은 사람의 역사가 아니라 생물과 지구에 관한 과학이에요. 그래서 400 자연과학이에요.",
     "hint": "공룡은 사람일까요, 생물일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-400-003",
@@ -257,7 +257,7 @@
     "explanation": "우주를 '연구'하는 천문학은 400 자연과학이지만, 우주 정거장처럼 무언가를 '만드는' 기술은 500 기술과학이에요.",
     "hint": "우주를 연구하는 책일까요, 무언가를 만드는 책일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-500-002",
@@ -285,7 +285,7 @@
     "explanation": "요리는 생활에 필요한 것을 만드는 생활 기술이라서 500 기술과학이에요. 음식을 예쁘게 꾸며도 예술 서가가 아니에요.",
     "hint": "요리는 무언가를 '만드는' 활동이에요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-500-003",
@@ -303,7 +303,7 @@
     "explanation": "번개가 치는 원리를 밝히는 날씨의 과학은 400 자연과학이에요. 다리 짓기(건설), 건강 지키기(의학), 전기차(기계·전기)는 지식을 활용하는 500 기술과학이에요.",
     "hint": "무언가를 만들거나 고치는 책이 아닌 것을 찾아보세요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-600-002",
@@ -331,7 +331,7 @@
     "explanation": "KDC에서 스포츠와 오락은 600 예술에 속해요. 의외라서 헷갈리기 쉬우니 꼭 기억해 두세요!",
     "hint": "운동도 '즐기는 활동'이에요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-600-003",
@@ -349,7 +349,7 @@
     "explanation": "판타지 소설은 작가가 지어낸 작품이라서 800 문학이에요. 춤(공연), 악기 연주(음악), 사진 찍기는 모두 600 예술이에요.",
     "hint": "작가가 지어낸 '이야기'는 어느 서가일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-700-002",
@@ -377,7 +377,7 @@
     "explanation": "우리말의 뜻과 바른 쓰임을 알려 주는 책은 말과 글 자체를 다루므로 700 언어예요. 이름에 '사전'이 붙어도 여러 분야를 담은 백과사전(000 총류)과는 달라요.",
     "hint": "이 책은 '말' 자체에 관한 책이에요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-700-003",
@@ -405,7 +405,7 @@
     "explanation": "영어로 쓰였어도 소설은 작가의 작품이라서 800 문학이에요. 영어를 '배우는' 책이어야 700 언어예요.",
     "hint": "영어를 배우는 책일까요, 영어로 쓴 이야기일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-800-002",
@@ -433,7 +433,7 @@
     "explanation": "작가가 상상해서 지어낸 소설은 800 문학이에요. 학교가 배경이어도 교육(300 사회과학) 책이 아니에요.",
     "hint": "진짜 있었던 일일까요, 지어낸 이야기일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-800-003",
@@ -461,7 +461,7 @@
     "explanation": "역사를 배경으로 해도 작가가 지어낸 소설이면 800 문학이에요. 실제로 있었던 일을 설명하는 책이 900 역사예요.",
     "hint": "타임슬립은 실제로 있었던 일일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-900-002",
@@ -489,7 +489,7 @@
     "explanation": "KDC에서 지리와 여행 안내는 900 역사에 속해요. 여행 책이 역사 서가에 있다니, 의외죠?",
     "hint": "역사 서가에는 '지리'도 함께 살아요.",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   },
   {
     "id": "quiz-900-003",
@@ -517,6 +517,6 @@
     "explanation": "실제 인물의 삶을 기록한 전기는 900 역사예요. 작가가 상상해서 지어낸 이야기라면 800 문학이에요.",
     "hint": "지어낸 이야기일까요, 실제 기록일까요?",
     "fictional": true,
-    "reviewStatus": "draft"
+    "reviewStatus": "approved"
   }
 ]
