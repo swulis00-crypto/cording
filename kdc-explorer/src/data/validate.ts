@@ -4,12 +4,15 @@ import {
   BLANK,
   isBuildQuiz,
   QUIZ_TYPES,
+  RULE_VISUALS,
+  SHELF_SEPARATOR,
   REVIEW_STATUSES,
   type Classification,
   type NumberRule,
   type Quiz,
   type QuizType,
   type ReviewStatus,
+  type RuleVisual,
 } from '../types/index.ts'
 
 export interface ValidationResult<T> {
@@ -157,8 +160,8 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
     else if (seenIds.has(raw.id)) problems.push('id가 중복되었습니다.')
     if (!isNonEmptyString(raw.title)) problems.push('제목(title)이 없습니다.')
     if (!isNonEmptyString(raw.summary)) problems.push('설명(summary)이 없습니다.')
-    if (raw.visual !== undefined && raw.visual !== 'author-parts' && raw.visual !== 'author-table') {
-      problems.push('그림(visual)은 "author-parts" 또는 "author-table"이어야 합니다.')
+    if (raw.visual !== undefined && !RULE_VISUALS.includes(raw.visual as RuleVisual)) {
+      problems.push(`그림(visual)은 ${RULE_VISUALS.join(', ')} 중 하나여야 합니다.`)
     }
     const key = raw.key
     const validKey =
@@ -179,7 +182,7 @@ export function validateRules(input: unknown): ValidationResult<NumberRule> {
     seenIds.add(raw.id as string)
     items.push({
       ...(isRecord(key) && { key: key as unknown as NumberRule['key'] }),
-      ...((raw.visual === 'author-parts' || raw.visual === 'author-table') && { visual: raw.visual }),
+      ...(RULE_VISUALS.includes(raw.visual as RuleVisual) && { visual: raw.visual as RuleVisual }),
       id: raw.id as string,
       emoji: typeof raw.emoji === 'string' ? raw.emoji : '🔎',
       title: raw.title as string,
@@ -266,6 +269,10 @@ export function validateQuizzes(
       problems.push('보기(options)는 비어 있지 않은 문자열 2개 이상이어야 합니다.')
     } else if (new Set(options).size !== options.length) {
       problems.push('보기(options)에 같은 값이 중복되었습니다.')
+    } else if (raw.type === 'shelf-order') {
+      const order = typeof raw.correctAnswer === 'string' ? raw.correctAnswer.split(SHELF_SEPARATOR) : []
+      const sameBooks = order.length === options.length && [...order].sort().join() === [...options].sort().join()
+      if (!sameBooks) problems.push('서가 정리 정답은 보기의 책을 모두 한 번씩, "' + SHELF_SEPARATOR.trim() + '"로 나눠 순서대로 적어야 합니다.')
     } else if (isBuildQuiz({ type: raw.type as QuizType })) {
       const problem = buildAnswerProblem(raw.template, options, raw.correctAnswer)
       if (problem) problems.push(problem)

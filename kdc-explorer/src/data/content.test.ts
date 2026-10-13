@@ -1,7 +1,9 @@
 // 실제 학습 데이터 파일 검사
 import { describe, expect, it } from 'vitest'
 import { authorMark } from '../features/author/authorMark.ts'
-import { allQuizzes, authorSteps, dataErrors, level2Quizzes, level3Quizzes, mainClasses, quizzes, rules } from './index.ts'
+import { compareCallNumbers } from '../features/author/callNumber.ts'
+import { SHELF_SEPARATOR } from '../types/index.ts'
+import { allQuizzes, authorSteps, callSteps, dataErrors, level2Quizzes, level3Quizzes, level4Quizzes, mainClasses, quizzes, rules } from './index.ts'
 
 // PRD 5.1 표, KDC 제6판 주류
 const EXPECTED_MAIN_CLASSES = [
@@ -99,6 +101,30 @@ describe('학습 데이터', () => {
       const author = authors[q.book!.title]
       expect(author, q.id).toBeDefined()
       expect(q.correctAnswer, q.id).toBe(authorMark(author, q.book!.title))
+    }
+  })
+
+  it('게임 4단계: 단계 4개, 모든 단계에 문항이 있고 서가 정리 문항을 포함한다', () => {
+    expect(callSteps.map((s) => s.id)).toEqual(['call-1', 'call-2', 'call-3', 'call-4'])
+    for (const s of callSteps) expect(level4Quizzes.some((q) => q.rule === s.id), s.id).toBe(true)
+    expect(level4Quizzes.filter((q) => q.type === 'shelf-order').length).toBeGreaterThanOrEqual(3)
+  })
+
+  it('게임 4단계: 서가 정리 정답은 청구기호 정렬 결과와 같다', () => {
+    for (const q of level4Quizzes.filter((q) => q.type === 'shelf-order')) {
+      expect(q.correctAnswer, q.id).toBe([...q.options].sort(compareCallNumbers).join(SHELF_SEPARATOR))
+    }
+  })
+
+  it('게임 4단계: 실제 책 라벨의 저자기호가 기호표 계산과 같다', () => {
+    const books: [string, string, string][] = [
+      ['l4-call2-001', '이꽃님', '당연하게도 나는 너를'],
+      ['l4-call2-002', '손원평', '아몬드'],
+      ['l4-call4-001', '김초엽', '우리가 빛의 속도로 갈 수 없다면'],
+    ]
+    for (const [id, author, title] of books) {
+      const q = level4Quizzes.find((x) => x.id === id)!
+      expect(q.correctAnswer, id).toBe(`813.7 ${authorMark(author, title)}`)
     }
   })
 

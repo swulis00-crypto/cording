@@ -2,6 +2,7 @@
 import rawClassifications from './classifications.json'
 import rawLevel2 from './level2.json'
 import rawLevel3 from './level3.json'
+import rawLevel4 from './level4.json'
 import rawQuizzes from './quizzes.json'
 import { validateClassifications, validateQuizzes, validateRules } from './validate.ts'
 import { getPlayableQuizzes } from '../features/quiz/engine.ts'
@@ -9,6 +10,7 @@ import type { Classification, NumberRule, Quiz } from '../types/index.ts'
 
 const level2 = rawLevel2 as unknown as { rules?: unknown; quizzes?: unknown }
 const level3 = rawLevel3 as unknown as { rules?: unknown; quizzes?: unknown }
+const level4 = rawLevel4 as unknown as { rules?: unknown; quizzes?: unknown }
 
 const classificationResult = validateClassifications(rawClassifications as unknown)
 const quizResult = validateQuizzes(rawQuizzes as unknown, classificationResult.items)
@@ -23,6 +25,12 @@ const level3QuizResult = validateQuizzes(
   level3.quizzes,
   classificationResult.items,
   authorStepResult.items.map((r) => r.id),
+)
+const callStepResult = validateRules(level4.rules)
+const level4QuizResult = validateQuizzes(
+  level4.quizzes,
+  classificationResult.items,
+  callStepResult.items.map((r) => r.id),
 )
 
 /** 분류번호순으로 정렬한 전체 분류 */
@@ -48,8 +56,14 @@ export const authorSteps: NumberRule[] = authorStepResult.items
 /** 게임 3단계 문항 */
 export const level3Quizzes: Quiz[] = level3QuizResult.items.filter((q) => q.rule !== undefined)
 
+/** 게임 4단계 단계(책 주소) */
+export const callSteps: NumberRule[] = callStepResult.items
+
+/** 게임 4단계 문항 */
+export const level4Quizzes: Quiz[] = level4QuizResult.items.filter((q) => q.rule !== undefined)
+
 /** 모든 게임 단계의 문항 (오답 복습용) */
-export const allQuizzes: Quiz[] = [...quizzes, ...level2Quizzes, ...level3Quizzes]
+export const allQuizzes: Quiz[] = [...quizzes, ...level2Quizzes, ...level3Quizzes, ...level4Quizzes]
 
 /** 화면에 안내할 데이터 오류 */
 export const dataErrors: string[] = [
@@ -61,6 +75,9 @@ export const dataErrors: string[] = [
   ...authorStepResult.errors.map((e) => `[게임 3단계] ${e}`),
   ...level3QuizResult.errors.map((e) => `[게임 3단계] ${e}`),
   ...level3QuizResult.items.filter((q) => q.rule === undefined).map((q) => `[게임 3단계] 퀴즈 "${q.id}": 단계(rule)가 없습니다.`),
+  ...callStepResult.errors.map((e) => `[게임 4단계] ${e}`),
+  ...level4QuizResult.errors.map((e) => `[게임 4단계] ${e}`),
+  ...level4QuizResult.items.filter((q) => q.rule === undefined).map((q) => `[게임 4단계] 퀴즈 "${q.id}": 단계(rule)가 없습니다.`),
 ]
 
 export function getClassification(id: string): Classification | undefined {
@@ -76,9 +93,9 @@ export function getChildren(parentId: string): Classification[] {
   return classifications.filter((c) => c.parentId === parentId)
 }
 
-/** 게임 2단계 규칙 또는 3단계 단계 */
+/** 게임 2단계 규칙, 3·4단계 단계 */
 export function getRule(id: string): NumberRule | undefined {
-  return rules.find((r) => r.id === id) ?? authorSteps.find((r) => r.id === id)
+  return [...rules, ...authorSteps, ...callSteps].find((r) => r.id === id)
 }
 
 /** 해당 분류 미션에 출제할 수 있는 게임 1단계 문항 (데이터 순서 유지) */
@@ -108,4 +125,9 @@ export function getRuleQuizzes(preview: boolean): Quiz[] {
 /** 게임 3단계에서 출제할 수 있는 문항 */
 export function getAuthorQuizzes(preview: boolean): Quiz[] {
   return stepQuizzes(authorSteps, level3Quizzes, preview)
+}
+
+/** 게임 4단계에서 출제할 수 있는 문항 */
+export function getCallQuizzes(preview: boolean): Quiz[] {
+  return stepQuizzes(callSteps, level4Quizzes, preview)
 }

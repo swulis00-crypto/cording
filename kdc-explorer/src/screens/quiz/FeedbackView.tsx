@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { getClassificationByCode } from '../../data/index.ts'
-import { codeFromOption, reactionFor, type AnswerRecord } from '../../features/quiz/engine.ts'
+import { codeFromOption, displayAnswer, reactionFor, type AnswerRecord } from '../../features/quiz/engine.ts'
 import { isBuildQuiz, type Quiz } from '../../types/index.ts'
 import { BookCard } from './BookCard.tsx'
 import { SpeechBubble } from './SpeechBubble.tsx'
@@ -52,13 +52,13 @@ export function FeedbackView({ quiz, answer, isLast, onNext }: Props) {
       <dl className={styles.answerLines}>
         <div>
           <dt>내가 고른 답</dt>
-          <dd>{answer.selected}</dd>
+          <dd>{displayAnswer(quiz, answer.selected)}</dd>
         </div>
         {!answer.correct && (
           <div>
             <dt>정답</dt>
             <dd>
-              <strong>{quiz.correctAnswer}</strong>
+              <strong>{displayAnswer(quiz, quiz.correctAnswer)}</strong>
             </dd>
           </div>
         )}
@@ -76,7 +76,11 @@ export function FeedbackView({ quiz, answer, isLast, onNext }: Props) {
           {quiz.character && <p className={styles.reviewQuestionText}>{`${quiz.character.name}: "${quiz.character.line}"`}</p>}
           {quiz.book && <BookCard book={quiz.book} fictional={quiz.fictional} compact />}
           <p className={styles.reviewQuestionText}>{quiz.question}</p>
-          {isBuildQuiz(quiz) && quiz.template ? (
+          {quiz.type === 'shelf-order' ? (
+            <p>
+              정답 순서: <strong>{displayAnswer(quiz, quiz.correctAnswer)}</strong>
+            </p>
+          ) : isBuildQuiz(quiz) && quiz.template ? (
             <p>
               틀: <strong>{quiz.template}</strong> · 숫자 카드: {quiz.options.join(', ')}
             </p>

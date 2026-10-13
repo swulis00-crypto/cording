@@ -872,3 +872,138 @@
   font-size: 0.75rem;
   font-weight: 700;
 }
+
+/* ---- 게임 4단계: 책 주소 구성도 · 서가 정리 ---- */
+.builderGap {
+  width: 14px;
+}
+
+.callParts {
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.callPartsBody {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.callLabel {
+  flex: none;
+  margin: 0;
+  padding: 8px 10px;
+  list-style: none;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  border: 2px solid var(--hue, var(--primary));
+  border-top-width: 10px;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.callLegend,
+.shelfRuleList {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.callLegend li,
+.shelfRuleList li {
+  padding: 3px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  border-left: 5px solid var(--hue, var(--primary));
+  border-radius: 6px;
+  background: #f6f1e6;
+  line-height: 1.35;
+}
+
+.shelfGame {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.shelfBooks,
+.shelfRow {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shelfBooks {
+  min-height: 112px;
+}
+
+.shelfRow {
+  min-height: 120px;
+  padding: 8px 8px 0;
+  align-items: flex-end;
+  border-bottom: 10px solid #a47b4f;
+  border-radius: 8px 8px 0 0;
+  background: #efe6d4;
+}
+
+.spine {
+  width: 76px;
+  min-height: 104px;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 2px solid var(--hue, var(--primary));
+  border-top-width: 8px;
+  border-radius: 6px 6px 2px 2px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 800;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.spine:hover {
+  background: #eef3f8;
+}
+
+.spinePlaced {
+  background: #fffdf8;
+}
+
+.spineOrder {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.spineEmpty {
+  width: 76px;
+  height: 104px;
+  border: 2px dashed #c7b598;
+  border-radius: 6px 6px 2px 2px;
+}
+
+.shelfDone {
+  align-self: center;
+  color: var(--status-completed);
+  font-weight: 800;
+}

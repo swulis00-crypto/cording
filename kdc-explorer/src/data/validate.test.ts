@@ -156,6 +156,22 @@ describe('게임 2단계 데이터', () => {
     expect(result.errors.join()).toContain('8xx')
   })
 
+  it('서가 정리: 정답이 보기의 책을 모두 한 번씩 담아야 한다', () => {
+    const shelf = (overrides: Record<string, unknown>) =>
+      quiz({ type: 'shelf-order', rule: 'rule-1', options: ['813.7 김84ㅇ', '813.7 손66ㅇ'], ...overrides })
+    const result = validateQuizzes(
+      [
+        shelf({ id: 'ok', correctAnswer: '813.7 김84ㅇ | 813.7 손66ㅇ' }),
+        shelf({ id: 'missing', correctAnswer: '813.7 김84ㅇ' }),
+        shelf({ id: 'other', correctAnswer: '813.7 김84ㅇ | 813.7 김95ㅂ' }),
+      ],
+      classifications,
+      ['rule-1'],
+    )
+    expect(result.items.map((q) => q.id)).toEqual(['ok'])
+    expect(result.errors).toHaveLength(2)
+  })
+
   it('존재하지 않는 규칙을 참조하면 탐지한다', () => {
     const result = validateQuizzes([build({ rule: 'rule-9' })], classifications, ['rule-1'])
     expect(result.errors.join()).toContain('rule-9')

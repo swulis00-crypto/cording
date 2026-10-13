@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { isPreviewMode } from '../app/preview.ts'
 import { useProgress } from '../app/useProgress.ts'
-import { authorSteps, mainClasses, rules } from '../data/index.ts'
+import { authorSteps, callSteps, mainClasses, rules } from '../data/index.ts'
 import { GAME_LEVELS, isLevelCompleted, isLevelUnlocked } from '../features/progress/levels.ts'
 import { totalStars } from '../features/progress/progress.ts'
 import styles from './Pages.module.css'
@@ -14,12 +14,14 @@ export function LevelsScreen() {
     mainClassIds: mainClasses.map((c) => c.id),
     ruleIds: rules.map((r) => r.id),
     authorStepIds: authorSteps.map((s) => s.id),
+    callStepIds: callSteps.map((s) => s.id),
   }
   // 단계별 진행 정도 (1단계: 구역, 2단계: 규칙)
   const steps: Record<number, { done: number; total: number; unit: string }> = {
     1: { done: content.mainClassIds.filter((id) => progress.completedClassifications.includes(id)).length, total: content.mainClassIds.length, unit: '구역' },
     2: { done: content.ruleIds.filter((id) => progress.completedRules.includes(id)).length, total: content.ruleIds.length, unit: '규칙' },
     3: { done: content.authorStepIds.filter((id) => progress.completedRules.includes(id)).length, total: content.authorStepIds.length, unit: '단계' },
+    4: { done: content.callStepIds.filter((id) => progress.completedRules.includes(id)).length, total: content.callStepIds.length, unit: '단계' },
   }
 
   return (

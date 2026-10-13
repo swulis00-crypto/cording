@@ -38,7 +38,7 @@ export const GAME_LEVELS: GameLevel[] = [
     title: '책 주소 완성하기',
     summary: '분류기호와 저자기호를 합쳐 책이 사는 주소(청구기호)를 완성해요.',
     path: '/level/4',
-    ready: false,
+    ready: true,
   },
 ]
 
@@ -48,18 +48,22 @@ export interface LevelContent {
   ruleIds: string[]
   /** 게임 3단계 단계(저자기호) */
   authorStepIds: string[]
+  /** 게임 4단계 단계(책 주소) */
+  callStepIds: string[]
 }
 
 /**
  * 게임 1단계 완료 = 주류 10개 구역을 모두 마침
  * 게임 2단계 완료 = 규칙을 모두 마침
  * 게임 3단계 완료 = 저자기호 단계를 모두 마침
+ * 게임 4단계 완료 = 책 주소 단계를 모두 마침
  */
 export function isLevelCompleted(level: number, progress: Progress, content: LevelContent): boolean {
   const all = (ids: string[], done: string[]) => ids.length > 0 && ids.every((id) => done.includes(id))
   if (level === 1) return all(content.mainClassIds, progress.completedClassifications)
   if (level === 2) return all(content.ruleIds, progress.completedRules)
   if (level === 3) return all(content.authorStepIds, progress.completedRules)
+  if (level === 4) return all(content.callStepIds, progress.completedRules)
   return false
 }
 

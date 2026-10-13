@@ -1,5 +1,5 @@
 // 퀴즈 규칙 (PRD 10.1). 화면과 분리한 순수 함수.
-import { isBuildQuiz, type Quiz, type QuizType } from '../../types/index.ts'
+import { isBuildQuiz, SHELF_SEPARATOR, type Quiz, type QuizType } from '../../types/index.ts'
 
 export const POINTS_PER_CORRECT = 10
 
@@ -55,6 +55,12 @@ export const QUIZ_TYPE_LABELS: Record<QuizType, string> = {
   'rule-inference': '🧩 규칙 추리',
   'build-number': '🔐 번호 조립',
   'build-author': '🛠 저자기호 만들기',
+  'shelf-order': '📚 서가 정리',
+}
+
+/** 답을 화면에 보여 줄 때의 모양 (서가 정리는 책 사이를 화살표로) */
+export function displayAnswer(quiz: Quiz, value: string): string {
+  return quiz.type === 'shelf-order' ? value.split(SHELF_SEPARATOR).join(' → ') : value
 }
 
 const CORRECT_REACTIONS = ['책이 제자리를 찾았어요! 📚', '서가가 한결 깔끔해졌어요! ✨', '탐험대원다운 판단이에요! 🧭']

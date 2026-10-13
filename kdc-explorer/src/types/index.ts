@@ -36,6 +36,8 @@ export type QuizType =
   | 'build-number'
   /** 카드로 빈칸을 채워 저자기호 만들기 (게임 3단계) */
   | 'build-author'
+  /** 책을 눌러 서가에 순서대로 꽂기 (게임 4단계) */
+  | 'shelf-order'
 
 export const QUIZ_TYPES: readonly QuizType[] = [
   'name-recall',
@@ -45,7 +47,11 @@ export const QUIZ_TYPES: readonly QuizType[] = [
   'rule-inference',
   'build-number',
   'build-author',
+  'shelf-order',
 ]
+
+/** 서가 정리 문제의 정답·답에서 책 사이를 나누는 표시 (예: "813.7 김84ㅇ | 813.7 김95ㅂ") */
+export const SHELF_SEPARATOR = ' | '
 
 /** 카드로 빈칸을 채우는 문제인지 (번호 조립·저자기호 만들기) */
 export function isBuildQuiz(quiz: { type: QuizType }): boolean {
@@ -64,9 +70,14 @@ export interface NumberRule {
   /** 숫자 해독표: 규칙이 다루는 자리의 숫자별 뜻 (예: 셋째 자리 1 시, 2 희곡 …) */
   key?: RuleKey
   /** 게임 3단계: 문제 위에 보여 줄 그림 (저자기호 구성 / 저자기호 기호표) */
-  visual?: 'author-parts' | 'author-table'
+  visual?: RuleVisual
   reviewStatus: ReviewStatus
 }
+
+/** 단계 안내 아래 그림: 저자기호 구성도·기호표(3단계), 청구기호 구성도·서가 정리 순서(4단계) */
+export type RuleVisual = 'author-parts' | 'author-table' | 'call-parts' | 'shelf-rules'
+
+export const RULE_VISUALS: readonly RuleVisual[] = ['author-parts', 'author-table', 'call-parts', 'shelf-rules']
 
 export interface RuleKey {
   /** 예: "셋째 자리" */

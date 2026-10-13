@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import { Link } from 'react-router'
-import { summarize, type AnswerRecord } from '../../features/quiz/engine.ts'
+import { displayAnswer, summarize, type AnswerRecord } from '../../features/quiz/engine.ts'
 import type { Classification, Quiz } from '../../types/index.ts'
 import styles from './Quiz.module.css'
 
@@ -78,10 +78,10 @@ export function ResultView({ classification, quizzes, answers, onRetry, onRetryW
                   {quiz.book ? `『${quiz.book.title}』` : quiz.question}
                 </summary>
                 <p>
-                  내가 고른 답: {answer?.selected ?? '-'}
+                  내가 고른 답: {answer ? displayAnswer(quiz, answer.selected) : '-'}
                   {!correct && (
                     <>
-                      {' · '}정답: <strong>{quiz.correctAnswer}</strong>
+                      {' · '}정답: <strong>{displayAnswer(quiz, quiz.correctAnswer)}</strong>
                     </>
                   )}
                 </p>

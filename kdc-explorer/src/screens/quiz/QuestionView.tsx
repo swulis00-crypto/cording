@@ -3,6 +3,7 @@ import { QUIZ_TYPE_LABELS } from '../../features/quiz/engine.ts'
 import { isBuildQuiz, type Quiz } from '../../types/index.ts'
 import { BookCard } from './BookCard.tsx'
 import { NumberBuilder } from './NumberBuilder.tsx'
+import { ShelfOrder } from './ShelfOrder.tsx'
 import { SpeechBubble } from './SpeechBubble.tsx'
 import styles from './Quiz.module.css'
 
@@ -48,10 +49,12 @@ export function QuestionView({ quiz, selected, hintShown, needsSelection, onSele
         <legend className={styles.question}>{quiz.question}</legend>
         {titleOptions && <p className={styles.fictionalNote}>📚 보기의 책 제목은 모두 가상 예시예요.</p>}
 
-        {template !== undefined ? (
+        {quiz.type === 'shelf-order' ? (
+          <ShelfOrder books={quiz.options} onChange={(value) => (value === null ? onClear() : onSelect(value))} />
+        ) : template !== undefined ? (
           <NumberBuilder
             template={template}
-            noun={quiz.type === 'build-author' ? '저자기호' : '번호'}
+            noun={template.includes(' ') ? '책 주소' : quiz.type === 'build-author' ? '저자기호' : '번호'}
             cards={quiz.options}
             onChange={(value) => (value === null ? onClear() : onSelect(value))}
           />
@@ -82,7 +85,9 @@ export function QuestionView({ quiz, selected, hintShown, needsSelection, onSele
 
       {needsSelection && (
         <p className={styles.alert} role="alert">
-          {building
+          {quiz.type === 'shelf-order'
+            ? '책을 모두 서가에 꽂아 주세요.'
+            : building
             ? quiz.type === 'build-author'
               ? '카드로 빈칸을 모두 채워 주세요.'
               : '숫자 카드로 빈칸을 모두 채워 주세요.'

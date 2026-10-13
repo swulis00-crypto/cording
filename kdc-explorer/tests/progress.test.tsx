@@ -197,5 +197,6 @@ describe('탐험 지도 (탐험 단계 고르기)', () => {
     expect(screen.getByRole('link', { name: '시작하기: 저자기호 만들기' })).toBeInTheDocument()
     expect(screen.getByText('진행 중 · 단계 0 / 4')).toBeInTheDocument()
     expect(screen.getByText('🔒 3단계를 마치면 열려요')).toBeInTheDocument()
+    expect(screen.queryByText('🛠 준비 중이에요')).not.toBeInTheDocument()
   })
 })

@@ -31,7 +31,10 @@ export function NumberBuilder({ template, cards, onChange, noun = '번호' }: Pr
   const slots = chars.map((c) =>
     c === BLANK ? { blank: true, order: order, value: filled[order++] } : { blank: false, order: -1, value: c },
   )
-  const spoken = slots.map((s) => s.value ?? '빈칸').join(' ')
+  const spoken = slots
+    .filter((s) => s.value !== ' ')
+    .map((s) => s.value ?? '빈칸')
+    .join(' ')
 
   return (
     <div className={styles.builder}>
@@ -40,7 +43,11 @@ export function NumberBuilder({ template, cards, onChange, noun = '번호' }: Pr
           <span
             key={i}
             className={
-              slot.blank ? `${styles.builderBlank} ${slot.order === filled.length ? styles.builderNext : ''}` : styles.builderFixed
+              slot.blank
+                ? `${styles.builderBlank} ${slot.order === filled.length ? styles.builderNext : ''}`
+                : slot.value === ' '
+                  ? styles.builderGap
+                  : styles.builderFixed
             }
           >
             {slot.value ?? ''}
