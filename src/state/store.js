@@ -78,8 +78,8 @@ export const GAME_METADATA = {
     subtitle: '정답 기호를 든 두더지를 콩!',
     icon: '🔨',
     themeColor: '#ec4899',
-    howTo: '두더지가 든 팻말을 잘 읽고, 정답 두더지를 빠르게 눌러요!',
-    skills: '저자기호 읽기 & 분류번호 순발력',
+    howTo: '두더지가 든 팻말을 잘 읽고, 정답 두더지를 빠르게 눌러요! (저자기호는 만들 줄 몰라도 돼요. 읽고 순서만 알면 OK)',
+    skills: '저자기호 구성 알기 & 꽂히는 순서',
     controls: 'pointer'
   }
 };

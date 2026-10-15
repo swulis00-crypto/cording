@@ -252,7 +252,7 @@ export const GAME_QUESTIONS = {
     basic: [
       {
         id: 'mole-b1',
-        prompt: '단서: 김유정의 단편소설 『봄봄』의 올바른 이재철 저자기호는?',
+        prompt: '김유정이 쓴 『봄봄』! 글쓴이 성 "김"으로 시작하고 제목 첫소리 "ㅂ"으로 끝나는 저자기호를 잡아요.',
         targetCode: '김68ㅂ',
         moles: [
           { code: '김68ㅂ', isTarget: true, desc: '김유정의 "봄봄" (정답!)' },
@@ -260,11 +260,11 @@ export const GAME_QUESTIONS = {
           { code: '손68ㅇ', isTarget: false, desc: '손원평의 "아몬드"' },
           { code: '박69ㄱ', isTarget: false, desc: '박완서 작가' }
         ],
-        explanation: '저자 성명 김유정 ➔ 성 "김" + 번호 "68" + 제목 첫 글자 봄봄 ➔ "ㅂ" = 김68ㅂ'
+        explanation: '저자기호 = 글쓴이 성(김) + 이름 번호(68) + 제목 첫 글자 "봄"의 첫소리(ㅂ) → 김68ㅂ. 번호는 사서 선생님이 표를 보고 정해요.'
       },
       {
         id: 'mole-b2',
-        prompt: '단서: 이순신 장군의 『난중일기』의 올바른 저자기호는?',
+        prompt: '이순신 장군이 쓴 『난중일기』! 글쓴이 성 "이"로 시작하고 제목 첫소리 "ㄴ"으로 끝나는 저자기호를 잡아요.',
         targetCode: '이58ㄴ',
         moles: [
           { code: '이58ㄴ', isTarget: true, desc: '이순신의 "난중일기" (정답!)' },
@@ -272,7 +272,7 @@ export const GAME_QUESTIONS = {
           { code: '생83ㅇ', isTarget: false, desc: '생텍쥐페리' },
           { code: '윤46ㅎ', isTarget: false, desc: '윤동주 시인' }
         ],
-        explanation: '저자 성명 이순신 ➔ 성 "이" + 번호 "58" + 제목 난중일기 ➔ "ㄴ" = 이58ㄴ'
+        explanation: '저자기호 = 글쓴이 성(이) + 이름 번호(58) + 제목 첫 글자 "난"의 첫소리(ㄴ) → 이58ㄴ'
       },
       {
         id: 'mole-b3',
@@ -290,15 +290,15 @@ export const GAME_QUESTIONS = {
     challenge: [
       {
         id: 'mole-c1',
-        prompt: '단서: 손원평 작가의 청소년 소설 『아몬드』의 올바른 저자기호는?',
+        prompt: '813.6 책꽂이에 김68ㅂ, 박69ㅈ, 손68ㅇ, 황84ㅅ 네 권이 함께 꽂혀요. "박69ㅈ" 바로 다음(오른쪽)에 꽂히는 저자기호를 잡아요!',
         targetCode: '손68ㅇ',
         moles: [
           { code: '손68ㅇ', isTarget: true, desc: '손원평의 "아몬드" (정답!)' },
-          { code: '손68ㅅ', isTarget: false, desc: '제목 첫글자가 틀림' },
-          { code: '원68ㅇ', isTarget: false, desc: '성씨가 틀림' },
-          { code: '손82ㅇ', isTarget: false, desc: '번호가 틀림' }
+          { code: '김68ㅂ', isTarget: false, desc: '김유정의 "봄봄" (박보다 앞)' },
+          { code: '황84ㅅ', isTarget: false, desc: '황순원의 "소나기" (맨 뒤)' },
+          { code: '박69ㅈ', isTarget: false, desc: '박완서 (기준 책)' }
         ],
-        explanation: '저자 성명 손원평 ➔ 성 "손" + 번호 "68" + 제목 첫 글자 아몬드 ➔ "ㅇ" = 손68ㅇ'
+        explanation: '번호가 같으면 저자기호 가나다순: 김68ㅂ → 박69ㅈ → 손68ㅇ → 황84ㅅ. 그래서 박 다음은 손!'
       },
       {
         id: 'mole-c2',

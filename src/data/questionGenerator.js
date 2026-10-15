@@ -258,73 +258,155 @@ function genSnake(books, difficulty) {
   };
 }
 
-/** 저자기호를 살짝 바꿔 헷갈리는 오답 만들기 */
-function mutateAuthorCode(code) {
-  const m = String(code).match(/^([가-힣A-Za-z])(\d{2,3})(.*)$/);
+/** 한글 음절의 첫소리(초성)를 호환 자모로 */
+const CHOSEONG = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+function initialConsonant(ch) {
+  const code = ch.charCodeAt(0) - 0xac00;
+  if (code < 0 || code > 11171) return null;
+  return CHOSEONG[Math.floor(code / 588)];
+}
+
+/** 저자기호 분해: 성 / 숫자 / 제목 첫소리 */
+function parseAuthorCode(code) {
+  const m = String(code).trim().match(/^([가-힣A-Za-z])(\d{2,3})([ㄱ-ㅎ가-힣A-Za-z]?)/);
   if (!m) return null;
-  const [, surname, digits, tail] = m;
-  const surnames = ['김', '이', '박', '최', '정', '강', '조', '윤', '장', '임', '한', '오', '서', '신', '권', '황', '안', '송', '류', '전'];
-  const consonants = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+  return { surname: m[1], digits: m[2], tail: m[3] || '' };
+}
 
-  const otherSurname = pickRandom(surnames.filter(s => s !== surname));
-  const swappedDigits = digits.length >= 2 ? digits.charAt(1) + digits.charAt(0) + digits.slice(2) : digits;
-  const otherDigits = swappedDigits === digits ? String((parseInt(digits, 10) + 11) % 100).padStart(2, '0') : swappedDigits;
-  const tailChar = tail.trim().charAt(0);
-  const otherTail = tail ? pickRandom(consonants.filter(c => c !== tailChar)) + tail.slice(1) : 'ㅅ';
+function authorSamples(books) {
+  const seen = new Set();
+  return [
+    ...LEE_AUTHOR_RULES.sampleAuthors.map(s => ({ name: s.name, title: s.title, code: s.code, classNo: s.classNo })),
+    ...books.filter(b => b.authorNo).map(b => ({ name: b.author, title: b.title, code: b.authorNo, classNo: b.classNo }))
+  ].filter(s => {
+    const key = String(s.code).trim();
+    const parsed = parseAuthorCode(key);
+    if (!key || !parsed || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 
+/** 성이 서로 다른 샘플 n개 고르기 */
+function pickDistinctSurnames(samples, n) {
+  const used = new Set();
+  const out = [];
+  for (const s of shuffle(samples)) {
+    const p = parseAuthorCode(s.code);
+    if (!p || used.has(p.surname)) continue;
+    used.add(p.surname);
+    out.push(s);
+    if (out.length >= n) break;
+  }
+  return out;
+}
+
+const AUTHOR_RULE_TEXT = '저자기호 = 글쓴이 성 + 이름 번호 + 책 제목 첫 글자의 첫소리. 번호가 같은 책꽂이에서는 저자기호 가나다순으로 꽂혀요.';
+
+/**
+ * 두더지 게임 - 저자기호 문제
+ * 아이들이 저자기호를 '만들' 필요는 없어요. 읽고 구성을 알아보고, 꽂히는 순서를 아는 것이 목표!
+ */
+function genAuthorMole(books, difficulty) {
+  const samples = authorSamples(books);
+  if (samples.length < 4) return null;
+  const types = difficulty === 'challenge'
+    ? ['shelfFirst', 'shelfNext', 'shelfNext', 'part', 'titleInitial']
+    : ['surname', 'surname', 'part', 'titleInitial', 'shelfFirst'];
+  const type = pickRandom(types);
+  const id = `gen-mole-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+
+  if (type === 'surname') {
+    const picks = pickDistinctSurnames(samples, 4);
+    if (picks.length < 4) return null;
+    const target = picks[0];
+    const p = parseAuthorCode(target.code);
+    return {
+      id, generated: true,
+      prompt: `글쓴이 성이 '${p.surname}'인 책! 저자기호 맨 앞 글자가 '${p.surname}'인 두더지를 잡아요.`,
+      targetCode: target.code,
+      moles: shuffle(picks.map((s, i) => ({ code: s.code, isTarget: i === 0, desc: `${s.name}의 『${s.title}』${i === 0 ? ' (정답!)' : ''}` }))),
+      explanation: `저자기호 맨 앞 글자는 글쓴이의 성이에요. ${target.code} = '${p.surname}'씨(${target.name}) + 이름 번호 ${p.digits} + 제목 첫소리 '${p.tail}'`
+    };
+  }
+
+  if (type === 'titleInitial') {
+    const cands = samples.filter(s => {
+      const p = parseAuthorCode(s.code);
+      return p && p.tail && initialConsonant(s.title.trim().charAt(0)) === p.tail;
+    });
+    if (!cands.length) return genAuthorMole(books, 'basic');
+    const target = pickRandom(cands);
+    const tp = parseAuthorCode(target.code);
+    const others = shuffle(samples.filter(s => s.code !== target.code && (parseAuthorCode(s.code) || {}).tail !== tp.tail)).slice(0, 3);
+    if (others.length < 3) return genAuthorMole(books, 'basic');
+    return {
+      id, generated: true,
+      prompt: `『${target.title}』처럼 제목이 '${tp.tail}' 소리로 시작하는 책! 저자기호 맨 뒤 글자가 '${tp.tail}'인 두더지를 잡아요.`,
+      targetCode: target.code,
+      moles: shuffle([
+        { code: target.code, isTarget: true, desc: `${target.name}의 『${target.title}』 (정답!)` },
+        ...others.map(o => ({ code: o.code, isTarget: false, desc: `${o.name}의 『${o.title}』` }))
+      ]),
+      explanation: `저자기호 맨 뒤 글자는 책 제목 첫 글자의 첫소리예요. 『${target.title}』 → '${target.title.trim().charAt(0)}' → '${tp.tail}' → ${target.code}`
+    };
+  }
+
+  if (type === 'part') {
+    const target = pickRandom(samples);
+    const p = parseAuthorCode(target.code);
+    const ask = pickRandom(p.tail ? ['surname', 'digits', 'tail'] : ['surname', 'digits']);
+    const labels = { surname: '글쓴이의 성은', digits: '글쓴이 이름 번호는', tail: '책 제목 첫 글자의 첫소리는' };
+    const parts = [
+      { code: p.surname, key: 'surname', desc: '글쓴이의 성' },
+      { code: p.digits, key: 'digits', desc: '이름 번호' }
+    ];
+    if (p.tail) parts.push({ code: p.tail, key: 'tail', desc: '제목 첫소리' });
+    parts.push({ code: String(target.classNo || '813'), key: 'classNo', desc: '분류번호(주제 번호)' });
+    return {
+      id, generated: true,
+      prompt: `저자기호 '${target.code}'(${target.name}의 『${target.title}』)에서 ${labels[ask]} 어느 것? 그 조각을 든 두더지를 잡아요!`,
+      targetCode: parts.find(x => x.key === ask).code,
+      moles: shuffle(parts.map(x => ({ code: x.code, isTarget: x.key === ask, desc: x.desc + (x.key === ask ? ' (정답!)' : '') }))),
+      explanation: `${target.code} = 성 '${p.surname}' + 이름 번호 '${p.digits}'${p.tail ? ` + 제목 첫소리 '${p.tail}'` : ''}. 분류번호(${target.classNo || ''})는 저자기호가 아니라 그 위에 적는 주제 번호예요.`
+    };
+  }
+
+  if (type === 'shelfFirst') {
+    const picks = pickDistinctSurnames(samples, 4);
+    if (picks.length < 4) return null;
+    const sorted = [...picks].sort((a, b) => a.code.localeCompare(b.code, 'ko'));
+    const target = sorted[0];
+    return {
+      id, generated: true,
+      prompt: `번호가 같은 책꽂이에 이 네 권이 함께 꽂혀요. 가장 왼쪽(맨 앞)에 꽂히는 저자기호를 잡아요!`,
+      targetCode: target.code,
+      moles: shuffle(picks.map(s => ({ code: s.code, isTarget: s === target, desc: `${s.name}의 『${s.title}』${s === target ? ' (정답!)' : ''}` }))),
+      explanation: `번호가 같으면 저자기호 가나다순! ${sorted.map(s => s.code).join(' → ')} 순서로 꽂혀요.`
+    };
+  }
+
+  // shelfNext
+  const picks = pickDistinctSurnames(samples, 4);
+  if (picks.length < 4) return null;
+  const sorted = [...picks].sort((a, b) => a.code.localeCompare(b.code, 'ko'));
+  const k = Math.floor(Math.random() * 3); // 0..2
+  const given = sorted[k];
+  const target = sorted[k + 1];
+  const moles = sorted.filter(s => s !== given);
   return {
-    wrongSurname: { code: `${otherSurname}${digits}${tail}`, desc: '성(姓)이 달라요' },
-    wrongDigits: { code: `${surname}${otherDigits}${tail}`, desc: '숫자가 달라요' },
-    wrongTail: { code: `${surname}${digits}${otherTail}`, desc: '책 제목 첫 글자가 달라요' }
+    id, generated: true,
+    prompt: `같은 번호 책꽂이에서 '${given.code}' 바로 다음(오른쪽)에 꽂히는 저자기호를 잡아요!`,
+    targetCode: target.code,
+    moles: shuffle(moles.map(s => ({ code: s.code, isTarget: s === target, desc: `${s.name}의 『${s.title}』${s === target ? ' (정답!)' : ''}` }))),
+    explanation: `가나다순으로 ${sorted.map(s => s.code).join(' → ')}. 그래서 '${given.code}' 다음은 ${target.code}! ${AUTHOR_RULE_TEXT}`
   };
 }
 
 function genWhackMole(books, difficulty) {
-  const useAuthor = Math.random() < 0.5;
-
-  if (useAuthor) {
-    const seenCodes = new Set();
-    const samples = [
-      ...LEE_AUTHOR_RULES.sampleAuthors.map(s => ({ name: s.name, title: s.title, code: s.code })),
-      ...books.filter(b => b.authorNo).map(b => ({ name: b.author, title: b.title, code: b.authorNo }))
-    ].filter(s => {
-      const key = String(s.code).trim();
-      if (!key || seenCodes.has(key)) return false;
-      seenCodes.add(key);
-      return true;
-    });
-    if (samples.length < 4) return null;
-    const target = pickRandom(samples);
-    const mutated = mutateAuthorCode(target.code);
-    if (!mutated) return null;
-
-    const firstChar = target.title.trim().charAt(0);
-    let moles;
-    if (difficulty === 'challenge') {
-      moles = [
-        { code: target.code, isTarget: true, desc: `${target.name}의 『${target.title}』 (정답!)` },
-        { code: mutated.wrongSurname.code, isTarget: false, desc: mutated.wrongSurname.desc },
-        { code: mutated.wrongDigits.code, isTarget: false, desc: mutated.wrongDigits.desc },
-        { code: mutated.wrongTail.code, isTarget: false, desc: mutated.wrongTail.desc }
-      ];
-    } else {
-      const others = shuffle(samples.filter(s => s.code !== target.code)).slice(0, 3);
-      moles = [
-        { code: target.code, isTarget: true, desc: `${target.name}의 『${target.title}』 (정답!)` },
-        ...others.map(o => ({ code: o.code, isTarget: false, desc: `${o.name}의 『${o.title}』` }))
-      ];
-    }
-    const m = String(target.code).match(/^([가-힣A-Za-z])(\d{2,3})(.*)$/);
-    return {
-      id: `gen-mole-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-      prompt: `${target.name}이(가) 쓴 『${target.title}』의 저자기호를 든 두더지를 잡아요!`,
-      targetCode: target.code,
-      moles: shuffle(moles),
-      explanation: m
-        ? `성 '${m[1]}' + 이름 번호 '${m[2]}' + 제목 첫 글자 '${firstChar}'의 첫소리 '${m[3]}' = ${target.code}`
-        : `${target.name}의 『${target.title}』 저자기호는 ${target.code}이에요.`,
-      generated: true
-    };
+  if (Math.random() < 0.55) {
+    const q = genAuthorMole(books, difficulty);
+    if (q) return q;
   }
 
   const target = pickRandom(ALL_DIVISIONS);
