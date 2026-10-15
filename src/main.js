@@ -31,6 +31,8 @@ const GAME_CLASSES = {
 
 let activeGame = null;
 let arenaTimers = [];
+let arenaCleanups = [];
+let rotateHintDismissed = false;
 
 // 디버그/자동 테스트용 훅 (이용자 정보 없음)
 window.__bookTrail = {
@@ -112,6 +114,8 @@ function initApp() {
 function destroyCurrentGame() {
   arenaTimers.forEach(t => clearTimeout(t));
   arenaTimers = [];
+  arenaCleanups.forEach(fn => { try { fn(); } catch (e) { /* ignore */ } });
+  arenaCleanups = [];
   if (activeGame) {
     try { activeGame.destroy(); } catch (e) { /* ignore */ }
     activeGame = null;
@@ -209,6 +213,11 @@ function renderGameArena(container, state) {
         </div>
       </div>
 
+      <div class="rotate-hint ${rotateHintDismissed ? 'hidden' : ''}" id="rotateHint">
+        <span>📱 휴대폰을 <strong>가로로</strong> 돌리면 글씨가 커져요!</span>
+        <button id="btnRotateHintClose" aria-label="닫기">알겠어요</button>
+      </div>
+
       <div class="game-viewport-card">
         <canvas id="gameCanvas" width="800" height="520"></canvas>
         <div class="arena-overlay" id="arenaOverlay"></div>
@@ -244,6 +253,14 @@ function renderGameArena(container, state) {
   const overlay = container.querySelector('#arenaOverlay');
   const toast = container.querySelector('#gameToast');
   const btnExit = container.querySelector('#btnExitGame');
+
+  const rotateClose = container.querySelector('#btnRotateHintClose');
+  if (rotateClose) {
+    rotateClose.addEventListener('click', () => {
+      rotateHintDismissed = true;
+      container.querySelector('#rotateHint').classList.add('hidden');
+    });
+  }
 
   let toastTimer = null;
   const showToast = (html, kind = 'info', ms = 2600) => {
@@ -349,6 +366,42 @@ function renderGameArena(container, state) {
 
   activeGame = new GameClass(canvas, config);
   activeGame.preview();
+
+  // 탭/앱을 벗어나면 자동 일시정지 → 돌아오면 "계속하기"
+  const showPauseOverlay = (title, desc) => {
+    overlay.innerHTML = `
+      <div class="overlay-card">
+        <div class="overlay-icon-large">⏸️</div>
+        <h3 class="overlay-title">${title}</h3>
+        <p class="overlay-desc">${desc}</p>
+        <button class="btn-primary-large overlay-next-btn" id="btnResumeGame"><span>▶ 계속하기</span></button>
+      </div>
+    `;
+    overlay.classList.add('active');
+    overlay.querySelector('#btnResumeGame').addEventListener('click', () => {
+      soundFx.play('click');
+      hideOverlay();
+      if (activeGame) activeGame.resume();
+    });
+  };
+  const onVisibility = () => {
+    if (document.hidden && activeGame && activeGame.isRunning && !activeGame.isPaused && !overlay.classList.contains('active')) {
+      activeGame.pause();
+      showPauseOverlay('잠깐 멈췄어요', '다른 화면에 다녀오셨네요. 준비되면 계속하기를 눌러요!');
+    }
+  };
+  document.addEventListener('visibilitychange', onVisibility);
+  arenaCleanups.push(() => document.removeEventListener('visibilitychange', onVisibility));
+
+  // 멈춤 상태 자동 복구: 일시정지인데 오버레이도 결과창도 없으면 다시 진행
+  const watchdog = setInterval(() => {
+    if (!activeGame || !activeGame.isRunning) return;
+    const modalOpen = !!document.querySelector('#modalContainer .modal-backdrop');
+    if (activeGame.isPaused && !overlay.classList.contains('active') && !modalOpen) {
+      activeGame.resume();
+    }
+  }, 1000);
+  arenaCleanups.push(() => clearInterval(watchdog));
 
   // 나가기: 게임을 멈추고 확인
   btnExit.addEventListener('click', () => {

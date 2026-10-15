@@ -28,7 +28,7 @@ export const GAME_METADATA = {
     subtitle: '힌트에 맞는 번호 책을 찾아 출구로!',
     icon: '🧭',
     themeColor: '#6366f1',
-    howTo: '화살표(또는 터치 패드)로 움직여요. 반짝이는 별도 모으고, 먼지 도깨비는 피해요!',
+    howTo: '화살표·터치 패드로 움직이거나, 화면을 가고 싶은 쪽으로 밀어요(스와이프). 반짝이는 별도 모으고, 먼지 도깨비는 피해요!',
     skills: '주제 → 분류번호 찾기',
     controls: 'dpad'
   },

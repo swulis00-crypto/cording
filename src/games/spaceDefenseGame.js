@@ -80,7 +80,7 @@ export class SpaceDefenseGame extends BaseGame {
       this.aliens.push({
         x: startX + col * spacing,
         y: 70 + row * 72,
-        w: 70, h: 50,
+        w: 78, h: 54,
         code,
         isTarget: code === q.targetClass,
         alive: true,
@@ -323,9 +323,9 @@ export class SpaceDefenseGame extends BaseGame {
       ctx.fill();
       this.emoji('👾', a.x + a.w / 2, a.y + bob + 17, 18);
       ctx.fillStyle = '#ffffff';
-      this.rrect(a.x + 8, a.y + bob + a.h - 20, a.w - 16, 17, 5);
+      this.rrect(a.x + 4, a.y + bob + a.h - 23, a.w - 8, 21, 6);
       ctx.fill();
-      this.text(a.code, a.x + a.w / 2, a.y + bob + a.h - 11, { size: 13, color: '#1e1b4b', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
+      this.text(a.code, a.x + a.w / 2, a.y + bob + a.h - 12, { size: 17, color: '#1e1b4b', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
     });
 
     this._drawShip();

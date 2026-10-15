@@ -5,3 +5,5 @@ dist/
 Thumbs.db
 *.log
 _backup_v1/
+
+.vercel

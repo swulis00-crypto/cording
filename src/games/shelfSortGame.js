@@ -274,21 +274,21 @@ export class ShelfSortGame extends BaseGame {
     const chunk = Math.max(4, Math.floor((w - 24) / 14));
     const lines = [title.slice(0, chunk), title.slice(chunk, chunk * 2 - 1) + (title.length > chunk * 2 - 1 ? '…' : '')].filter(Boolean);
     lines.forEach((ln, i) => {
-      this.text(ln, x + w / 2 + 3, yy + 34 + i * 20, { size: 14, color: '#fff', weight: 700 });
+      this.text(ln, x + w / 2 + 3, yy + 34 + i * 22, { size: 16, color: '#fff', weight: 800 });
     });
 
     // 청구기호 라벨
-    const labelH = 70;
+    const labelH = 74;
     ctx.fillStyle = '#fffbeb';
     this.rrect(x + 10, yy + h - labelH - 12, w - 20, labelH, 4);
     ctx.fill();
     ctx.strokeStyle = '#f59e0b';
     ctx.lineWidth = 1.5;
     ctx.stroke();
-    this.text(String(item.code || ''), x + w / 2, yy + h - labelH + 10, { size: 19, color: '#0f172a', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
-    this.text(item.authorNo || item.author || '', x + w / 2, yy + h - labelH + 36, { size: 13, color: '#1e293b', weight: 700 });
+    this.text(String(item.code || ''), x + w / 2, yy + h - labelH + 14, { size: 23, color: '#0f172a', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
+    this.text(item.authorNo || item.author || '', x + w / 2, yy + h - labelH + 40, { size: 15, color: '#1e293b', weight: 800 });
     if (item.volume) {
-      this.text(item.volume, x + w / 2, yy + h - labelH + 54, { size: 11, color: '#64748b', weight: 700 });
+      this.text(item.volume, x + w / 2, yy + h - labelH + 58, { size: 12, color: '#64748b', weight: 700 });
     }
   }
 

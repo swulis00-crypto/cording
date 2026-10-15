@@ -83,10 +83,17 @@ export class MazeGame extends BaseGame {
     this.templateOrder = [];
 
     this._onKey = this._onKey.bind(this);
+    this._onTouchStart = this._onTouchStart.bind(this);
+    this._onTouchEnd = this._onTouchEnd.bind(this);
+    this.touchStart = null;
   }
 
   setup() {
     window.addEventListener('keydown', this._onKey);
+    // 휴대폰: 화면을 밀거나(스와이프) 캐릭터 기준으로 가고 싶은 쪽을 탭
+    this.canvas.style.touchAction = 'none';
+    this.canvas.addEventListener('touchstart', this._onTouchStart, { passive: true });
+    this.canvas.addEventListener('touchend', this._onTouchEnd, { passive: true });
     const idx = TEMPLATES.map((_, i) => i);
     for (let i = idx.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -97,6 +104,36 @@ export class MazeGame extends BaseGame {
 
   teardown() {
     window.removeEventListener('keydown', this._onKey);
+    this.canvas.style.touchAction = '';
+    this.canvas.removeEventListener('touchstart', this._onTouchStart);
+    this.canvas.removeEventListener('touchend', this._onTouchEnd);
+  }
+
+  _onTouchStart(e) {
+    const t = e.touches[0];
+    this.touchStart = { x: t.clientX, y: t.clientY };
+  }
+
+  _onTouchEnd(e) {
+    if (!this.touchStart) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - this.touchStart.x;
+    const dy = t.clientY - this.touchStart.y;
+    this.touchStart = null;
+
+    if (Math.abs(dx) >= 18 || Math.abs(dy) >= 18) {
+      // 스와이프
+      if (Math.abs(dx) > Math.abs(dy)) this.setDirection(dx > 0 ? 1 : -1, 0);
+      else this.setDirection(0, dy > 0 ? 1 : -1);
+      return;
+    }
+    // 탭: 캐릭터 기준으로 탭한 방향
+    const p = this.pointFromEvent(e);
+    const rx = p.x - this.player.x;
+    const ry = p.y - this.player.y;
+    if (Math.abs(rx) < 6 && Math.abs(ry) < 6) return;
+    if (Math.abs(rx) > Math.abs(ry)) this.setDirection(rx > 0 ? 1 : -1, 0);
+    else this.setDirection(0, ry > 0 ? 1 : -1);
   }
 
   renderPreview() {
@@ -283,9 +320,19 @@ export class MazeGame extends BaseGame {
     const ty = Math.floor((ny + p.dirY * 14) / this.cellH);
     if (this._walkable(tx, ty)) {
       p.x = nx; p.y = ny;
+      this.blockedFrames = 0;
     } else {
       p.x = cx; p.y = cy;
       p.dirX = 0; p.dirY = 0;
+    }
+
+    // 벽을 향해 계속 누르고 있으면 안내
+    if (!p.dirX && !p.dirY && (this.inputDir.x || this.inputDir.y)) {
+      this.blockedFrames = (this.blockedFrames || 0) + 1;
+      if (this.blockedFrames === 45) {
+        this.addFloat('벽이에요! 다른 방향으로 ↔', p.x, p.y - 30, '#fbbf24', 15);
+      }
+      if (this.blockedFrames > 120) this.blockedFrames = 0;
     }
 
     // 별 조각
@@ -469,9 +516,9 @@ export class MazeGame extends BaseGame {
 
       // 번호 배지
       ctx.fillStyle = '#ffffff';
-      this.rrect(ix - 22, iy - 32, 44, 17, 6);
+      this.rrect(ix - 27, iy - 36, 54, 21, 7);
       ctx.fill();
-      this.text(item.code, ix, iy - 23, { size: 12, color: '#0f172a', weight: 800 });
+      this.text(item.code, ix, iy - 25, { size: 15, color: '#0f172a', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
     });
 
     // 출구 방향 화살표

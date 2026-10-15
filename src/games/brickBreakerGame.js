@@ -301,7 +301,7 @@ export class BrickBreakerGame extends BaseGame {
         ctx.moveTo(br.x + 60, br.y + 3); ctx.lineTo(br.x + 52, br.y + 15); ctx.lineTo(br.x + 68, br.y + 28);
         ctx.stroke();
       }
-      this.text(br.code, br.x + br.w / 2, br.y + br.h / 2 + 1, { size: 14, color: '#fff', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
+      this.text(br.code, br.x + br.w / 2, br.y + br.h / 2 + 1, { size: 17, color: '#fff', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
     });
 
     this._drawPaddle();

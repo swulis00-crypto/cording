@@ -211,12 +211,12 @@ export class WhackMoleGame extends BaseGame {
 
         // 팻말
         ctx.fillStyle = '#fef3c7';
-        this.rrect(h.x + h.w / 2 - 52, baseY - 22, 104, 30, 6);
+        this.rrect(h.x + h.w / 2 - 62, baseY - 26, 124, 34, 7);
         ctx.fill();
         ctx.strokeStyle = '#b45309';
         ctx.lineWidth = 2;
         ctx.stroke();
-        this.text(m.code, h.x + h.w / 2, baseY - 7, { size: 16, color: '#1e293b', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
+        this.text(m.code, h.x + h.w / 2, baseY - 9, { size: 21, color: '#1e293b', weight: 900, font: '"Outfit", "Noto Sans KR", sans-serif' });
 
         ctx.restore();
       }

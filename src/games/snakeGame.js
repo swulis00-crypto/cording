@@ -230,11 +230,12 @@ export class SnakeGame extends BaseGame {
       ctx.fillStyle = isNext ? '#14b8a6' : '#64748b';
       this.rrect(it.x * cs + 3, it.y * cs + 3, cs - 6, cs - 6, 6);
       ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.9)';
-      this.rrect(it.x * cs + 6, it.y * cs + cs / 2 - 1, cs - 12, cs / 2 - 5, 3);
+      this.text(String(it.order), cx, cy, { size: 15, color: '#fff', weight: 900 });
+      // 번호 배지 (칸보다 넓게, 블록 아래)
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      this.rrect(cx - 26, cy + cs / 2 - 4, 52, 18, 5);
       ctx.fill();
-      this.text(String(it.order), cx, cy - 7, { size: 12, color: '#fff', weight: 900 });
-      this.text(it.code, cx, cy + 7, { size: 9, color: '#0f172a', weight: 900, font: '"Outfit", sans-serif' });
+      this.text(it.code, cx, cy + cs / 2 + 5, { size: 12, color: '#0f172a', weight: 900, font: '"Outfit", sans-serif' });
     });
 
     // 뱀
