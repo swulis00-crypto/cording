@@ -170,7 +170,7 @@ function renderGameArena(container, state) {
   const showTouchBar = controls !== 'pointer';
 
   container.innerHTML = `
-    <div class="game-screen">
+    <div class="game-screen" data-controls="${controls}">
       <div class="game-hud">
         <div class="hud-game-info">
           <div class="hud-game-icon">${meta.icon}</div>
@@ -231,6 +231,7 @@ function renderGameArena(container, state) {
           <button class="touch-dbtn down ${showDpad ? '' : 'hidden'}" data-dir="0,1" aria-label="아래">▼</button>
           <button class="touch-dbtn right" data-dir="1,0" aria-label="오른쪽">▶</button>
         </div>
+        <div class="bar-clue" id="barClue"></div>
         <div class="touch-action-group ${showAction ? '' : 'hidden'}">
           <button class="touch-action-btn" id="touchActionBtn"><span>${actionLabel}</span></button>
         </div>
@@ -250,6 +251,7 @@ function renderGameArena(container, state) {
   const clueTag = container.querySelector('#clueTag');
   const clueTitle = container.querySelector('#clueTitle');
   const clueInstruction = container.querySelector('#clueInstruction');
+  const barClue = container.querySelector('#barClue');
   const overlay = container.querySelector('#arenaOverlay');
   const toast = container.querySelector('#gameToast');
   const btnExit = container.querySelector('#btnExitGame');
@@ -302,6 +304,9 @@ function renderGameArena(container, state) {
       clueTag.textContent = info.tag || '';
       clueTitle.textContent = info.title || '';
       clueInstruction.textContent = info.clue || '';
+      if (barClue) {
+        barClue.innerHTML = `<div class="bar-clue-tag">${escapeHtml(info.tag || '')}</div><div class="bar-clue-title">${escapeHtml(info.title || '')}</div><div class="bar-clue-text">${escapeHtml(info.clue || '')}</div>`;
+      }
       clueInstruction.classList.remove('pop');
       void clueInstruction.offsetWidth;
       clueInstruction.classList.add('pop');
