@@ -60,7 +60,8 @@ export function compareClassNo(a, b) {
 
 /** 청구기호 전체 비교: 분류번호 → 저자기호(가나다) → 권차 */
 export function compareCallNumber(a, b) {
-  const c = compareClassNo(a.code, b.code);
+  // 도서 객체(classNo)와 게임 아이템(code) 모두 지원
+  const c = compareClassNo(a.code ?? a.classNo, b.code ?? b.classNo);
   if (c !== 0) return c;
   const an = (a.authorNo || a.author || '').replace(/\s*v\.\d+/, '');
   const bn = (b.authorNo || b.author || '').replace(/\s*v\.\d+/, '');
@@ -164,7 +165,7 @@ function genShelfSort(books, difficulty) {
     id: `item-${idx + 1}`,
     code: b.classNo,
     title: b.title,
-    authorNo: b.authorNo + (b.volume ? ` ${b.volume}` : ''),
+    authorNo: b.authorNo,
     volume: b.volume || '',
     rank: idx + 1
   }));

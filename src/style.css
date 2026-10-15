@@ -1607,11 +1607,12 @@ body {
 
 #gameCanvas { image-rendering: auto; width: 100%; height: auto; }
 
-/* 토스트 (힌트 / 정답 배너) */
+/* 토스트 (힌트 / 정답 배너) — 게임판이 아닌 정보판/힌트 카드 위에 표시 */
+.game-screen { position: relative; }
 .game-toast {
   position: absolute;
   left: 50%;
-  top: 14px;
+  top: 6px;
   transform: translate(-50%, -30px);
   max-width: 92%;
   background: rgba(15, 23, 42, 0.95);
@@ -1857,7 +1858,7 @@ body {
   .bar-clue-text { font-weight: 600; }
   .touch-action-group .touch-action-btn { width: 72px; height: 72px; font-size: 1.05rem; }
   .arena-overlay { position: fixed; inset: 0; z-index: 200; padding: 0.75rem; }
-  .game-toast { font-size: 0.85rem; padding: 0.5rem 0.8rem; }
+  .game-toast { position: fixed; top: 8px; width: 94%; max-width: 94%; font-size: 0.85rem; padding: 0.5rem 0.8rem; z-index: 300; }
 }
 
 /* 노트북/PC: 게임판 + 힌트 카드를 나란히 두고, 게임판 높이를 화면에 맞춰 스크롤 없이 한눈에 */
@@ -1898,6 +1899,19 @@ body {
     max-height: calc(100vh - 210px);
     min-height: 300px;
   }
+  /* 토스트는 오른쪽 힌트 카드 위에 겹쳐 표시 */
+  .game-toast {
+    grid-area: clue;
+    position: relative;
+    left: auto; top: auto;
+    transform: translateY(-10px);
+    width: 100%;
+    max-width: none;
+    align-self: start;
+    z-index: 5;
+    margin-top: 4px;
+  }
+  .game-toast.show { transform: none; }
 }
 
 /* 휴대폰 세로: 가로 회전 안내 */

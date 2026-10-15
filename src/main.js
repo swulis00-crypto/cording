@@ -221,8 +221,10 @@ function renderGameArena(container, state) {
       <div class="game-viewport-card">
         <canvas id="gameCanvas" width="800" height="520"></canvas>
         <div class="arena-overlay" id="arenaOverlay"></div>
-        <div class="game-toast" id="gameToast"></div>
       </div>
+
+      <!-- 힌트 토스트: 게임판을 가리지 않도록 힌트 카드/정보판 위에 표시 -->
+      <div class="game-toast" id="gameToast"></div>
 
       <div class="touch-controls-bar ${showTouchBar ? '' : 'hidden'}">
         <div class="touch-dpad ${showDpad || showLR ? '' : 'hidden'} ${showLR ? 'lr-only' : ''}">
