@@ -1,6 +1,4 @@
 # main 브랜치에 푸시하면 데이터 검증·테스트·빌드 후 GitHub Pages에 배포한다.
-#  - kdc-explorer  → https://<계정>.github.io/cording/
-#  - book-trail    → https://<계정>.github.io/cording/book-trail/
 name: Deploy to GitHub Pages
 
 on:
@@ -29,26 +27,11 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: |
-            kdc-explorer/package-lock.json
-            book-trail/package-lock.json
+          cache-dependency-path: kdc-explorer/package-lock.json
       - run: npm ci
       - run: npm run validate:data
       - run: npm test
       - run: npm run build
-
-      # 책길 탐험대(book-trail)를 빌드해 하위 폴더로 함께 배포
-      - name: Build book-trail
-        working-directory: book-trail
-        run: |
-          npm ci
-          npm run build
-      - name: Copy book-trail into pages output
-        working-directory: .
-        run: |
-          mkdir -p kdc-explorer/dist/book-trail
-          cp -r book-trail/dist/. kdc-explorer/dist/book-trail/
-
       - uses: actions/upload-pages-artifact@v3
         with:
           path: kdc-explorer/dist
