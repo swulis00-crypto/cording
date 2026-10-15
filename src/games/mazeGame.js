@@ -76,6 +76,8 @@ export class MazeGame extends BaseGame {
     this.dots = new Set();
     this.bookItems = [];
     this.enemies = [];
+    this.powerStars = [];
+    this.powerTimer = 0; // > 0 이면 유령을 잡을 수 있는 상태
     this.exit = { x: 17, y: 11, open: false };
     this.targetFound = false;
     this.invincible = 0;
@@ -156,9 +158,11 @@ export class MazeGame extends BaseGame {
     this.exit.open = false;
     this.invincible = 0;
     this.hintTimer = 0;
+    this.powerTimer = 0;
 
     const dist = this._bfs(1, 1);
     this._placeItems(q, dist);
+    this._placePowerStars(dist);
     this._placeDots(dist);
     this._placeEnemies(dist, index);
 
@@ -239,9 +243,31 @@ export class MazeGame extends BaseGame {
     });
   }
 
+  _placePowerStars(dist) {
+    const near = (x, y, px, py) => Math.abs(x - px) + Math.abs(y - py);
+    const cells = [];
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
+        if (this.grid[r][c] !== 0 || dist[r][c] < 5) continue;
+        if (this.bookItems.some(b => near(c, r, b.gridX, b.gridY) < 2)) continue;
+        if (near(c, r, this.exit.x, this.exit.y) < 2) continue;
+        cells.push({ x: c, y: r });
+      }
+    }
+    cells.sort(() => Math.random() - 0.5);
+    this.powerStars = [];
+    for (const cell of cells) {
+      if (this.powerStars.length >= 2) break;
+      if (this.powerStars.every(s => near(cell.x, cell.y, s.x, s.y) >= 8)) {
+        this.powerStars.push({ x: cell.x, y: cell.y, taken: false });
+      }
+    }
+  }
+
   _placeDots(dist) {
     this.dots = new Set();
     const itemCells = new Set(this.bookItems.map(b => `${b.gridX},${b.gridY}`));
+    this.powerStars.forEach(s => itemCells.add(`${s.x},${s.y}`));
     for (let r = 0; r < this.rows; r++) {
       for (let c = 0; c < this.cols; c++) {
         if (this.grid[r][c] !== 0) continue;
@@ -258,15 +284,24 @@ export class MazeGame extends BaseGame {
     const cells = [];
     for (let r = 0; r < this.rows; r++) {
       for (let c = 0; c < this.cols; c++) {
-        if (this.grid[r][c] === 0 && dist[r][c] >= 8) cells.push({ x: c, y: r });
+        if (this.grid[r][c] !== 0 || dist[r][c] < 8) continue;
+        // 책 아이템 근처(3칸 이내)에는 유령이 생기지 않음
+        if (this.bookItems.some(b => Math.abs(b.gridX - c) + Math.abs(b.gridY - r) <= 3)) continue;
+        cells.push({ x: c, y: r });
       }
     }
     cells.sort(() => Math.random() - 0.5);
     this.enemies = cells.slice(0, count).map(cell => ({
       x: (cell.x + 0.5) * this.cellW,
       y: (cell.y + 0.5) * this.cellH,
-      dirX: 1, dirY: 0, speed, timer: 0
+      home: { x: cell.x, y: cell.y },
+      dirX: 1, dirY: 0, speed, timer: 0, stunned: 0
     }));
+  }
+
+  /** 유령이 피해야 하는 칸: 아직 안 먹은 책 아이템 바로 옆 */
+  _isNearItem(gx, gy) {
+    return this.bookItems.some(b => !b.collected && Math.abs(b.gridX - gx) + Math.abs(b.gridY - gy) <= 1);
   }
 
   /* ---------------- 입력 ---------------- */
@@ -349,6 +384,23 @@ export class MazeGame extends BaseGame {
       this.emitStats();
     }
 
+    // 큰 별: 먹으면 잠시 유령을 잡을 수 있음
+    if (this.powerTimer > 0) this.powerTimer--;
+    for (const st of this.powerStars) {
+      if (st.taken) continue;
+      const sx = (st.x + 0.5) * this.cellW;
+      const sy = (st.y + 0.5) * this.cellH;
+      if (Math.hypot(p.x - sx, p.y - sy) < this.cellW * 0.55) {
+        st.taken = true;
+        this.powerTimer = 420;
+        this.score += 30;
+        soundFx.play('star');
+        this.addFloat('유령을 잡을 수 있어요! 👻', p.x, p.y - 30, '#60a5fa', 18);
+        this.burst(sx, sy, '#fde68a', 18);
+        this.emitStats();
+      }
+    }
+
     // 책 아이템
     for (const item of this.bookItems) {
       if (item.collected) continue;
@@ -387,37 +439,54 @@ export class MazeGame extends BaseGame {
       }
     }
 
-    // 먼지 도깨비
+    // 유령
+    const scared = this.powerTimer > 0;
     for (const en of this.enemies) {
       en.timer++;
+      if (en.stunned > 0) { en.stunned--; continue; }
       const egx = Math.floor(en.x / this.cellW);
       const egy = Math.floor(en.y / this.cellH);
       const ecx = (egx + 0.5) * this.cellW;
       const ecy = (egy + 0.5) * this.cellH;
-      if (Math.abs(en.x - ecx) < en.speed && Math.abs(en.y - ecy) < en.speed) {
+      const speed = scared ? en.speed * 0.6 : en.speed;
+      if (Math.abs(en.x - ecx) < speed && Math.abs(en.y - ecy) < speed) {
         en.x = ecx; en.y = ecy;
         const dirs = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }]
           .filter(d => this._walkableForEnemy(egx + d.x, egy + d.y));
         const notBack = dirs.filter(d => !(d.x === -en.dirX && d.y === -en.dirY));
-        const pool = notBack.length ? notBack : dirs;
+        // 책 아이템 바로 옆 칸은 피하기 (정답을 막고 서 있지 않도록)
+        const awayFromItems = notBack.filter(d => !this._isNearItem(egx + d.x, egy + d.y));
+        const pool = awayFromItems.length ? awayFromItems : (notBack.length ? notBack : dirs);
         if (pool.length) {
-          // 가끔 플레이어 쪽으로 쫓아오기
           let chosen = pool[Math.floor(Math.random() * pool.length)];
-          if (Math.random() < 0.35) {
-            chosen = pool.reduce((best, d) => {
-              const dx = (egx + d.x + 0.5) * this.cellW - p.x;
-              const dy = (egy + d.y + 0.5) * this.cellH - p.y;
-              const dist = Math.hypot(dx, dy);
-              return dist < best.dist ? { d, dist } : best;
-            }, { d: chosen, dist: Infinity }).d;
+          const distTo = (d) => Math.hypot((egx + d.x + 0.5) * this.cellW - p.x, (egy + d.y + 0.5) * this.cellH - p.y);
+          if (scared && Math.random() < 0.7) {
+            // 겁먹은 유령은 플레이어에게서 도망
+            chosen = pool.reduce((best, d) => (distTo(d) > distTo(best) ? d : best), chosen);
+          } else if (!scared && Math.random() < 0.35) {
+            // 가끔 플레이어 쪽으로 쫓아오기
+            chosen = pool.reduce((best, d) => (distTo(d) < distTo(best) ? d : best), chosen);
           }
           en.dirX = chosen.x; en.dirY = chosen.y;
         }
       }
-      en.x += en.dirX * en.speed;
-      en.y += en.dirY * en.speed;
+      en.x += en.dirX * speed;
+      en.y += en.dirY * speed;
 
-      if (this.invincible <= 0 && Math.hypot(p.x - en.x, p.y - en.y) < 22) {
+      if (Math.hypot(p.x - en.x, p.y - en.y) < 22) {
+        if (scared) {
+          // 유령 잡기! 자기 자리로 돌려보냄
+          this.score += 50;
+          soundFx.play('coin');
+          this.addFloat('유령 퇴치! +50', en.x, en.y - 24, '#60a5fa', 18);
+          this.burst(en.x, en.y, '#93c5fd', 16);
+          en.x = (en.home.x + 0.5) * this.cellW;
+          en.y = (en.home.y + 0.5) * this.cellH;
+          en.stunned = 90;
+          this.emitStats();
+          continue;
+        }
+        if (this.invincible > 0) continue;
         const ended = this.loseLife({ x: p.x, y: p.y });
         if (!ended) {
           this.invincible = 110;
@@ -538,15 +607,40 @@ export class MazeGame extends BaseGame {
       ctx.restore();
     }
 
-    // 먼지 도깨비
+    // 큰 별
+    this.powerStars.forEach(st => {
+      if (st.taken) return;
+      const sx = (st.x + 0.5) * this.cellW;
+      const sy = (st.y + 0.5) * this.cellH;
+      const pulse = 0.5 + 0.5 * Math.sin(this._frame / 7);
+      ctx.beginPath();
+      ctx.arc(sx, sy, 14 + pulse * 5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(253,224,71,${0.15 + pulse * 0.2})`;
+      ctx.fill();
+      this.emoji('⭐', sx, sy + 1, 20 + pulse * 3);
+    });
+
+    // 유령 (별을 먹으면 겁먹은 모습)
+    const scared = this.powerTimer > 0;
+    const ending = scared && this.powerTimer < 100 && Math.floor(this._frame / 6) % 2 === 0;
     this.enemies.forEach(en => {
       const bob = Math.sin(this._frame / 6) * 2;
       ctx.beginPath();
       ctx.arc(en.x, en.y + bob, 15, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(148,163,184,0.25)';
+      ctx.fillStyle = scared ? (ending ? 'rgba(248,250,252,0.35)' : 'rgba(96,165,250,0.45)') : 'rgba(148,163,184,0.25)';
       ctx.fill();
-      this.emoji('👻', en.x, en.y + bob, 22);
+      this.emoji(en.stunned > 0 ? '💫' : (scared ? '😱' : '👻'), en.x, en.y + bob, 22);
     });
+
+    if (scared) {
+      const w = Math.max(0, (this.powerTimer / 420)) * 160;
+      ctx.fillStyle = 'rgba(15,23,42,0.75)';
+      this.rrect(this.canvasW / 2 - 84, 6, 168, 16, 8);
+      ctx.fill();
+      ctx.fillStyle = '#60a5fa';
+      this.rrect(this.canvasW / 2 - 80, 9, w, 10, 5);
+      ctx.fill();
+    }
 
     // 플레이어
     const p = this.player;
