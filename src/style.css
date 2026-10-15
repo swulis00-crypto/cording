@@ -1871,8 +1871,10 @@ body {
     grid-template-areas:
       "hud hud"
       "view clue"
-      "touch clue"
+      "view toast"
+      "touch touch"
       "howto howto";
+    grid-template-rows: auto auto 1fr auto auto;
     gap: 0.75rem 1rem;
     align-items: start;
   }
@@ -1899,17 +1901,19 @@ body {
     max-height: calc(100vh - 210px);
     min-height: 300px;
   }
-  /* 토스트는 오른쪽 힌트 카드 위에 겹쳐 표시 */
+  /* 토스트는 문제 카드 아래 빈 공간에 표시 (문제를 가리지 않음) */
   .game-toast {
-    grid-area: clue;
+    grid-area: toast;
     position: relative;
     left: auto; top: auto;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
     width: 100%;
     max-width: none;
     align-self: start;
     z-index: 5;
-    margin-top: 4px;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.45;
   }
   .game-toast.show { transform: none; }
 }
